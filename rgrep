@@ -1,0 +1,91 @@
+#!/usr//bin/perl -w
+use 5.006;
+use 5.10.0;
+use strict;
+use File::Find ();
+use IO::File;
+use Getopt::Std;
+
+
+use vars qw/*name *dir *prune $opt_w $opt_i/;
+*name   = *File::Find::name;
+*dir    = *File::Find::dir;
+*prune  = *File::Find::prune;
+
+sub wanted;
+sub fileglob_to_re ($);
+sub domatch( $;$ );
+sub usage;
+
+
+getopts('wi');
+my $regex = shift or usage;
+$regex = '\b' . $regex . '\b' if $opt_w;
+$regex = qr{$regex};
+$regex = "(?i)$regex" if $opt_i;
+my $ffilter = shift;
+if (defined($ffilter) && $ffilter){
+        $ffilter = fileglob_to_re($ffilter);
+}
+# Traverse desired filesystems
+File::Find::find({wanted => \&wanted}, './');
+exit;
+
+
+sub wanted {
+        return if -d $File::Find::name;
+                return if ( $File::Find::name =~ /\/data\/log\/\d\d\d\d\d\d_/ );
+    if (defined($ffilter) && $ffilter) {
+                return unless /$ffilter/si;
+        }
+        #skip binary file
+    return if (/^.*\.gif\z/si);
+    return if (/^.*\.jpg\z/si);
+    return if (/^.*\.bmp\z/si);
+    return if (/^.*\.png\z/si);
+    return if (/^.*\.swf\z/si);
+    return if (/^.*\.ico\z/si);
+    return if (/^.*\.exe\z/si);
+    return if (/^.*\.ttf\z/si);
+    return if (/^.*\.dat\z/si);
+    return if (/^.*\.attach\z/si);
+    return if (/^.*\.rar\z/si);
+    return if (/^.*\.wav\z/si);
+    return if (/^.*\.db\z/si);
+        my $fh = IO::File->new( $_ );
+        return unless -f $fh;
+        domatch $fh, $File::Find::name;
+}
+
+sub fileglob_to_re ($) {
+    my $x = shift;
+    $x =~ s#([./^\$()+])#\\$1#g;
+    $x =~ s#([?*])#.$1#g;
+    "^$x\\z";
+}
+
+sub domatch( $;$ )
+{
+    my $fh = shift;
+    my $name = shift;
+
+    warn "$name is a directory\n" and return if -d $name;
+
+    while( <$fh> )
+    {
+        if ( /$regex/o )
+        {
+            print "$name:" ;
+            print "$.:" ;
+            print;
+        }
+    }
+}
+
+sub usage() {
+        say "grep in directory recursion mode.";
+        say "Usage : rgrep [-wi] regex [filetype].";
+        say "-w search at word boundary.";
+        say "-i case insensitive search.";
+        exit;
+}

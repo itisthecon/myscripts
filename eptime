@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+use 5.006;
+use 5.10.0;
+use strict;
+use Time::localtime;
+use Time::Local;
+use Getopt::Std;
+use Date::Manip;
+
+our $opt_d;
+
+getopt('d');
+if ( defined ( $opt_d ) ){
+        say UnixDate(ParseDate($opt_d),"%s");
+        say $opt_d;
+}
+my $mtime = shift || time;
+my $tm = localtime($mtime);
+say $mtime;
+printf("%04d-%02d-%02d %02d:%02d:%02d\n", $tm->year+1900, $tm->mon+1, $tm->mday, $tm->hour, $tm->min, $tm->sec);

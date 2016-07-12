@@ -1,0 +1,12 @@
+#!/usr/bin/perl -w
+use 5.006;
+use 5.10.0;
+use strict;
+use Data::Pwgen qw(pwgen pwstrength);
+for ( my $i = 0; $i < 20; $i++ ){
+	for ( my $j = 0; $j < 8; $j++ ){
+		my $pass = pwgen(8);
+		print "$pass ";
+	}
+	print "\n";
+}
