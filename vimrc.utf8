@@ -1,0 +1,89 @@
+source $VIMRUNTIME/vimrc_example.vim
+"source $VIMRUNTIME/mswin.vim
+"behave mswin
+set nobackup
+set nocompatible
+"set guifont=幼圆:h14:w7
+set helplang=cn
+set fileencodings=ucs-bom,chinese,taiwan,japan,korea,utf-8,latin1
+set showmatch
+set formatoptions+=mM "正确处理中文字符的折行和拼接
+syntax on
+
+set autoindent        "always set autoindenting on
+set smartindent       "set smart indent
+set smarttab          "use tabs at the start of a line, spaces elsewhere
+set tabstop=4
+set shiftwidth=4
+set noexpandtab
+set hlsearch
+
+"colo metacosm
+colo desert
+"colo blackdust
+
+""""""""""""""""""""""""""""""
+" Statusline
+"   """"""""""""""""""""""""""""""
+"Always hide the statusline
+set laststatus=2
+"
+function! CurDir()
+    let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
+    return curdir
+endfunction
+
+"Format the statusline
+set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+
+set diffexpr=MyDiff()
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+nnoremap <F2> :set encoding=utf8 <CR>
+nnoremap <F3> :set encoding=cp936 <CR>
+nmap <F5> ^i/* <Esc> $a*/<Esc> "把行变成传统c格式的注释
+nmap <F6> ^xxx <Esc> $hxx <Esc> "取消传统格式的c格式注释
+command -nargs=* Help tabnew | help <args> | resize 999
+
+
+
+function! SetFileEncodings(encodings)
+     let b:my_fileencodings_bak=&fileencodings
+     let &fileencodings=a:encodings
+endfunction
+
+
+"把后缀.nfo的文件当作CP437编码
+au BufReadPre  *.nfo              call SetFileEncodings('cp437')
+
+"set encoding=cp936
+"set encoding=gb2312
+set termencoding=utf-8
+set encoding=utf-8
+set fileencodings=utf-8,gbk,ucs-bom,cp936
+set fileencoding=utf-8
+set history=7000
+set undofile
+set undodir=~/.vimundo
+set undolevels=10000 "maximum number of changes that can be undone
