@@ -1,0 +1,11 @@
+HISTFILESIZE=5000000
+HISTSIZE=5000000
+
+export LC_ALL="zh_CN.UTF-8"
+export LANG="zh_CN.UTF-8"
+export LC_CTYPE=iso-8859-1
+export OUTPUT_CHARSET="zh_CN.UTF-8"
+umask 022
+fortune
+export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\h\\$\033[0m"
+export TZ="Asia/Shanghai"
