@@ -4,7 +4,7 @@ import os
 import http.cookiejar
 import urllib.request
 
-def build_opener_with_chrome_cookies(domain=None):
+def build_opener_with_chrome_cookies():
     cookiejar = http.cookiejar.CookieJar()    # No cookies stored yet
 #由于要在服务器上cron，以下值直接从chrome的开发者工具里面拷贝出来
     rows = [['PHPSESSID','319s'],
@@ -43,7 +43,7 @@ def build_opener_with_chrome_cookies(domain=None):
     return opener
 
 if __name__ == '__main__':
-    opener = build_opener_with_chrome_cookies(domain='chiphell.com')
+    opener = build_opener_with_chrome_cookies()
     html = opener.open('https://www.chiphell.com/').read()
     html = str(html,'utf-8', errors='ignore')
     import re
