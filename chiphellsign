@@ -7,21 +7,21 @@ import urllib.request
 def build_opener_with_chrome_cookies(domain=None):
     cookiejar = http.cookiejar.CookieJar()    # No cookies stored yet
 #由于要在服务器上cron，以下值直接从chrome的开发者工具里面拷贝出来
-    rows = [['PHPSESSID','3phh19s'],
-['_fmdata','6C0053BBE7C0612CD0FF810887E8897FE747B83DC54FA8998AA47BABB11B6C63B838F925BBC38'],
-['_ga','GA1.2.46321.1414723914'],
-['rcount','47bf3d4466b0ae'],
+    rows = [['PHPSESSID','319s'],
+['_fmdata','6CB11B6C63B838F925BBC38'],
+['_ga','GA3914'],
+['rcount','46b0ae'],
 ['ruser','1940'],
-['v2x4_48dd_auth','3860fF93vAP5fP%2Bl9BnvDHlT7kEwm0og'],
+['v2x4_48dd_auth','386jhkjhkyuytuEwm0og'],
 ['v2x4_48dd_lastact','14609portal.php%09'],
-['v2x4_48dd_lastcheckfeed','24952483'],
+['v2x4_48dd_lastcheckfeed','25276876483'],
 ['v2x4_48dd_lastvisit','1499'],
 ['v2x4_48dd_lip','69258466'],
 ['v2x4_48dd_saltkey','nvS2y'],
-['v2x4_48dd_seccode','32aa74173bad9'],
+['v2x4_48dd_seccode','32aahjgfht73bad9'],
 ['v2x4_48dd_sid','P2PP'],
 ['v2x4_48dd_smile','1'],
-['v2x4_48dd_ulastactivity','db75c4lwlzOsuoUE0wHlnZ']]
+['v2x4_48dd_ulastactivity','dbkjhkhj8768lnZ']]
     for row in rows:
         cookie_item = http.cookiejar.Cookie(
             version=0, name=row[0], value=row[1],
