@@ -70,6 +70,7 @@ export SYBASE=/usr/local
 export LC_ALL=zh_CN.UTF-8
 export LANG=zh_CN.UTF-8
 export TZ="Asia/Shanghai"
+export EDITOR=/usr/local/bin/vim
 alias startx='service lightdm start'
 alias stopx='service lightdm stop'
 alias zhcon='zhcon --utf8'
