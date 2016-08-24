@@ -1,11 +1,76 @@
+# /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+
+if [ "$PS1" ]; then
+  if [ "$BASH" ] && [ "$BASH" != "/bin/sh" ]; then
+    # The file bash.bashrc already sets the default PS1.
+    # PS1='\h:\w\$ '
+    if [ -f /etc/bash.bashrc ]; then
+      . /etc/bash.bashrc
+    fi
+  else
+    if [ "`id -u`" -eq 0 ]; then
+      PS1='# '
+    else
+      PS1='$ '
+    fi
+  fi
+fi
+
+if [ -d /etc/profile.d ]; then
+  for i in /etc/profile.d/*.sh; do
+    if [ -r $i ]; then
+      . $i
+    fi
+  done
+  unset i
+fi
+`cat /etc/lscolor`
 HISTFILESIZE=5000000
 HISTSIZE=5000000
+alias vi="/usr/local/bin/vim"
 
-export LC_ALL="zh_CN.UTF-8"
-export LANG="zh_CN.UTF-8"
-export LC_CTYPE=iso-8859-1
-export OUTPUT_CHARSET="zh_CN.UTF-8"
-umask 022
-fortune
-export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\h\\$\033[0m"
+export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;35;1m\W@\033[36m\h\033[;35;1m\\$\033[0m"
+alias ls="ls -A --color -F --show-control-chars"
+alias l="ls -Al"
+alias m="less"
+alias cp="cp -i"
+alias rm="rm -i"
+alias mv="mv -i"
+alias wcc='netstat -an |grep 113.105.169.168.80|wc -l'
+alias webd="cd /data/webserver/"
+#alias update="/usr/sbin/ntpdate clock.nc.fukuoka-u.ac.jp"
+alias update="/usr/sbin/ntpdate 210.72.145.44"
+alias nocommet='perl -nle '\''print unless /^\s*#/ or /^$/'\''  '
+alias toutf8="perl -MEncode -pi -E '\$_=encode(\"utf-8\",decode(\"gbk\",\$_));' "
+alias togbk="perl -MEncode -pi -E '\$_=encode(\"gbk\",decode(\"utf-8\",\$_));' "
+alias php="/data/webserver/php/bin/php-cgi"
+#alias mycli="mycli -u mac -p password -h 192.168.2.156"
+alias mycli="mycli -S /var/run/mysqld/mysqld.sock"
+alias myclicmdhis="mycli -h 192.168.1.55 -ucmdhis -ppassword cmdhis"
+alias hotdb='/data/webserver/mysql/bin/mysqlhotcopy -p password'
+alias dbimysql='/data/webserver/scripts/dbimysql'
+alias dbimssql='/data/webserver/scripts/dbimssql'
+alias dbimssql2='/data/webserver/scripts/dbimssql2'
+alias dbikhan='/data/webserver/scripts/dbikhan'
+alias bkweb='tar cvfz `date "+%Y-%m-%d_%H-%M"`_webdocs.tar.gz webdocs/'
+alias bkdb='mysqldump -u root -p ycweb > `date "+%Y-%m-%d_%H-%M"`_ycweb.sql'
+alias bkzs='tar cvfz `date "+%Y-%m-%d_%H-%M"`_zhushou1.tar /data/webserver/newwww/zhushou1/'
+alias constatus="netstat -n | awk '/^tcp/ {++S[\$NF]} END {for(a in S) print a, S[a]}'"
+alias lk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend" #osx锁屏
+alias ftpstart="launchctl load -w /System/Library/LaunchDaemons/ftp.plist"
+alias soft='cd /data/soft/'
+alias mountext='mount /dev/sdb2 /media/ubuntu/casper-rw'
+alias rftp='ncftp -u admin -p password 192.168.1.1'
+alias d='cd ~tangjun/下载/'
+export LESS="-R"
+export PAGER=less
+export LESSCHARSET=utf-8
+export SYBASE=/usr/local
+export LC_ALL=zh_CN.UTF-8
+export LANG=zh_CN.UTF-8
 export TZ="Asia/Shanghai"
+alias startx='service lightdm start'
+alias stopx='service lightdm stop'
+alias zhcon='zhcon --utf8'
+/usr/games/fortune

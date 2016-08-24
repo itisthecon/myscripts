@@ -3,11 +3,10 @@ source $VIMRUNTIME/vimrc_example.vim
 "behave mswin
 set nobackup
 set nocompatible
-"set guifont=å¹¼åœ†:h14:w7
 set helplang=cn
 set fileencodings=ucs-bom,chinese,taiwan,japan,korea,utf-8,latin1
 set showmatch
-set formatoptions+=mM "æ­£ç¡®å¤„ç†ä¸­æ–‡å­—ç¬¦çš„æŠ˜è¡Œå’Œæ‹¼æ¥
+set formatoptions+=mM "ÕıÈ·´¦ÀíÖĞÎÄ×Ö·ûµÄÕÛĞĞºÍÆ´½Ó
 syntax on
 
 set autoindent        "always set autoindenting on
@@ -16,10 +15,10 @@ set smarttab          "use tabs at the start of a line, spaces elsewhere
 set tabstop=4
 set shiftwidth=4
 set noexpandtab
-set hlsearch
 
 "colo metacosm
 colo desert
+"colo github
 "colo blackdust
 
 """"""""""""""""""""""""""""""
@@ -62,18 +61,26 @@ function MyDiff()
 endfunction
 nnoremap <F2> :set encoding=utf8 <CR>
 nnoremap <F3> :set encoding=cp936 <CR>
-nmap <F5> ^i/* <Esc> $a*/<Esc> "æŠŠè¡Œå˜æˆä¼ ç»Ÿcæ ¼å¼çš„æ³¨é‡Š
-nmap <F6> ^xxx <Esc> $hxx <Esc> "å–æ¶ˆä¼ ç»Ÿæ ¼å¼çš„cæ ¼å¼æ³¨é‡Š
+nmap <F5> ^i/* <Esc> $a*/<Esc> "°ÑĞĞ±ä³É´«Í³c¸ñÊ½µÄ×¢ÊÍ
+nmap <F6> ^xxx <Esc> $hxx <Esc> "È¡Ïû´«Í³¸ñÊ½µÄc¸ñÊ½×¢ÊÍ
+nmap ds :s/^\s\+// <CR> "É¾³ıĞĞÊ×µÄ¿Õ°×
 command -nargs=* Help tabnew | help <args> | resize 999
+
+
 
 function! SetFileEncodings(encodings)
      let b:my_fileencodings_bak=&fileencodings
      let &fileencodings=a:encodings
 endfunction
 
-"æŠŠåç¼€.nfoçš„æ–‡ä»¶å½“ä½œCP437ç¼–ç 
-au BufReadPre  *.nfo              call SetFileEncodings('cp437')
 
+"°Ñºó×º.nfoµÄÎÄ¼şµ±×÷CP437±àÂë
+au BufReadPre  *.nfo              call SetFileEncodings('cp437') 
+
+"set encoding=utf8
+"set encoding=gbk
+"set encoding=gb2312
+"set encoding=cp936
 set termencoding=utf-8
 set encoding=utf-8
 set fileencodings=utf-8,gbk,ucs-bom,cp936
@@ -82,5 +89,7 @@ set history=7000
 set undofile
 set undodir=~/.vimundo
 set undolevels=10000 "maximum number of changes that can be undone
-set nohlsearch
+"set nohlsearch
+set hlsearch
 set mouse=
+set ignorecase
