@@ -45,8 +45,8 @@ alias nocommet='perl -nle '\''print unless /^\s*#/ or /^$/'\''  '
 alias toutf8="perl -MEncode -pi -E '\$_=encode(\"utf-8\",decode(\"gbk\",\$_));' "
 alias togbk="perl -MEncode -pi -E '\$_=encode(\"gbk\",decode(\"utf-8\",\$_));' "
 alias php="/data/webserver/php/bin/php-cgi"
-#alias mycli="mycli -u mac -p password -h 192.168.2.156"
-alias mycli="mycli -S /var/run/mysqld/mysqld.sock"
+alias mysql="/data/webserver/mysql/bin/mysql -uroot -puwoiDue1"
+alias mycli="mycli -uroot -puwoiDue1"
 alias myclicmdhis="mycli -h 192.168.1.55 -ucmdhis -ppassword cmdhis"
 alias hotdb='/data/webserver/mysql/bin/mysqlhotcopy -p password'
 alias dbimysql='/data/webserver/scripts/dbimysql'
@@ -61,8 +61,9 @@ alias lk="/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources
 alias ftpstart="launchctl load -w /System/Library/LaunchDaemons/ftp.plist"
 alias soft='cd /data/soft/'
 alias mountext='mount /dev/sdb2 /media/ubuntu/casper-rw'
-alias rftp='ncftp -u admin -p password 192.168.1.1'
+alias rftp='ncftp ftp://192.168.1.1/sdc1/'
 alias d='cd ~tangjun/下载/'
+alias sshmyvps='ssh -p 27996 root@45.78.8.121'
 export LESS="-R"
 export PAGER=less
 export LESSCHARSET=utf-8
@@ -74,4 +75,5 @@ export EDITOR=/usr/local/bin/vim
 alias startx='service lightdm start'
 alias stopx='service lightdm stop'
 alias zhcon='zhcon --utf8'
+export PATH=$PATH:/data/soft/node/node6/bin
 /usr/games/fortune
