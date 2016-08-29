@@ -14,7 +14,11 @@ set smartindent       "set smart indent
 set smarttab          "use tabs at the start of a line, spaces elsewhere
 set tabstop=4
 set shiftwidth=4
-set noexpandtab
+"set noexpandtab
+set expandtab
+set softtabstop=4
+set textwidth=79
+set fileformat=unix
 
 "colo metacosm
 colo desert
