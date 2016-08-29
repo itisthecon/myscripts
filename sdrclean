@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+
+import os
+import getopt,sys
+import shutil
+
+def askconfirm(prompt = 'Please enter Yes/No: '):
+    while True:
+        try:
+            i = input(prompt)
+        except KeyboardInterrupt:
+            sys.exit(2)
+            #return False
+        if i.lower() in ('yes','y'): return True
+        elif i.lower() in ('no','n'): return False
+def getdirsize(dir):  
+    size = 0 
+    for root, dirs, files in os.walk(dir):  
+        size += sum([os.path.getsize(os.path.join(root, name)) for name in files])  
+    return size  
+
+opts, args = getopt.getopt(sys.argv[1:], 'dyh?')
+delete = False
+confirm = True
+for o, v in opts:
+    if o == '-d':
+        delete = True
+    if o == '-y':
+        confirm = False
+    if o == '-h' or o == '-?':
+        helpinfo = '''list or delete kindle's bsolete sdr  directory.
+Useage : sdrclean -[yd] #in kindle's documents directory
+-d delete obsolete sdr
+-y delete without comfirm
+-? or -h display this message'''
+        print ( helpinfo )
+        sys.exit(2)
+
+d = {}
+for f in os.listdir ( '.' ):
+    fname, extname = os.path.splitext(f)
+    if fname not in d:
+        d[fname] = [extname]
+    else:
+        d[fname].append(extname)
+
+delsum = 0;
+for k,v in d.items():
+    if len(v) == 1 and v[0] == '.sdr':
+        dn = k + v[0]
+        if ( delete ):
+            if  confirm:
+                confirmed = askconfirm ('r u sure delete ' + dn +' ?(y/n)')
+            else:
+                confirmed = True
+            if ( confirmed ):
+                shutil.rmtree(dn)
+                delsum += 1
+        else:
+            print (dn,'size=',getdirsize(dn) )
+if delsum > 0:
+    print ( "%s kinkdle's obsolete sdr directories are deleted." % (delsum) )
