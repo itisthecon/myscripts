@@ -63,11 +63,14 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-nnoremap <F2> :set encoding=utf8 <CR>
 nnoremap <F3> :set encoding=cp936 <CR>
 nmap <F5> ^i/* <Esc> $a*/<Esc> "把行变成传统c格式的注释
 nmap <F6> ^xxx <Esc> $hxx <Esc> "取消传统格式的c格式注释
 nmap ds :s/^\s\+// <CR> "删除行首的空白
+nnoremap <F2> :s/^\s\+// <CR> "删除行首的空白
+nnoremap <C-A> :s/^\s\+// <CR> "删除行首的空白
+imap <C-A> <Esc> :s/^\s\+// <CR> i "删除行首的空白
+imap <F2> <Esc> :s/^\s\+// <CR> "删除行首的空白
 command -nargs=* Help tabnew | help <args> | resize 999
 
 
