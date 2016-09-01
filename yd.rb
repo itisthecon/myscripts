@@ -4,13 +4,16 @@ require 'open-uri'
 require 'mechanize'
 require 'colorize'
 
+if ARGV.empty?
+	abort ("有道在线词典控制台Ruby版\n用法:yd 单词 单词 ...")
+end
 error_code = {
-	0.to_s.to_sym => '正常',
-	20.to_s.to_sym => '要翻译的文本过长',
-	30.to_s.to_sym => '无法进行有效的翻译',
-	40.to_s.to_sym => '不支持的语言类型',
-	50.to_s.to_sym => '无效的key',
-	60.to_s.to_sym => '无词典结果，仅在获取词典结果生效'
+	0 => '正常',
+	20 => '要翻译的文本过长',
+	30 => '无法进行有效的翻译',
+	40 => '不支持的语言类型',
+	50 => '无效的key',
+	60 => '无词典结果，仅在获取词典结果生效'
 }
 agent = Mechanize.new
 agent.user_agent_alias = 'Mac Safari'
@@ -25,7 +28,7 @@ end
 result = JSON.parse(json)
 errorcode = result['errorCode']
 if errorcode != 0
-	abort (error_code[errorcode.to_s.to_sym])
+	abort (error_code[errorcode])
 end
 query = result['query'] + ':'
 has_phonetic = false
@@ -45,7 +48,6 @@ end
 puts query.colorize(:color => :light_white,:mode => :bold)
 if has_phonetic
     puts phonetic
-    #puts '音标: '.colorize(:color => :cyan,:mode => :bold) + phonetic.colorize(:yellow) + "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + uk_phonetic.colorize(:yellow) + "\t" + '美音: '.colorize(:color => :cyan,:mode => :bold) + us_phonetic.colorize(:yellow)
 end
 puts '翻译:'.colorize(:color => :cyan,:mode => :bold)
 for trans in result['translation']
