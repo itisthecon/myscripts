@@ -32,17 +32,23 @@ if errorcode != 0
 end
 query = result['query'] + ':'
 has_phonetic = false
-if result['basic']['phonetic']
-    has_phonetic = true
-    phonetic = '[' + result['basic']['phonetic'] + ']'
-    phonetic = '音标: '.colorize(:color => :cyan,:mode => :bold) + phonetic.colorize(:yellow)
-    if result['basic']['uk-phonetic']
-        uk_phonetic = '[' + result['basic']['uk-phonetic'] + ']'
-        phonetic += "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + uk_phonetic.colorize(:yellow)
-    end
-    if result['basic']['us-phonetic']
-        us_phonetic = '[' + result['basic']['us-phonetic'] + ']'
-        phonetic += "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + us_phonetic.colorize(:yellow)
+has_basic = false
+if result['basic']
+    has_basic =true
+end
+if has_basic
+    if result['basic']['phonetic']
+        has_phonetic = true
+        phonetic = '[' + result['basic']['phonetic'] + ']'
+        phonetic = '音标: '.colorize(:color => :cyan,:mode => :bold) + phonetic.colorize(:yellow)
+        if result['basic']['uk-phonetic']
+            uk_phonetic = '[' + result['basic']['uk-phonetic'] + ']'
+            phonetic += "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + uk_phonetic.colorize(:yellow)
+        end
+        if result['basic']['us-phonetic']
+            us_phonetic = '[' + result['basic']['us-phonetic'] + ']'
+            phonetic += "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + us_phonetic.colorize(:yellow)
+        end
     end
 end
 puts query.colorize(:color => :light_white,:mode => :bold)
@@ -53,11 +59,15 @@ puts '翻译:'.colorize(:color => :cyan,:mode => :bold)
 for trans in result['translation']
     puts "\t" + trans.colorize(:yellow)
 end
-puts '基本词典:'.colorize(:color => :cyan,:mode => :bold)
-for basedic in result['basic']['explains']
-    puts "\t" + basedic.colorize(:yellow)
+if has_basic
+    puts '基本词典:'.colorize(:color => :cyan,:mode => :bold)
+    for basedic in result['basic']['explains']
+        puts "\t" + basedic.colorize(:yellow)
+    end
 end
-puts '网络释义:'.colorize(:color => :cyan,:mode => :bold)
-for web in result['web']
-    puts "\t" + web['key'].colorize(:blue) + ' : ' + web['value'].join(',')
+if result['web']
+    puts '网络释义:'.colorize(:color => :cyan,:mode => :bold)
+    for web in result['web']
+        puts "\t" + web['key'].colorize(:blue) + ' : ' + web['value'].join(',')
+    end
 end
