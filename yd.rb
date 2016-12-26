@@ -47,7 +47,7 @@ if has_basic
         end
         if result['basic']['us-phonetic']
             us_phonetic = '[' + result['basic']['us-phonetic'] + ']'
-            phonetic += "\t" + '英音: '.colorize(:color => :cyan,:mode => :bold) + us_phonetic.colorize(:yellow)
+            phonetic += "\t" + '美音: '.colorize(:color => :cyan,:mode => :bold) + us_phonetic.colorize(:yellow)
         end
     end
 end
