@@ -5,15 +5,15 @@ require 'mechanize'
 require 'colorize'
 
 if ARGV.empty?
-    abort ("有道在线词典控制台Ruby版\n用法:yd 单词 单词 ...")
+	abort ("有道在线词典控制台Ruby版\n用法:yd 单词 单词 ...")
 end
 error_code = {
-    0 => '正常',
-    20 => '要翻译的文本过长',
-    30 => '无法进行有效的翻译',
-    40 => '不支持的语言类型',
-    50 => '无效的key',
-    60 => '无词典结果，仅在获取词典结果生效'
+	0 => '正常',
+	20 => '要翻译的文本过长',
+	30 => '无法进行有效的翻译',
+	40 => '不支持的语言类型',
+	50 => '无效的key',
+	60 => '无词典结果，仅在获取词典结果生效'
 }
 agent = Mechanize.new
 agent.robots = false
@@ -29,12 +29,12 @@ end
 result = JSON.parse(json)
 errorcode = result['errorCode']
 if errorcode != 0
-    abort (error_code[errorcode])
+	abort (error_code[errorcode])
 end
 query = result['query'] + ':'
 phonetic = ''
-unless result['basic'].empty?
-    unless result['basic']['phonetic'].empty?
+unless result['basic'].nil?
+    unless result['basic']['phonetic'].nil?
         phonetic = '[' + result['basic']['phonetic'] + ']'
         phonetic = '音标: '.colorize(:color => :cyan,:mode => :bold) + phonetic.colorize(:yellow)
         unless result['basic']['uk-phonetic'].empty?
@@ -53,11 +53,11 @@ unless phonetic.empty?
 end
 puts '翻译:'.colorize(:color => :cyan,:mode => :bold)
 result['translation'].each {|trans| puts "\t" + trans.colorize(:yellow)}
-unless result['basic'].empty?
+unless result['basic'].nil?
     puts '基本词典:'.colorize(:color => :cyan,:mode => :bold)
     result['basic']['explains'].each {|basedic| puts "\t" + basedic.colorize(:yellow)}
 end
-unless result['web'].empty?
+unless result['web'].nil?
     puts '网络释义:'.colorize(:color => :cyan,:mode => :bold)
     result['web'].each {|web| puts "\t" + web['key'].colorize(:blue) + ' : ' + web['value'].join(',')}
 end
