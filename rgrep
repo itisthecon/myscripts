@@ -78,7 +78,10 @@ sub domatch( $;$ )
 			print "$name" ;
 			print color('reset');
 			print ":";
-			print "$.:" ;
+			print color('yellow');
+            		print "$." ;
+         		print color('reset');
+            		print ":";
 			print $`;
 			print color('bold red');
 			print $&;
