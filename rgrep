@@ -7,17 +7,15 @@ use IO::File;
 use Getopt::Std;
 use Term::ANSIColor;
 
-
 use vars qw/*name *dir *prune $opt_w $opt_i $opt_V/;
-*name   = *File::Find::name;
-*dir    = *File::Find::dir;
-*prune  = *File::Find::prune;
+*name  = *File::Find::name;
+*dir   = *File::Find::dir;
+*prune = *File::Find::prune;
 
 sub wanted;
 sub fileglob_to_re ($);
 sub domatch( $;$ );
 sub usage;
-
 
 getopts('wiV');
 my $regex = shift or usage;
@@ -25,76 +23,68 @@ $regex = '\b' . $regex . '\b' if $opt_w;
 $regex = qr{$regex};
 $regex = "(?i)$regex" if $opt_i;
 my $ffilter = shift;
-if (defined($ffilter) && $ffilter){
-	$ffilter = fileglob_to_re($ffilter);
+if ( defined($ffilter) && $ffilter ) {
+    $ffilter = fileglob_to_re($ffilter);
+    print "file name search pattern is : $ffilter\n" if $opt_V;
 }
+
 # Traverse desired filesystems
-File::Find::find({wanted => \&wanted}, './');
+File::Find::find( { wanted => \&wanted }, './' );
 exit;
 
-
 sub wanted {
-	return if -d $File::Find::name;
-	return if ( $File::Find::name =~ /\/data\/log\/\d\d\d\d\d\d_/ );
-	if (defined($ffilter) && $ffilter) {
-		return unless /$ffilter/si;
-	}
-	#skip binary file
-	my @ignorelist = qw( .gif .jpg .bmp .png .swf .ico .exe .dll 
-	.exe .ttf .dat .attach .rar.zip .gz .z .wav .mp3 .db .pack 
-	.mo .o .lib .so
-	);
-	for my $ext ( @ignorelist ) {
-		print "skip binary file $_\n" if $opt_V;
-		return if (/^.*\$ext\z/si);
-	}
-	my $fh = IO::File->new( $_ );
-	return unless -f $fh;
-	if ( -B $fh ) {
-		print "skip binary file $_\n" if $opt_V;
-		return;
-	}
-	domatch $fh, $File::Find::name;
+    return if -d $File::Find::name;
+    if ( defined($ffilter) && $ffilter ) {
+        return unless /$ffilter/si;
+    }
+
+    #skip binary file
+    my @ignorelist = qw( .gif .jpg .bmp .png .swf .ico .exe .dll
+      .exe .ttf .dat .attach .rar.zip .gz .z .wav .mp3 .db .pack
+      .mo .o .lib .so
+    );
+    for my $ext (@ignorelist) {
+        if (/^.*\$ext\z/si) {
+            print "skip binary file $_\n" if $opt_V;
+            return;
+        }
+    }
+    my $fh = IO::File->new($_);
+    return unless -f $fh;
+    if ( -B $fh ) {
+        print "skip binary file $_\n" if $opt_V;
+        return;
+    }
+    domatch $fh, $File::Find::name;
 }
 
 sub fileglob_to_re ($) {
-	my $x = shift;
-	$x =~ s#([./^\$()+])#\\$1#g;
-	$x =~ s#([?*])#.$1#g;
-	"^$x\\z";
+    my $x = shift;
+    $x =~ s#([./^\$()+])#\\$1#g;
+    $x =~ s#([?*])#.$1#g;
+    "^$x\\z";
 }
 
-sub domatch( $;$ )
-{
-	my $fh = shift;
-	my $name = shift;
+sub domatch( $;$ ) {
+    my $fh   = shift;
+    my $name = shift;
 
-	warn "$name is a directory\n" and return if -d $name;
+    warn "$name is a directory\n" and return if -d $name;
 
-	while( <$fh> ) {
-		if ( /$regex/o ) {
-			print color('bold blue');
-			print "$name" ;
-			print color('reset');
-			print ":";
-            print color('yellow');
-            print "$." ;
-            print color('reset');
-            print ":";
-			print $`;
-			print color('bold red');
-			print $&;
-			print color('reset');
-			print $';
-		}
-	}
+    while (<$fh>) {
+        if (/$regex/o) {
+            print color('bold blue'), "$name", color('reset'), ":";
+            print color('yellow'),    "$.",    color('reset'), ":";
+            print $`, color('bold red'), $&, color('reset'), $';
+        }
+    }
 }
 
 sub usage() {
-	say "grep in directory recursion mode.";
-	say "Usage : rgrep [-wi] regex [filetype].";
-	say "-w search at word boundary.";
-	say "-i case insensitive search.";
-	say "-V verbose mode.";
-	exit;
+    say "grep in directory recursion mode.";
+    say "Usage : rgrep [-wiV] regex [filetype].";
+    say "-w search at word boundary.";
+    say "-i case insensitive search.";
+    say "-V verbose mode.";
+    exit;
 }
