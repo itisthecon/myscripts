@@ -54,6 +54,7 @@ sub wanted {
 	return if (/^.*\.wav\z/si);
 	return if (/^.*\.db\z/si);
 	return if (/^.*\.pack\z/si);
+	return if (/^.*\.o\z/si);
 	my $fh = IO::File->new( $_ );
 	return unless -f $fh;
 	domatch $fh, $File::Find::name;
