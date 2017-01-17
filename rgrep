@@ -8,7 +8,7 @@ use Getopt::Std;
 use Term::ANSIColor;
 
 
-use vars qw/*name *dir *prune $opt_w $opt_i/;
+use vars qw/*name *dir *prune $opt_w $opt_i $opt_V/;
 *name   = *File::Find::name;
 *dir    = *File::Find::dir;
 *prune  = *File::Find::prune;
@@ -19,7 +19,7 @@ sub domatch( $;$ );
 sub usage;
 
 
-getopts('wi');
+getopts('wiV');
 my $regex = shift or usage;
 $regex = '\b' . $regex . '\b' if $opt_w;
 $regex = qr{$regex};
@@ -40,23 +40,20 @@ sub wanted {
 		return unless /$ffilter/si;
 	}
 	#skip binary file
-	return if (/^.*\.gif\z/si);
-	return if (/^.*\.jpg\z/si);
-	return if (/^.*\.bmp\z/si);
-	return if (/^.*\.png\z/si);
-	return if (/^.*\.swf\z/si);
-	return if (/^.*\.ico\z/si);
-	return if (/^.*\.exe\z/si);
-	return if (/^.*\.ttf\z/si);
-	return if (/^.*\.dat\z/si);
-	return if (/^.*\.attach\z/si);
-	return if (/^.*\.rar\z/si);
-	return if (/^.*\.wav\z/si);
-	return if (/^.*\.db\z/si);
-	return if (/^.*\.pack\z/si);
-	return if (/^.*\.o\z/si);
+	my @ignorelist = qw( .gif .jpg .bmp .png .swf .ico .exe .dll 
+	.exe .ttf .dat .attach .rar.zip .gz .z .wav .mp3 .db .pack 
+	.mo .o .lib .so
+	);
+	for my $ext ( @ignorelist ) {
+		print "skip binary file $_\n" if $opt_V;
+		return if (/^.*\$ext\z/si);
+	}
 	my $fh = IO::File->new( $_ );
 	return unless -f $fh;
+	if ( -B $fh ) {
+		print "skip binary file $_\n" if $opt_V;
+		return;
+	}
 	domatch $fh, $File::Find::name;
 }
 
@@ -80,10 +77,10 @@ sub domatch( $;$ )
 			print "$name" ;
 			print color('reset');
 			print ":";
-			print color('yellow');
-            		print "$." ;
-         		print color('reset');
-            		print ":";
+            print color('yellow');
+            print "$." ;
+            print color('reset');
+            print ":";
 			print $`;
 			print color('bold red');
 			print $&;
@@ -98,5 +95,6 @@ sub usage() {
 	say "Usage : rgrep [-wi] regex [filetype].";
 	say "-w search at word boundary.";
 	say "-i case insensitive search.";
+	say "-V verbose mode.";
 	exit;
 }
