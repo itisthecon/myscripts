@@ -53,6 +53,7 @@ sub wanted {
 	return if (/^.*\.rar\z/si);
 	return if (/^.*\.wav\z/si);
 	return if (/^.*\.db\z/si);
+	return if (/^.*\.pack\z/si);
 	my $fh = IO::File->new( $_ );
 	return unless -f $fh;
 	domatch $fh, $File::Find::name;
