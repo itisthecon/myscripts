@@ -1,0 +1,40 @@
+#!/usr/bin/ruby
+require 'net/http'
+require 'json'
+require 'pp'
+
+if ARGV.length < 3
+    puts "usage : #{__FILE__} citycode_from city_code_to departure_date"
+    exit(1)
+end
+qorgi = ARGV[0]
+qdest = ARGV[1]
+qdate = ARGV[2]
+key = 'your google api key'
+uri = URI('https://www.googleapis.com/qpxExpress/v1/trips/search?key=' + key)
+data = '{"request": {"refundable": "false", "passengers": {"infantInLapCount": 0, "infantInSeatCount": 0, "childCount": 0, "seniorCount": 0, "adultCount": 1}, "slice": [{"origin": "' + qorgi + '", "date": "' + qdate + '", "destination": "' + qdest + '"}], "solutions": 10}}'
+http = Net::HTTP.new(uri.host, uri.port)
+http.use_ssl = true
+req = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
+req.body = data
+res = http.request(req)
+jsondata = JSON.parse(res.body)
+if jsondata["trips"].nil?
+    pp res.body
+    exit(2)
+end
+airlines = {}
+jsondata["trips"]["data"]["carrier"].each do |airline|
+    airlines[airline["code"]] = airline["name"]
+end
+jsondata["trips"]["tripOption"].each do |trip|
+    code = trip["slice"][0]["segment"][0]["flight"]["carrier"]
+    flightno = code + trip["slice"][0]["segment"][0]["flight"]["number"]
+    carrier = airlines[code]
+    price = trip["saleTotal"]
+    orig = trip["slice"][0]["segment"][0]["leg"][0]["origin"]
+    dest = trip["slice"][0]["segment"][0]["leg"][0]["destination"]
+    deptime = trip["slice"][0]["segment"][0]["leg"][0]["departureTime"][/(?<=T).*(?=\+)/]
+    arvtime = trip["slice"][0]["segment"][0]["leg"][0]["arrivalTime"][/(?<=T).*(?=\+)/]
+    puts "%s\t%s\t%s\t%s\t%s\t%s\t%s" % [flightno,price,orig,dest,deptime,arvtime,carrier]
+end
