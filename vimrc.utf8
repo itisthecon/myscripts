@@ -1,7 +1,7 @@
 source $VIMRUNTIME/vimrc_example.vim
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
-set nobackup
+"set nobackup
 set nocompatible
 set helplang=cn
 set fileencodings=ucs-bom,chinese,taiwan,japan,korea,utf-8,latin1
@@ -14,11 +14,7 @@ set smartindent       "set smart indent
 set smarttab          "use tabs at the start of a line, spaces elsewhere
 set tabstop=4
 set shiftwidth=4
-"set noexpandtab
-set expandtab
-set softtabstop=4
-set textwidth=79
-set fileformat=unix
+set noexpandtab
 
 "colo metacosm
 colo desert
@@ -63,14 +59,11 @@ function MyDiff()
   endif
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
-nnoremap <F3> :set encoding=cp936 <CR>
-nmap <F5> ^i/* <Esc> $a*/<Esc> "把行变成传统c格式的注释
-nmap <F6> ^xxx <Esc> $hxx <Esc> "取消传统格式的c格式注释
+"nnoremap <F2> :set encoding=utf8 <CR>
+"nnoremap <F3> :set encoding=cp936 <CR>
+"nmap <F5> ^i/* <Esc> $a*/<Esc> "把行变成传统c格式的注释
+"nmap <F6> ^xxx <Esc> $hxx <Esc> "取消传统格式的c格式注释
 nmap ds :s/^\s\+// <CR> "删除行首的空白
-nnoremap <F2> :s/^\s\+// <CR> "删除行首的空白
-nnoremap <C-A> :s/^\s\+// <CR> "删除行首的空白
-imap <C-A> <Esc> :s/^\s\+// <CR> i "删除行首的空白
-imap <F2> <Esc> :s/^\s\+// <CR> "删除行首的空白
 command -nargs=* Help tabnew | help <args> | resize 999
 
 
@@ -82,7 +75,7 @@ endfunction
 
 
 "把后缀.nfo的文件当作CP437编码
-au BufReadPre  *.nfo              call SetFileEncodings('cp437') 
+au BufReadPre  *.nfo              call SetFileEncodings('cp437')
 
 "set encoding=utf8
 "set encoding=gbk
@@ -94,9 +87,12 @@ set fileencodings=utf-8,gbk,ucs-bom,cp936
 set fileencoding=utf-8
 set history=7000
 set undofile
-set undodir=~/.vimundo
+set undodir=~/.vim/undo
 set undolevels=10000 "maximum number of changes that can be undone
 "set nohlsearch
-set hlsearch
 set mouse=
+set hlsearch
 set ignorecase
+
+set backupdir=~/.vim/backup
+set directory=~/.vim/swap
