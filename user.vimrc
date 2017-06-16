@@ -1,23 +1,11 @@
-set nocompatible               " be iMproved
-
 inoremap jk <ESC>
-" 1 tab to 2 space for ruby
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
 " number line show
 set nu
-
-"set noswapfile
-"in order to switch between buffers with unsaved change
-"set hidden
 
 " hightlight column and line
 set cursorline
 "set cursorcolumn
 filetype plugin indent on
-syntax on
 
 " support css word with -
 autocmd FileType css,scss,slim,html,eruby,coffee,javascript setlocal iskeyword+=-
