@@ -77,6 +77,21 @@ endfunction
 "把后缀.nfo的文件当作CP437编码
 au BufReadPre  *.nfo              call SetFileEncodings('cp437')
 
+"确保备份交换和undo目录存在
+function! EnsureDirExists (dir)
+   if !isdirectory(a:dir)
+     if exists("*mkdir")
+       call mkdir(a:dir,'p')
+       echo "Created directory: " . a:dir
+     else
+       echo "Please create directory: " . a:dir
+     endif
+   endif
+endfunction
+call EnsureDirExists($HOME . '/.vim/backup')
+call EnsureDirExists($HOME . '/.vim/swap')
+call EnsureDirExists($HOME . '/.vim/undo')
+
 "set encoding=utf8
 "set encoding=gbk
 "set encoding=gb2312
@@ -87,12 +102,12 @@ set fileencodings=utf-8,gbk,ucs-bom,cp936
 set fileencoding=utf-8
 set history=7000
 set undofile
-set undodir=~/.vim/undo
 set undolevels=10000 "maximum number of changes that can be undone
 "set nohlsearch
 set mouse=
 set hlsearch
 set ignorecase
 
+set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
 set directory=~/.vim/swap
