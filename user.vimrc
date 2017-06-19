@@ -1,6 +1,6 @@
 inoremap jk <ESC>
-" number line show
-set nu
+"显示行号
+"set nu
 
 " hightlight column and line
 set cursorline
