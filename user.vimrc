@@ -19,7 +19,7 @@ set backspace=indent,eol,start
 set t_Co=256
 " colorscheme, read here: http://vim.wikia.com/wiki/Change_the_color_scheme
 set background=dark
-colorscheme molokai
+"colorscheme molokai
 autocmd BufWritePre * :%s/\s\+$//e
 
 set rtp+=~/.vim/bundle/Vundle.vim
