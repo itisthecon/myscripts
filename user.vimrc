@@ -175,3 +175,7 @@ let DisableAutoPHPFolding = 0
 "map <F6> <Esc>:EnablePHPFolds<Cr>
 map <F5> <Esc>:EnablePHPFolds<Cr>
 map <F6> <Esc>:DisablePHPFolds<Cr>
+
+"搜索高亮颜色
+hi Search ctermbg=LightYellow
+hi Search ctermfg=Red
