@@ -1,0 +1,81 @@
+#!/usr/bin/ruby
+require 'net/http'
+require 'mechanize'
+require 'json'
+
+data = Hash.new
+
+agent = Mechanize.new
+agent.user_agent_alias = 'Linux Firefox'
+agent.request_headers = {'accept-language' => 'zh-CN',}
+
+url = "https://api-otc.huobi.pro/v1/otc/base/market/price"
+page = agent.get url
+resp = JSON.parse(page.body)
+usdtprice = resp['data'][1]['price'].to_f;
+btcprice = resp['data'][0]['price'].to_f;
+
+data["price"] = Hash.new
+data["price"]["usdt"] = usdtprice
+data["price"]["btc"] = btcprice
+
+url = "https://api-otc.huobi.pro/v1/otc/trade/list/public?coinId=2&tradeType=1&currentPage=1&payWay=&country="
+page = agent.get url
+resp = JSON.parse(page.body)
+
+premium = (resp['data'][0]['price'] / usdtprice) * 100
+data["usdt"] = Hash.new
+data['usdt']['premium'] = (premium - 100 ).round(2)
+data['usdt']['data'] = Array.new
+
+i = 0
+resp['data'][0..2].each do |price_info|
+    data['usdt']['data'][i] = Hash.new
+    data['usdt']['data'][i]['username'] = price_info['userName']
+    data['usdt']['data'][i]['pay_method'] = price_info['payMethodI18n']
+    data['usdt']['data'][i]['price'] = price_info['price']
+    data['usdt']['data'][i]['min_limit'] = price_info['minTradeLimit']
+    data['usdt']['data'][i]['max_limit'] = price_info['maxTradeLimit']
+
+    i += 1
+end
+
+url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=usdt-eth"
+page = agent.get url
+resp = JSON.parse(page.body)
+ethprice = resp['result'][0]['Last']
+
+url = "https://www.coincola.com/buy/ETH?country_code=CN"
+page = agent.get url
+
+cnyethprice = page.css('table tbody tr')[0].css('td')[4].text.split(' ')[0].to_f
+
+data["price"]["eth"] = cnyethprice
+premium = (cnyethprice / (ethprice * usdtprice)) * 100
+data['eth'] = Hash.new
+data['eth']['premium'] = (premium - 100).round(2)
+data['eth']['data'] = Array.new
+
+i = 0
+page.css('table tbody tr')[0..2].each do |tr|
+    data['eth']['data'][i] = Hash.new
+    data['eth']['data'][i]['username'] = tr.css('td')[0].text.strip
+    data['eth']['data'][i]['credit'] = tr.css('td')[1].text.strip.gsub(/\n\s+/m, ' ')
+    data['eth']['data'][i]['pay_method'] = tr.css('td')[2].text.strip
+    data['eth']['data'][i]['pay_limit'] = tr.css('td')[3].text.strip
+    data['eth']['data'][i]['price'] = tr.css('td')[4].text.strip.split(' ')[0].to_f
+
+    i += 1
+end
+
+url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-lmc"
+page = agent.get url
+resp = JSON.parse(page.body)
+data['lmc'] = Hash.new
+data['lmc']['last'] = resp['result'][0]['Last'] * 100000000
+data['lmc']['high'] = resp['result'][0]['High'] * 100000000
+data['lmc']['low'] = resp['result'][0]['Low'] * 100000000
+
+data['time'] = Time.now.to_s.split(' ')[0..1].join(' ')
+
+puts data.to_json

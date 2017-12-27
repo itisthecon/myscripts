@@ -1,0 +1,64 @@
+#!/usr/bin/ruby
+require 'net/http'
+require 'mechanize'
+require 'json'
+require 'colorize'
+
+agent = Mechanize.new
+agent.user_agent_alias = 'Linux Firefox'
+agent.request_headers = {'accept-language' => 'zh-CN',}
+
+url = "https://api-otc.huobi.pro/v1/otc/base/market/price"
+page = agent.get url
+resp = JSON.parse(page.body)
+btctitle = resp['data'][0]['coinName'] + '/CNY:'
+usdttitle = resp['data'][1]['coinName'] + '/CNY:'
+usdtprice = resp['data'][1]['price'].to_f;
+s = btctitle.colorize(:color => :light_white,:mode => :bold) + "#{resp['data'][0]['price']}".colorize(:yellow) +"\t" + usdttitle.colorize(:color => :light_white,:mode => :bold) + "#{resp['data'][1]['price']}".colorize(:yellow) + "\n\n"
+puts s
+
+url = "https://api-otc.huobi.pro/v1/otc/trade/list/public?coinId=2&tradeType=1&currentPage=1&payWay=&country="
+page = agent.get url
+resp = JSON.parse(page.body)
+
+premium = (resp['data'][0]['price'] / usdtprice) * 100
+if premium >= 105
+    premium = premium.round(2).to_s.colorize(:color => :red,:mode => :bold)
+else
+    premium = premium.round(2).to_s.colorize(:color => :green,:mode => :bold)
+end
+
+puts "USDT premium : #{premium}%"
+
+resp['data'][0..2].each do |price_info|
+    s = price_info['userName'] + "\t" + price_info['payMethodI18n'] + "\t" + "#{price_info['price']}".colorize(:yellow) + "\t#{price_info['minTradeLimit']}-#{price_info['maxTradeLimit']}\t#{price_info['tradeCount']}"
+    puts s
+end
+
+url = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=usdt-eth"
+page = agent.get url
+resp = JSON.parse(page.body)
+ethprice = resp['result'][0]['Last']
+
+url = "https://www.coincola.com/buy/ETH?country_code=CN"
+page = agent.get url
+
+cnyethprice = page.css('table tbody tr')[0].css('td')[4].text.split(' ')[0].to_f
+
+premium = (cnyethprice / (ethprice * usdtprice)) * 100
+if premium >= 105
+    premium = premium.round(2).to_s.colorize(:color => :red,:mode => :bold)
+else
+    premium = premium.round(2).to_s.colorize(:color => :green,:mode => :bold)
+end
+
+puts "\nETH premium : #{premium}%"
+
+page.css('table tbody tr')[0..2].each do |tr|
+    uname = tr.css('td')[0].text.strip
+    credit = tr.css('td')[1].text.strip.gsub(/\n\s+/m, ' ')
+    payment_method = tr.css('td')[2].text.strip
+    pay_limit = tr.css('td')[3].text.strip
+    price = tr.css('td')[4].text.strip
+    puts "#{uname}\t#{credit}\t#{payment_method}\t#{pay_limit}\t" + "#{price}".colorize(:yellow)
+end
