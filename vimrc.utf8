@@ -86,7 +86,7 @@ endfun
 "F10删除行尾空白
 noremap <F10> :call TrimWhitespace()<CR>
 "保存时自动删除行尾空白
-autocmd BufWritePre,FileType php * :call TrimWhitespace()
+autocmd BufWritePre *.php :call TrimWhitespace()
 
 "把后缀.nfo的文件当作CP437编码
 au BufReadPre  *.nfo              call SetFileEncodings('cp437')
