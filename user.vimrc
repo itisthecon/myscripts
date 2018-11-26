@@ -62,7 +62,7 @@ Plugin 'honza/vim-snippets'
 "Ack全局搜索插件 !!!使用前需apt install ack
 Plugin 'mileszs/ack.vim'
 "Ack的快捷键设置为F4
-:map <F4> :Ack -i<Space>
+":map <F4> :Ack -i<Space>
 if has("gui_running")
   colorscheme desert
   set bs=2
@@ -175,6 +175,13 @@ let DisableAutoPHPFolding = 0
 "map <F6> <Esc>:EnablePHPFolds<Cr>
 map <F5> <Esc>:EnablePHPFolds<Cr>
 map <F6> <Esc>:DisablePHPFolds<Cr>
+
+function! Comment()
+    r~/.vim/php/comment.txt
+endfunction
+
+map <F3> <Esc>:call Comment()<CR>
+
 
 "搜索高亮颜色
 hi Search ctermbg=LightYellow
