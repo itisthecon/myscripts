@@ -182,6 +182,11 @@ endfunction
 
 map <F3> <Esc>:call Comment()<CR>
 
+function! Newfunc()
+    r~/.vim/php/newfunc.txt
+endfunction
+
+nmap <C-a> <Esc>:call Newfunc()<CR>
 
 "搜索高亮颜色
 hi Search ctermbg=LightYellow
