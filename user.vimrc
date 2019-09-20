@@ -47,7 +47,10 @@ Bundle 'Raimondi/delimitMate'
 Plugin 'tpope/vim-dispatch'
 
 "自动补全YCM
-Bundle 'Valloric/YouCompleteMe'
+"Bundle 'Valloric/YouCompleteMe'
+
+"标签跳转扩展
+Bundle 'vim-scripts/matchit.zip'
 
 "CSS color show(css颜色显示) 将css/sass/less中的颜色用背景色高亮出来方便预览
 Plugin 'gorodinskiy/vim-coloresque'
