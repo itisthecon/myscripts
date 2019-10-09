@@ -5,7 +5,6 @@ inoremap jk <ESC>
 " hightlight column and line
 set cursorline
 "set cursorcolumn
-filetype plugin indent on
 
 " support css word with -
 autocmd FileType css,scss,slim,html,eruby,coffee,javascript setlocal iskeyword+=-
@@ -51,6 +50,9 @@ Plugin 'tpope/vim-dispatch'
 
 "标签跳转扩展
 Bundle 'vim-scripts/matchit.zip'
+
+"fish syntax扩展
+Bundle 'dag/vim-fish'
 
 "CSS color show(css颜色显示) 将css/sass/less中的颜色用背景色高亮出来方便预览
 Plugin 'gorodinskiy/vim-coloresque'
@@ -191,8 +193,14 @@ endfunction
 
 nmap <C-a> <Esc>:call Newfunc()<CR>
 
+augroup fish_ft
+  au!
+  autocmd BufNewFile,BufRead *.fish   set syntax=fish
+augroup END
+
 "搜索高亮颜色
 hi Search ctermbg=LightYellow
 hi Search ctermfg=DarkRed
 
-filetype plugin on
+syntax enable
+filetype plugin indent on
