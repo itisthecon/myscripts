@@ -204,3 +204,24 @@ hi Search ctermfg=DarkRed
 
 syntax enable
 filetype plugin indent on
+
+"状态栏相关设置
+Plugin 'itchyny/lightline.vim'
+Plugin 'itchyny/vim-gitbranch'
+let g:lightline = {
+      \ 'colorscheme': 'Tomorrow_Night_Blue',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste' ],
+      \             [ 'gitbranch', 'readonly', 'modified', 'cwd', 'path', 'totallines', 'length' ] ]
+      \ },
+      \ 'component': {
+      \   'totallines': '%LL',
+      \   'length'    : "%{line2byte('$') + len(getline('$'))}C",
+      \   'cwd'       : '%{CurDir()}',
+      \   'path'  : '%f'
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'gitbranch#name'
+      \ },
+\}
+set noshowmode

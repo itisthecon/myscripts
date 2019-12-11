@@ -18,6 +18,8 @@ set softtabstop=4 "敲入tab键时实际占有的列数。softtabstop大于tabstop时多出的部分
 set expandtab
 "set noexpandtab
 
+set noshowmode
+
 "colo metacosm
 colo desert
 "colo github
