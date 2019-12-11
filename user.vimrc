@@ -218,10 +218,18 @@ let g:lightline = {
       \   'totallines': '%LL',
       \   'length'    : "%{line2byte('$') + len(getline('$'))}C",
       \   'cwd'       : '%{CurDir()}',
+      \   'git'       : '%{FugitiveStatusline()}',
       \   'path'  : '%f'
       \ },
       \ 'component_function': {
-      \   'gitbranch': 'gitbranch#name'
+      \   'gitbranch': 'Gitbr'
       \ },
 \}
+function Gitbr()
+    let branchname = gitbranch#name()
+    if strlen(branchname) < 1
+        return ""
+    endif
+    return ' ' . branchname
+endfunction
 set noshowmode
