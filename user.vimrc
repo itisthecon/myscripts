@@ -233,3 +233,10 @@ function Gitbr()
     return ' ' . branchname
 endfunction
 set noshowmode
+
+"""""""""""""""""""""""""""""
+"插入模式映射
+"
+"锁进
+inoremap <C-T> <ESC>>>i
+inoremap <C-A-T> <ESC><<i
