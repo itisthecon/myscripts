@@ -237,6 +237,9 @@ set noshowmode
 """""""""""""""""""""""""""""
 "插入模式映射
 "
-"锁进
+"增加缩进
 inoremap <C-T> <ESC>>>i
-inoremap <C-A-T> <ESC><<i
+"减少缩进
+inoremap <C-B> <ESC><<i
+"删除当前行
+inoremap <C-D> <ESC>ddi
