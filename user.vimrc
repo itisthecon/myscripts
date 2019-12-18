@@ -212,7 +212,12 @@ let g:lightline = {
       \ 'colorscheme': 'Tomorrow_Night_Blue',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'modified', 'cwd', 'path', 'totallines', 'length' ] ]
+      \             [ 'gitbranch', 'readonly', 'modified', 'cwd', 'path'] ],
+      \   'right': [
+      \              [ 'fileformat', 'fileencoding', 'filetype', 'totallines', 'length'] ,
+      \              [ 'percent' ],
+      \              [ 'lineinfo' ]
+      \              ]
       \ },
       \ 'component': {
       \   'totallines': '%LL',
