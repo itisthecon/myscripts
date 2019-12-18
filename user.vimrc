@@ -243,3 +243,5 @@ inoremap <C-T> <ESC>>>i
 inoremap <C-B> <ESC><<i
 "删除当前行
 inoremap <C-D> <ESC>ddi
+
+let mapleader = "_"
