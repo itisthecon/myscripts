@@ -2,11 +2,11 @@ source $VIMRUNTIME/vimrc_example.vim
 "source $VIMRUNTIME/mswin.vim
 "behave mswin
 "set nobackup
-set nocompatible "²»¼æÈİvi,¿ÉÔöÇ¿ĞÔÄÜ
+set nocompatible "ä¸å…¼å®¹vi,å¯å¢å¼ºæ€§èƒ½
 set helplang=cn
 set fileencodings=ucs-bom,chinese,taiwan,japan,korea,utf-8,latin1
 set showmatch
-set formatoptions+=mM "ÕıÈ·´¦ÀíÖĞÎÄ×Ö·ûµÄÕÛĞĞºÍÆ´½Ó
+set formatoptions+=mM "æ­£ç¡®å¤„ç†ä¸­æ–‡å­—ç¬¦çš„æŠ˜è¡Œå’Œæ‹¼æ¥
 syntax on
 
 set autoindent        "always set autoindenting on
@@ -14,7 +14,7 @@ set smartindent       "set smart indent
 set smarttab          "use tabs at the start of a line, spaces elsewhere
 set tabstop=4
 set shiftwidth=4
-set softtabstop=4 "ÇÃÈëtab¼üÊ±Êµ¼ÊÕ¼ÓĞµÄÁĞÊı¡£softtabstop´óÓÚtabstopÊ±¶à³öµÄ²¿·Ö»áÓÃ¿Õ¸ñÌî³ä,Ğ¡ÓÚµÄÊ±ºò»á±ä³Ésofttabstop¸ö¿Õ¸ñ
+set softtabstop=4 "æ•²å…¥tabé”®æ—¶å®é™…å æœ‰çš„åˆ—æ•°ã€‚softtabstopå¤§äºtabstopæ—¶å¤šå‡ºçš„éƒ¨åˆ†ä¼šç”¨ç©ºæ ¼å¡«å……,å°äºçš„æ—¶å€™ä¼šå˜æˆsofttabstopä¸ªç©ºæ ¼
 set expandtab
 "set noexpandtab
 
@@ -65,11 +65,11 @@ function MyDiff()
 endfunction
 "nnoremap <F2> :set encoding=utf8 <CR>
 "nnoremap <F3> :set encoding=cp936 <CR>
-"nmap <F5> ^i/* <Esc> $a*/<Esc> "°ÑĞĞ±ä³É´«Í³c¸ñÊ½µÄ×¢ÊÍ
-"nmap <F6> ^xxx <Esc> $hxx <Esc> "È¡Ïû´«Í³¸ñÊ½µÄc¸ñÊ½×¢ÊÍ
-"×Ô¶¯¸ñÊ½»¯jsonÎÄ±¾
+"nmap <F5> ^i/* <Esc> $a*/<Esc> "æŠŠè¡Œå˜æˆä¼ ç»Ÿcæ ¼å¼çš„æ³¨é‡Š
+"nmap <F6> ^xxx <Esc> $hxx <Esc> "å–æ¶ˆä¼ ç»Ÿæ ¼å¼çš„cæ ¼å¼æ³¨é‡Š
+"è‡ªåŠ¨æ ¼å¼åŒ–jsonæ–‡æœ¬
 map <F2> <Esc>:%!python -m json.tool<CR>:set filetype=json<CR>
-"É¾³ıĞĞÊ×µÄ¿Õ°×
+"åˆ é™¤è¡Œé¦–çš„ç©ºç™½
 nmap <F9> :s/^\s\+//<CR>
 
 command -nargs=* Help tabnew | help <args> | resize 999
@@ -79,21 +79,21 @@ function! SetFileEncodings(encodings)
      let &fileencodings=a:encodings
 endfunction
 
-"É¾³ıĞĞÎ²µÄ¿Õ°×
+"åˆ é™¤è¡Œå°¾çš„ç©ºç™½
 fun! TrimWhitespace()
     let l:save = winsaveview()
     keeppatterns %s/\s\+$//e
     call winrestview(l:save)
 endfun
-"F10É¾³ıĞĞÎ²¿Õ°×
+"F10åˆ é™¤è¡Œå°¾ç©ºç™½
 noremap <F10> :call TrimWhitespace()<CR>
-"±£´æÊ±×Ô¶¯É¾³ıĞĞÎ²¿Õ°×
+"ä¿å­˜æ—¶è‡ªåŠ¨åˆ é™¤è¡Œå°¾ç©ºç™½
 autocmd BufWritePre *.php :call TrimWhitespace()
 
-"°Ñºó×º.nfoµÄÎÄ¼şµ±×÷CP437±àÂë
+"æŠŠåç¼€.nfoçš„æ–‡ä»¶å½“ä½œCP437ç¼–ç 
 au BufReadPre  *.nfo              call SetFileEncodings('cp437')
 
-"È·±£±¸·İ½»»»ºÍundoÄ¿Â¼´æÔÚ
+"ç¡®ä¿å¤‡ä»½äº¤æ¢å’Œundoç›®å½•å­˜åœ¨
 function! EnsureDirExists (dir)
    if !isdirectory(a:dir)
      if exists("*mkdir")
