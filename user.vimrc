@@ -313,4 +313,4 @@ endfunction
 
 " }}}
 
-colorscheme ron
+colorscheme desert
