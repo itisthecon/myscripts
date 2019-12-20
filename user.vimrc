@@ -37,13 +37,10 @@ endif
 
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 
-set noshowmode
-
 "搜索高亮颜色
 hi Search ctermbg=LightYellow
 hi Search ctermfg=DarkRed
 
-syntax enable
 filetype plugin indent on
 
 " }}}
@@ -144,6 +141,8 @@ Plugin 'L9'
 Plugin 'scrooloose/nerdtree'
 Plugin 'mattn/emmet-vim'
 
+Plugin 'ntpeters/vim-better-whitespace'
+
 call vundle#end()
 " }}}
 " Vimrc autocommands ----------------------- {{{
@@ -238,21 +237,7 @@ let g:ctrlp_custom_ignore = '\v[\/]\.(DS_Store|git|hg|svn)|(optimized|compiled|n
 let php_folding=0
 let DisableAutoPHPFolding = 0
 
-" }}}
-" Vimrc functions ----------------------- {{{
-
-function! Comment()
-    r~/.vim/php/comment.txt
-endfunction
-
-
-function! Newfunc()
-    r~/.vim/php/newfunc.txt
-endfunction
-
-" }}}
-" Vimscript file status bar ---------------------- {{{
-
+" 状态条定义
 let g:lightline = {
             \ 'colorscheme': 'Tomorrow_Night_Blue',
             \ 'active': {
@@ -275,6 +260,22 @@ let g:lightline = {
             \   'gitbranch': 'Gitbr'
             \ },
             \}
+"enable highlighting and stripping whitespace on save by default
+let g:better_whitespace_enabled=1
+let g:strip_whitespace_on_save=1
+" }}}
+" Vimrc functions ----------------------- {{{
+
+function! Comment()
+    r~/.vim/php/comment.txt
+endfunction
+
+
+function! Newfunc()
+    r~/.vim/php/newfunc.txt
+endfunction
+
+" 状态条git分支显示
 function Gitbr()
     let branchname = gitbranch#name()
     if strlen(branchname) < 1
