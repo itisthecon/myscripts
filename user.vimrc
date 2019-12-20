@@ -60,14 +60,18 @@ Plugin 'tpope/vim-sensible'
 "支持使用.来重复执行一些插件的命令（如speeddating, surround等)
 Plugin 'tpope/vim-repeat'
 
-"用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+" 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+" cs"'      双引号转单引号
+" cs'<q>    单引号转<q></q>
+" cst"      再转回来
+" ds"       删掉双引号
 Plugin 'tpope/vim-surround'
 
 "自动补全引号括号等
 Bundle 'Raimondi/delimitMate'
 
 "异步运行测试，并在分屏中看到测试的输出
-Plugin 'tpope/vim-dispatch'
+"Plugin 'tpope/vim-dispatch'
 
 "自动补全YCM
 "Bundle 'Valloric/YouCompleteMe'
@@ -82,11 +86,11 @@ Bundle 'dag/vim-fish'
 Plugin 'gorodinskiy/vim-coloresque'
 
 "以下5行是代码补全snipmate相关的插件
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
+"Plugin 'MarcWeber/vim-addon-mw-utils'
+"Plugin 'tomtom/tlib_vim'
+"Plugin 'garbas/vim-snipmate'
 " Optional:
-Plugin 'honza/vim-snippets'
+"Plugin 'honza/vim-snippets'
 
 "Ack全局搜索插件 !!!使用前需apt install ack
 Plugin 'mileszs/ack.vim'
@@ -96,8 +100,18 @@ Plugin 'tpope/vim-fugitive'
 " ruby command for rvm
 Plugin 'tpope/vim-rvm'
 
-" 快速移动光标, 往前移动,,w 往后移动,,b 搜索跳转,,s 行级跳转,,j前跳 ,,k后跳
-" 行内跳转,,h前跳 ,,l后跳
+" 快速移动光标
+" <Leader><Leader>f{char}   向右寻找{char}
+" <Leader><Leader>F{char}   向左寻找{char}
+" <Leader><Leader>t{char}   向前寻找{char}
+" <Leader><Leader>T{char}   向后寻找{char}
+" <Leader><Leader>b         word 级后跳转
+" <Leader><Leader>w         word 级前跳转
+" <Leader><Leader>s         搜索跳转
+" <Leader><Leader>j         行级下跳转
+" <Leader><Leader>k         行级上跳转
+" <Leader><Leader>n         往前跳到上一次 ? 或 / 搜索
+" <Leader><Leader>N         往后跳到上一次 ? 或 / 搜索
 Plugin 'Lokaltog/vim-easymotion'
 
 " power vim plugin for rails
@@ -173,10 +187,10 @@ augroup auto_grp
     autocmd BufWritePre * :%s/\s\+$//e
 
     "let g:user_emmet_expandabbr_key = '<c-e>'
-    autocmd FileType html,css,scss,eruby,php EmmetInstall
+    "autocmd FileType html,css,scss,eruby,php EmmetInstall
 
     " coffeescript
-    autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+    "autocmd BufNewFile,BufRead *.coffee set filetype=coffee
 
     " hack filetype for slim
     autocmd BufNewFile,BufRead *.slim set filetype=slim
@@ -271,6 +285,7 @@ let g:lightline = {
             \   'gitbranch': 'Gitbr'
             \ },
             \}
+
 "enable highlighting and stripping whitespace on save by default
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
