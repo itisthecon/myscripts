@@ -165,8 +165,8 @@ Plugin 'scrooloose/nerdtree'
 
 Plugin 'ntpeters/vim-better-whitespace'
 
-" 主题
-Plugin 'morhetz/gruvbox'
+" 颜色主题
+Plugin 'rakr/vim-one'
 
 call vundle#end()
 " }}}
@@ -289,6 +289,7 @@ let g:lightline = {
 "enable highlighting and stripping whitespace on save by default
 let g:better_whitespace_enabled=1
 let g:strip_whitespace_on_save=1
+"let g:indent_guides_enable_on_vim_startup = 1
 " }}}
 " Vimrc functions ----------------------- {{{
 
@@ -310,5 +311,4 @@ function Gitbr()
     return ' ' . branchname
 endfunction
 
-let g:indent_guides_enable_on_vim_startup = 1
 " }}}
