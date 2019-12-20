@@ -1,12 +1,14 @@
 " Vimrc file settings ---------------------- {{{
-
+"syntax on
+if !exists("g:syntax_on")
+    syntax enable
+endif
 "set nobackup
 set nocompatible "不兼容vi,可增强性能
 set helplang=cn
 set fileencodings=ucs-bom,chinese,taiwan,japan,korea,utf-8,latin1
 set showmatch
 set formatoptions+=mM "正确处理中文字符的折行和拼接
-syntax on
 
 set autoindent        "always set autoindenting on
 set smartindent       "set smart indent
@@ -19,6 +21,7 @@ set expandtab
 
 set noshowmode
 
+"colo koehler
 "colo metacosm
 colo desert
 "colo github
@@ -49,7 +52,8 @@ set undolevels=10000 "maximum number of changes that can be undone
 "set nohlsearch
 set mouse=
 set hlsearch
-set ignorecase
+"搜索不区分大小写
+"set ignorecase
 
 set undodir=~/.vim/undo
 set backupdir=~/.vim/backup
