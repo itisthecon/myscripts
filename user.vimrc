@@ -166,7 +166,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'ntpeters/vim-better-whitespace'
 
 " 颜色主题
-Plugin 'rakr/vim-one'
+"Plugin 'rakr/vim-one'
 
 call vundle#end()
 " }}}
@@ -313,5 +313,4 @@ endfunction
 
 " }}}
 
-let g:one_allow_italics = 1 " I love italic for comments
-colorscheme one
+colorscheme ron
