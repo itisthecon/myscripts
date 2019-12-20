@@ -43,6 +43,7 @@ hi Search ctermfg=DarkRed
 
 filetype plugin indent on
 
+set mouse=
 " }}}
 " Vimrc file plugins ----------------------- {{{
 call vundle#begin()
@@ -111,14 +112,20 @@ Plugin 'vim-scripts/The-NERD-Commenter'
 
 Plugin 'nathanaelkane/vim-indent-guides'
 
-" markdown support
+" 根据符号多行对齐
+" 使用方法:
+" 按 => 对齐为例
+" :Tabularize /=>
 Plugin 'godlygeek/tabular'
+
+" markdown support
+" tabular plugin must come before vim-markdown
 Plugin 'plasticboy/vim-markdown'
 
 " sass highlight
-Plugin 'JulesWang/css.vim'
-Plugin 'cakebaker/scss-syntax.vim'
-Plugin 'isRuslan/vim-es6'
+"Plugin 'JulesWang/css.vim'
+"Plugin 'cakebaker/scss-syntax.vim'
+"Plugin 'isRuslan/vim-es6'
 
 """""""""""""""
 "md相关插件
@@ -126,11 +133,11 @@ Plugin 'isRuslan/vim-es6'
 """""""""""""""
 
 " coffeescript
-Plugin 'kchmck/vim-coffee-script'
+"Plugin 'kchmck/vim-coffee-script'
 
 " quickly search file(s), use ctrl+p, F5 refresh
 " 快速搜索打开文件
-Plugin 'kien/ctrlp.vim'
+"Plugin 'kien/ctrlp.vim'
 
 " slim template support
 Plugin 'slim-template/vim-slim.git'
@@ -139,9 +146,13 @@ Plugin 'slim-template/vim-slim.git'
 Plugin 'L9'
 
 Plugin 'scrooloose/nerdtree'
-Plugin 'mattn/emmet-vim'
+" html 缩写
+"Plugin 'mattn/emmet-vim'
 
 Plugin 'ntpeters/vim-better-whitespace'
+
+" 主题
+Plugin 'morhetz/gruvbox'
 
 call vundle#end()
 " }}}

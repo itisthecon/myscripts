@@ -50,7 +50,6 @@ set history=7000
 set undofile
 set undolevels=10000 "maximum number of changes that can be undone
 "set nohlsearch
-set mouse=
 set hlsearch
 "搜索不区分大小写
 "set ignorecase
