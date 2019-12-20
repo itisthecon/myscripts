@@ -64,11 +64,6 @@ set directory=~/.vim/swap
 "nmap <F6> ^xxx <Esc> $hxx <Esc> "取消传统格式的c格式注释
 "自动格式化json文本
 map <F2> <Esc>:%!python -m json.tool<CR>:set filetype=json<CR>
-"删除行首的空白
-nmap <F9> :s/^\s\+//<CR>
-
-"F10删除行尾空白
-noremap <F10> :call TrimWhitespace()<CR>
 
 " }}}
 " Vimrc functions ----------------------- {{{
@@ -107,13 +102,6 @@ function! SetFileEncodings(encodings)
      let &fileencodings=a:encodings
 endfunction
 
-"删除行尾的空白
-fun! TrimWhitespace()
-    let l:save = winsaveview()
-    keeppatterns %s/\s\+$//e
-    call winrestview(l:save)
-endfun
-
 "确保备份交换和undo目录存在
 function! EnsureDirExists (dir)
    if !isdirectory(a:dir)
@@ -134,9 +122,6 @@ source $VIMRUNTIME/vimrc_example.vim
 "behave mswin
 
 command -nargs=* Help tabnew | help <args> | resize 999
-
-"保存时自动删除行尾空白
-autocmd BufWritePre *.php :call TrimWhitespace()
 
 "把后缀.nfo的文件当作CP437编码
 au BufReadPre  *.nfo              call SetFileEncodings('cp437')

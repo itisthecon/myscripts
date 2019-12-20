@@ -112,7 +112,6 @@ Plugin 'itchyny/vim-gitbranch'
 " quickly comment your code, try ,cc on selected line
 Plugin 'vim-scripts/The-NERD-Commenter'
 
-"let g:indent_guides_enable_on_vim_startup = 1
 Plugin 'nathanaelkane/vim-indent-guides'
 
 " markdown support
@@ -284,4 +283,5 @@ function Gitbr()
     return ' ' . branchname
 endfunction
 
+let g:indent_guides_enable_on_vim_startup = 1
 " }}}
