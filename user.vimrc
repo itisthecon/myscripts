@@ -61,10 +61,11 @@ Plugin 'tpope/vim-sensible'
 Plugin 'tpope/vim-repeat'
 
 " 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
-" cs"'      双引号转单引号
-" cs'<q>    单引号转<q></q>
-" cst"      再转回来
-" ds"       删掉双引号
+" cs"'               双引号转单引号
+" cs'<q>             单引号转<q></q>
+" cst"               再转回来
+" ds"                删掉双引号
+" ys<text-obj>"      添加符号,比如ysid" -- 给当前句子加上引号
 Plugin 'tpope/vim-surround'
 
 "自动补全引号括号等
@@ -83,7 +84,8 @@ Bundle 'vim-scripts/matchit.zip'
 Bundle 'dag/vim-fish'
 
 "CSS color show(css颜色显示) 将css/sass/less中的颜色用背景色高亮出来方便预览
-Plugin 'gorodinskiy/vim-coloresque'
+"Plugin 'gorodinskiy/vim-coloresque'
+Plugin 'ap/vim-css-color'
 
 "以下5行是代码补全snipmate相关的插件
 "Plugin 'MarcWeber/vim-addon-mw-utils'
