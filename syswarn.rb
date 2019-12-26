@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+
+exit if RUBY_PLATFORM !~ /linux/
+
 require 'colorize'
 
 DISKWARN = 75.0
