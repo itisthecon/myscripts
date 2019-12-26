@@ -167,7 +167,6 @@ shopt -s extglob
 shopt -s globstar
 shopt -s histreedit
 shopt -s hostcomplete
-eval "$(dircolors)"
 # }}}
 
 # color definitions----------------------- {{{
@@ -221,9 +220,9 @@ function mcd () { mkdir -p "$1" && cd "$1"; }
 # }}}
 
 # final actions----------------------- {{{
-if [ -f "/etc/lscolor" ];
+if [ -f "/usr/bin/dircolors" ];
 then
-    `cat /etc/lscolor`;
+    eval "$(dircolors)"
 fi
 
 if [ -f "/usr/games/fortune" ];
