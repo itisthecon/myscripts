@@ -124,8 +124,8 @@ fi
 
 if [ -f "/usr/local/bin/exa" ];
 then
-    alias ls="exa -F";
-    alias l="exa -alFhg --git";
+    alias ls="/usr/local/bin/exa -F";
+    alias l="/usr/local/bin/exa -alFhg --git";
 fi
 
 # }}}
