@@ -116,6 +116,7 @@ alias cpv='rsync -avhP --progress'
 alias cpvr='rsync -avhzP --progress'
 alias scperl="perl -MSmart::Comments"
 alias e='perl -nlE'
+alias ipa='ip -h -s -d -c a'
 
 if [ -f "/usr/local/bin/vim" ];
 then
