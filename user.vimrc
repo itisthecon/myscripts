@@ -177,7 +177,7 @@ call vundle#end()
 augroup auto_grp
     au!
     autocmd BufNewFile,BufRead *.fish   set syntax=fish
-    autocmd FileType vim setlocal foldmethod=marker
+    autocmd FileType vim,sh,conf setlocal foldmethod=marker
 
     " support css word with -
     autocmd FileType css,scss,slim,html,eruby,coffee,javascript setlocal iskeyword+=-
