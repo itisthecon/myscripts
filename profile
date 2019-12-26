@@ -46,7 +46,7 @@ else
 fi
 
 HOSTNAME=`/bin/hostname 2>/dev/null`
-export PATH USER LOGNAME MAIL HOSTNAME HISTSIZE HISTCONTROL
+export USER LOGNAME MAIL HOSTNAME
 
 # By default, we want umask to get set. This sets it for login shell
 # Current threshold for system reserved uid/gids is 200
