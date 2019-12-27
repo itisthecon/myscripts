@@ -263,12 +263,12 @@ function mcd () { mkdir -p "$1" && cd "$1"; }
 
 function up_profile()
 {
-    pushd .;
+    pushd . > /dev/null;
     cd /data/soft/git/myscripts;
-    { git pull; } || { popd; }
+    { git pull; } || { popd > /dev/null; }
     cd /data/soft/git/fish_config;
-    { git pull; } || { popd; }
-    popd;
+    { git pull; } || { popd > /dev/null; }
+    popd > /dev/null;
 }
 # }}}
 
