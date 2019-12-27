@@ -89,7 +89,7 @@ export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh
 export LC_ALL=zh_CN.UTF-8
 export PATH=/data/soft/go/bin:$PATH:/data/webserver/php/bin
-export LESS="-R"
+export LESS="-FSRXc"
 export PAGER=less
 export TZ="Asia/Shanghai"
 printf "\e[?2004l"
