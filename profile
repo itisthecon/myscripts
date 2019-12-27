@@ -73,6 +73,7 @@ unset -f pathmunge
 # }}}
 
 # envionment variables----------------------- {{{
+
 # history options
 export HISTFILESIZE=5000000
 export HISTSIZE=5000000
@@ -81,6 +82,7 @@ export HISTCONTROL=ignoredups
 #export PROMPT_COMMAND='history -a'
 # After each command, append to the history file and reread it
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
 export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
 export TERM=xterm
 export LANG=zh_CN.UTF-8
@@ -100,7 +102,7 @@ alias ..="cd .."
 alias ...="cd ../.."
 alias ls="ls -A --color -F --show-control-chars"
 alias l="ls -Al"
-alias m="less"
+alias m="less -FSRXc"
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
@@ -133,20 +135,59 @@ fi
 
 # macos alias----------------------- {{{
 
+# from https://natelandau.com/my-mac-osx-bash_profile/
 if [[ $(uname -s) == Darwin ]];
 then
-    alias f='open -a Finder ./';
-    alias flushDNS='dscacheutil -flushcache';            # flushDNS:     Flush out the DNS Cache
-    alias lsock='sudo /usr/sbin/lsof -i -P';             # lsock:        Display open sockets
-    alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP';   # lsockU:       Display only open UDP sockets
-    alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP';   # lsockT:       Display only open TCP sockets
-    alias ipInfo0='ipconfig getpacket en0';              # ipInfo0:      Get info on connections for en0
-    alias ipInfo1='ipconfig getpacket en1';              # ipInfo1:      Get info on connections for en1
-    alias openPorts='sudo lsof -i | grep LISTEN';        # openPorts:    All listening connections
-    alias showBlocked='sudo ipfw list';                  # showBlocked:  All ipfw rules inc/ blocked IPs
-    alias mountReadWrite='/sbin/mount -uw /';    # mountReadWrite:   For use when booted into single-user
-    alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE';
+    alias f='open -a Finder ./';                                                  # Opens current directory in MacOS Finder
+    alias flush_dns='dscacheutil -flushcache';                                    # Flush out the DNS Cache
+    alias lsock='sudo /usr/sbin/lsof -i -P';                                      # lsock:        Display open sockets
+    alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP';                            # lsockU:       Display only open UDP sockets
+    alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP';                            # lsockT:       Display only open TCP sockets
+    alias ip_info0='ipconfig getpacket en0';                                      # Get info on connections for en0
+    alias ip_info1='ipconfig getpacket en1';                                      # Get info on connections for en1
+    alias open_ports='sudo lsof -i | grep LISTEN';                                # All listening connections
+    alias show_blocked='sudo ipfw list';                                          # All ipfw rules inc/ blocked IPs
+    alias mount_read_write='/sbin/mount -uw /';                                   # For use when booted into single-user
+    alias finder_show_hidden='defaults write com.apple.finder ShowAllFiles TRUE'; # Show hidden files in Finder
+    alias finder_hide_hidden='defaults write com.apple.finder ShowAllFiles FALSE' # Hide hidden files in Finder
+    alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'            # Find CPU hogs
+    alias mem_hogs_top='top -l 1 -o rsize | head -20'                             # Find memory hogs
+    alias mem_hogs_ps='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'    # Find memory hogs
+    alias ttop="top -R -F -s 10 -o rsize"                                         # Recommended minimize resources top
+    alias fix_stty='stty sane'                                                    # fix_stty:     Restore terminal settings when screwed up
+    ql () { qlmanage -p "$*" >& /dev/null; }                                      # ql:           Opens any file in MacOS Quicklook Preview
+    my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }      # List processes owned by my user
 fi
+
+#   ---------------------------------------
+#   REMINDERS & NOTES
+#   ---------------------------------------
+
+#   remove_disk: spin down unneeded disk
+#   ---------------------------------------
+#   diskutil eject /dev/disk1s3
+
+#   to change the password on an encrypted disk image:
+#   ---------------------------------------
+#   hdiutil chpass /path/to/the/diskimage
+
+#   to mount a read-only disk image as read-write:
+#   ---------------------------------------
+#   hdiutil attach example.dmg -shadow /tmp/example.shadow -noverify
+
+#   mounting a removable drive (of type msdos or hfs)
+#   ---------------------------------------
+#   mkdir /Volumes/Foo
+#   ls /dev/disk*   to find out the device to use in the mount command)
+#   mount -t msdos /dev/disk1s1 /Volumes/Foo
+#   mount -t hfs /dev/disk1s1 /Volumes/Foo
+
+#   to create a file of a given size: /usr/sbin/mkfile or /usr/bin/hdiutil
+#   ---------------------------------------
+#   e.g.: mkfile 10m 10MB.dat
+#   e.g.: hdiutil create -size 10m 10MB.dmg
+#   the above create files that are almost all zeros - if random bytes are desired
+#   then use: ~/Dev/Perl/randBytes 1048576 > 10MB.dat
 
 # }}}
 # }}}
