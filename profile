@@ -260,6 +260,16 @@ function _exit()              # Function to run upon exit of shell.
 trap _exit EXIT
 
 function mcd () { mkdir -p "$1" && cd "$1"; }
+
+function up_profile()
+{
+    pushd .;
+    cd /data/soft/git/myscript;
+    { git pull; } || { popd; }
+    cd /data/soft/git/fish_config;
+    { git pull; } || { popd; }
+    popd;
+}
 # }}}
 
 # final actions----------------------- {{{
