@@ -84,6 +84,11 @@ export HISTCONTROL=ignoredups
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
+if [ -f "/data/soft/git/myscripts/gitbr.rb" ];
+then
+   export PS1="\`echo \[\e[34m\];/data/soft/git/myscripts/gitbr.rb;if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
+fi
+
 export TERM=xterm
 export LANG=zh_CN.UTF-8
 export LANGUAGE=zh_CN:zh
