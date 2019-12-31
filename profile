@@ -81,12 +81,34 @@ export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups
 #export PROMPT_COMMAND='history -a'
 # After each command, append to the history file and reread it
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+#export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
-if [ -f "/data/soft/git/myscripts/gitbr.rb" ];
+
+if [ -d "/data/soft/git/bash-git-prompt" ];
 then
-   export PS1="\`echo \[\e[34m\];/data/soft/git/myscripts/git_show.rb;if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
+  GIT_PROMPT_ONLY_IN_REPO=1
+  GIT_PROMPT_LEADING_SPACE=0
+
+  GIT_PROMPT_PREFIX="["
+  GIT_PROMPT_SUFFIX="]"
+  GIT_PROMPT_SEPARATOR="|"
+  GIT_PROMPT_STAGED="${Red}●${ResetColor}"
+  GIT_PROMPT_CONFLICTS="${Red}✖${ResetColor}"
+  GIT_PROMPT_CHANGED="${Blue}✚${ResetColor}"
+  GIT_PROMPT_UNTRACKED="${Cyan}…${ResetColor}"
+  GIT_PROMPT_STASHED="${BoldBlue}⚑${ResetColor}"
+  GIT_PROMPT_CLEAN="${BoldGreen}✔${ResetColor}"
+
+  GIT_PROMPT_COMMAND_OK="${Yellow}^_^"
+  GIT_PROMPT_COMMAND_FAIL="${Red}O_O"
+
+  GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_\033[;33;1m\W@\033[31m\h\033[;33;1m${ResetColor}"
+  GIT_PROMPT_END_USER="${ResetColor} $${ResetColor}"
+  GIT_PROMPT_END_ROOT="${BoldYellow}#${ResetColor}"
+
+  source /data/soft/git/bash-git-prompt/gitprompt.sh
+  reload_git_prompt_colors "Single_line_Ubuntu"
 fi
 
 export TERM=xterm
