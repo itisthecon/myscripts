@@ -87,6 +87,8 @@ export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[3
 
 if [ -d "/data/soft/git/bash-git-prompt" ];
 then
+  source /data/soft/git/bash-git-prompt/prompt-colors.sh
+  source /data/soft/git/bash-git-prompt/gitprompt.sh
   GIT_PROMPT_ONLY_IN_REPO=1
   GIT_PROMPT_LEADING_SPACE=0
 
@@ -99,16 +101,14 @@ then
   GIT_PROMPT_UNTRACKED="${Cyan}…${ResetColor}"
   GIT_PROMPT_STASHED="${BoldBlue}⚑${ResetColor}"
   GIT_PROMPT_CLEAN="${BoldGreen}✔${ResetColor}"
-
-  GIT_PROMPT_COMMAND_OK="${Yellow}^_^"
-  GIT_PROMPT_COMMAND_FAIL="${Red}O_O"
+  GIT_PROMPT_SYMBOLS_AHEAD="⬆."
+  GIT_PROMPT_SYMBOLS_BEHIND="⬇."
 
   GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_\033[;33;1m\W@\033[31m\h\033[;33;1m${ResetColor}"
-  GIT_PROMPT_END_USER="${ResetColor} $${ResetColor}"
-  GIT_PROMPT_END_ROOT="${BoldYellow}#${ResetColor}"
-
-  source /data/soft/git/bash-git-prompt/gitprompt.sh
-  reload_git_prompt_colors "Single_line_Ubuntu"
+  export GIT_PROMPT_END_USER="${ResetColor} $${ResetColor}"
+  export GIT_PROMPT_END_ROOT="${BoldYellow}#${ResetColor}"
+  export GIT_PROMPT_COMMAND_OK="${Yellow}^_^"
+  export GIT_PROMPT_COMMAND_FAIL="${Red}O_O-_LAST_COMMAND_STATE_"
 fi
 
 export TERM=xterm
