@@ -22,6 +22,6 @@ if diskused > DISKWARN
 end
 
 unless warning_info.empty?
-  puts "\e[1;5;33mwArning\e[0m \e[1;33m:\e[0m"
-  puts "\e[1;31m" + warning_info + "\e[0m"
+  puts "\e[1;5;93mwArning\e[0m \e[1;33m:\e[0m"
+  puts "\e[1;91m" + warning_info + "\e[0m"
 end
