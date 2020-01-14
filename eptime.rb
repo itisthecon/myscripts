@@ -10,7 +10,7 @@ unless params["d"].nil?
   puts params["d"]
 end
 
-unless ARGV[0].empty?
+unless ARGV[0].nil?
   puts ARGV[0]
   puts Time.at(ARGV[0].to_i).to_s
 end
