@@ -315,3 +315,5 @@ then
     /data/soft/git/myscripts/syswarn.rb;
 fi
 # }}}
+
+set editing-mode vi
