@@ -2,8 +2,6 @@
 
 exit if RUBY_PLATFORM !~ /linux/
 
-require 'colorize'
-
 DISKWARN = 75.0
 
 warning_info = ""
@@ -24,6 +22,6 @@ if diskused > DISKWARN
 end
 
 unless warning_info.empty?
-  puts "wArning :".colorize(:color => :yellow,:mode => :bold)
-  puts warning_info.colorize(:color => :red,:mode => :bold)
+  puts "\e[1;5;93mwArning\e[0m \e[1;33m:\e[0m"
+  puts "\e[1;91m" + warning_info + "\e[0m"
 end
