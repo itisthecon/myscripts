@@ -290,7 +290,11 @@ trap _exit EXIT
 
 function mcd () { mkdir -p "$1" && cd "$1"; }
 
-function up_apt () { apt update && apt upgrade; }
+function up_apt ()
+{
+    apt update;
+    apt upgrade;
+}
 
 function up_profile()
 {
