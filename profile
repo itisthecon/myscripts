@@ -147,6 +147,8 @@ alias scperl="perl -MSmart::Comments"
 alias e='perl -nlE'
 alias ipa='ip -h -s -d -c a'
 alias dus='du -hs * |sort -h'
+alias up_rust="rustup update stable"
+alias up_cargo="cargo install-update -a"
 
 if [ -f "/usr/local/bin/vim" ];
 then
@@ -297,6 +299,50 @@ function up_profile()
     { git pull; } || { popd > /dev/null; }
     popd > /dev/null;
 }
+
+function up_fish()
+{
+    pushd . > /dev/null;
+
+    if ! [[ -e /data/soft/git/fish-shell && -d /data/soft/git/fish-shell ]];
+    then
+        mkdir -p /data/soft/git/
+        cd /data/soft/git/
+        git clone https://github.com/fish-shell/fish-shell.git
+    fi
+
+    cd /data/soft/git/fish-shell
+    git pull
+    rm -rf build
+    mkdir build
+    cd build
+    cmake ..
+    make
+    make install
+
+    popd > /dev/null;
+}
+
+function up_vim()
+{
+    pushd . > /dev/null;
+
+    if ! [[ -e /data/soft/git/vim && -d /data/soft/git/vim ]];
+    then
+        mkdir -p /data/soft/git/
+        cd /data/soft/git/
+        git clone https://github.com/vim/vim.git
+    fi
+
+    cd /data/soft/git/vim
+    git pull
+    ./configure --enable-python3interp --enable-pythoninterp --with-features=huge --enable-perlinterp --enable-multibyte --enable-rubyinterp --enable-luainterp --enable-cscope
+    make
+    make install
+
+    popd > /dev/null;
+}
+
 # }}}
 
 # final actions----------------------- {{{
