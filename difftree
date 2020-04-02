@@ -1,0 +1,23 @@
+#!/usr/local/bin/perl -w
+use 5.10.0;
+use strict;
+use File::Find;
+use File::Spec::Functions qw(abs2rel);
+use Digest::MD5::File qw(file_md5_hex);
+use Cwd;
+
+die("useage: difftree dir1 dir2") if scalar(@ARGV) != 2;
+my $pwd = cwd() . '/';
+(my $first_dir, my $sec_dir) = map { $_ .= '/' if !/\/$/; $_ = $pwd . $_ if !/^\//; $_ } @ARGV;
+
+use vars qw/*path/;
+*path   = *File::Find::name;
+
+find({wanted => \&wanted}, $first_dir);
+
+sub wanted
+{
+    return if (!/\.php$/ && !/\.sql$/);
+    my $sec_path = $sec_dir . abs2rel($path, $first_dir);
+    print `/usr/local/bin/colordiff -u $path $sec_path` if (file_md5_hex($path) ne file_md5_hex($sec_path));
+}
