@@ -150,6 +150,14 @@ alias dus='du -hs * |sort -h'
 alias up_rust="rustup update stable"
 alias up_cargo="cargo install-update -a"
 alias dus='du -hs *|sort -h'
+alias aptdep 'apt-cache depends'
+alias aptdeped 'apt-cache rdepends'
+alias aptfiles 'apt-file list'
+alias aptinfo 'apt-cache show'
+alias apts 'aptitude search'
+alias aptsearch 'apt-cache search'
+alias aptshow 'apt-cache showpkg'
+alias aptwhich 'dpkg -S'
 
 if [ -f "/usr/local/bin/vim" ];
 then
