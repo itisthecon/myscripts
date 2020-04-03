@@ -17,7 +17,7 @@ error_code = {
 }
 agent = Mechanize.new
 agent.user_agent_alias = 'Mac Safari'
-query = URI::encode(ARGV.join(' '))
+query = URI.encode_www_form_component(ARGV.join(' '))
 url = 'http://fanyi.youdao.com/openapi.do?keyfrom=google-youdao&key=814771929&type=data&doctype=json&version=1.1&q='
 url += query
 begin

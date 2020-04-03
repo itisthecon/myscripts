@@ -149,6 +149,7 @@ alias ipa='ip -h -s -d -c a'
 alias dus='du -hs * |sort -h'
 alias up_rust="rustup update stable"
 alias up_cargo="cargo install-update -a"
+alias dus='du -hs *|sort -h'
 
 if [ -f "/usr/local/bin/vim" ];
 then
