@@ -303,6 +303,7 @@ function up_apt ()
 {
     apt update;
     apt upgrade;
+    apt autoremove;
 }
 
 function up_profile()
