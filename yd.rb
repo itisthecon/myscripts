@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 require 'json'
-require 'open-uri'
-require 'mechanize'
 require 'colorize'
+require 'net/http'
+require 'uri'
 
 if ARGV.empty?
 	abort ("有道在线词典控制台Ruby版\n用法:yd 单词 单词 ...")
@@ -15,17 +15,13 @@ error_code = {
 	50 => '无效的key',
 	60 => '无词典结果，仅在获取词典结果生效'
 }
-agent = Mechanize.new
-agent.user_agent_alias = 'Mac Safari'
 query = URI.encode_www_form_component(ARGV.join(' '))
 url = 'http://fanyi.youdao.com/openapi.do?keyfrom=google-youdao&key=814771929&type=data&doctype=json&version=1.1&q='
 url += query
-begin
-    json = agent.get(url).body
-rescue Exception => ex
-    log.error "Error: #{ex}"
-end
-result = JSON.parse(json)
+uri = URI.parse(url)
+
+response = Net::HTTP.get_response(uri)
+result = JSON.parse(response.body)
 errorcode = result['errorCode']
 if errorcode != 0
 	abort (error_code[errorcode])
