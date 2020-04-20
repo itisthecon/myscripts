@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'mysql2'
+require 'pry'
+require 'json'
+require 'text-table'
+require 'date'
+require 'awesome_print'
+
+class Mysql2::Client
+  def ff(sql)
+    res = query(sql)
+    transform_h(res, 1)
+  end
+
+  def l(n = 4)
+    sql = 'show tables'
+    res = query(sql, as: :array)
+
+    tbl = []
+    res.each_slice(n) do |row|
+      tbl.push row.map { |a| a[0] }
+    end
+
+    puts tbl.to_table
+
+    nil
+  end
+
+  def d(table)
+    sql = "desc #{table}"
+
+    res = query(sql, as: :array)
+
+    fields = res.fields
+    res_a = res.to_a
+    res_a.unshift(fields)
+
+    puts res_a.to_table(first_row_is_head: true)
+  end
+
+  def q(sql, take = 10)
+    res = query(sql)
+    total = res.count
+
+    ap transform_h(res, take)
+
+    puts "#{total} total, show #{take} rows."
+    nil
+  end
+
+  def field_probe(table, field)
+    (query "show columns from `#{table}` like '#{field}'").to_a.any?
+  end
+
+  def s(table, take = 10)
+    sql = "select * from `#{table}`"
+
+    if field_probe(table, 'created_at')
+      sql += ' order by created_at desc'
+      return q(sql, take)
+    end
+
+    if field_probe(table, 'id')
+      sql += ' order by id desc'
+      return q(sql, take)
+    end
+
+    q(sql, take)
+  end
+
+  def transform_h(res, take)
+    types = res.field_types
+    fields = res.fields
+
+    res.take(take).each do |ret|
+      types.each_with_index do |type, index|
+        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql? 'json'
+
+        if fields[index].match(/_at$/) && type.match(/^int/) && !ret[fields[index]].nil?
+          ret[fields[index]] = ret[fields[index]].to_s + ' ' + Time.at(ret[fields[index]]).to_s
+        end
+      end
+    end
+  end
+
+  def count(sql)
+    query(sql).count
+  end
+
+  def fff(sql)
+    query(sql, as: :array).first[0]
+  end
+end
+
+db = nil
+config_file = File.open '/etc/dbrepl_conf.json'
+configs = JSON.load config_file
+
+configs.each do |config|
+  instance_variable_set("@#{config['name']}", Mysql2::Client.new(host: config['host'], username: config['username'], password: config['password'], database: config['database']))
+
+  db = instance_variable_get("@#{config['name']}") if config['default']
+end
+
+db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
+
+binding.pry
