@@ -23,7 +23,13 @@ class Mysql2::Client
       tbl.push row.map { |a| a[0] }
     end
 
-    puts tbl.to_table
+    if tbl.any?
+      if tbl[-1].length < 4
+        tbl[-1].fill("",  tbl[-1].length..3)
+      end
+
+      puts tbl.to_table
+    end
 
     nil
   end
