@@ -56,19 +56,19 @@ class Mysql2::Client
     nil
   end
 
-  def field_probe(table, field)
+  def field_probe?(table, field)
     (query "show columns from `#{table}` like '#{field}'").to_a.any?
   end
 
   def s(table, take = 10)
     sql = "select * from `#{table}`"
 
-    if field_probe(table, 'created_at')
+    if field_probe?(table, 'created_at')
       sql += ' order by created_at desc'
       return q(sql, take)
     end
 
-    if field_probe(table, 'id')
+    if field_probe?(table, 'id')
       sql += ' order by id desc'
       return q(sql, take)
     end
