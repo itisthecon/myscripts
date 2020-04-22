@@ -115,7 +115,10 @@ db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
 $db = db
 $tables = $db ? $db.query("show tables", as: :array).to_a.flatten : []
 
-Pry.config.command_completions = proc { (Pry.config.commands.keys + $tables).uniq } if $tables.any?
+if $tables.any?
+  Pry.config.command_completions = proc { $tables }
+  Pry.config.file_completions = proc { [] }
+end
 
 Pry::Commands.block_command "l", "list tables." do
   db.l
