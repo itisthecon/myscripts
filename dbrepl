@@ -82,7 +82,7 @@ class Mysql2::Client
 
     res.take(take).each do |ret|
       types.each_with_index do |type, index|
-        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql? 'json' && ret[fields[index]]
+        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql?('json') && ret[fields[index]]
 
         if fields[index].match(/_at$/) && type.match(/^int/) && !ret[fields[index]].nil?
           ret[fields[index]] = ret[fields[index]].to_s + ' ' + Time.at(ret[fields[index]]).to_s
