@@ -82,7 +82,7 @@ class Mysql2::Client
 
     res.take(take).each do |ret|
       types.each_with_index do |type, index|
-        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql? 'json'
+        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql? 'json' && ret[fields[index]]
 
         if fields[index].match(/_at$/) && type.match(/^int/) && !ret[fields[index]].nil?
           ret[fields[index]] = ret[fields[index]].to_s + ' ' + Time.at(ret[fields[index]]).to_s
@@ -111,5 +111,31 @@ configs.each do |config|
 end
 
 db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
+
+$db = db
+$tables = $db ? $db.query("show tables", as: :array).to_a.flatten : []
+
+Pry.config.command_completions = proc { (Pry.config.commands.keys + $tables).uniq } if $tables.any?
+
+Pry::Commands.block_command "l", "list tables." do
+  db.l
+end
+
+Pry::Commands.create_command "d" do
+  description "desc a table."
+
+  Pry.config.command_completions = proc { $tables }
+  def process
+    $db.d args[0]
+  end
+end
+
+Pry::Commands.block_command "s", "list a table, order by latest records if possible" do |table|
+  db.s table
+end
+
+Pry::Commands.block_command "q", "run a sql query" do |*sql|
+  db.q(sql.join(' '))
+end
 
 binding.pry
