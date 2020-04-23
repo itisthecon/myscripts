@@ -117,11 +117,10 @@ end
 
 db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
 
-$db = db
-$tables = $db ? $db.query("show tables", as: :array).to_a.flatten : []
+tables = db ? db.query("show tables", as: :array).to_a.flatten : []
 
-if $tables.any?
-  Pry.config.command_completions = proc { $tables }
+if tables.any?
+  Pry.config.command_completions = proc { tables }
   Pry.config.file_completions = proc { [] }
 end
 
@@ -129,13 +128,8 @@ Pry::Commands.block_command "l", "list tables." do
   db.l
 end
 
-Pry::Commands.create_command "d" do
-  description "desc a table."
-
-  Pry.config.command_completions = proc { $tables }
-  def process
-    $db.d args[0]
-  end
+Pry::Commands.block_command "d", "show a table's structure." do |table|
+  db.d table
 end
 
 Pry::Commands.block_command "s", "list a table, order by latest records if possible" do |table|
