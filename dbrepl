@@ -49,7 +49,7 @@ class Mysql2::Client
 
   def q(sql, take = 10)
     res = query(sql)
-    total = res.count
+    total = res ? res.count : nil
 
     ap transform_h(res, take)
 
@@ -57,7 +57,7 @@ class Mysql2::Client
       take = total
     end
 
-    puts "#{total}".colorize(color: :cyan, mode: :bold) + " row(s) total, show " + "#{take}".colorize(color: :blue, mode: :bold) + " row(s)."
+    puts "#{total}".colorize(color: :cyan, mode: :bold) + " row(s) total, show " + "#{take}".colorize(color: :blue, mode: :bold) + " row(s)." if total
     nil
   end
 
