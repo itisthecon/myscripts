@@ -12,7 +12,7 @@ require 'colorize'
 class Mysql2::Client
   def ff(sql)
     res = query(sql)
-    transform_h(res, 1)
+    ap transform_h(res, 1)
   end
 
   def l(n = 4)
@@ -101,7 +101,7 @@ class Mysql2::Client
   end
 
   def fff(sql)
-    query(sql, as: :array).first[0]
+    ap query(sql, as: :array).first[0]
   end
 end
 
@@ -138,6 +138,14 @@ end
 
 Pry::Commands.block_command "q", "run a sql query" do |*sql|
   db.q(sql.join(' '))
+end
+
+Pry::Commands.block_command "ff", "run a sql query and fetch first row" do |*sql|
+  db.ff(sql.join(' '))
+end
+
+Pry::Commands.block_command "fff", "run a sql query and fetch first row's first field" do |*sql|
+  db.fff(sql.join(' '))
 end
 
 binding.pry
