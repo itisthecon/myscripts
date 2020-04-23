@@ -57,7 +57,7 @@ class Mysql2::Client
       take = total
     end
 
-    puts "#{total}".colorize(color: :cyan, mode: :bold) + " total, show " + "#{take}".colorize(color: :blue, mode: :bold) + " rows."
+    puts "#{total}".colorize(color: :cyan, mode: :bold) + " row(s) total, show " + "#{take}".colorize(color: :blue, mode: :bold) + " row(s)."
     nil
   end
 
