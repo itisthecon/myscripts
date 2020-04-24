@@ -165,4 +165,6 @@ Pry::Commands.block_command "fff", "run a sql query and fetch first row's first 
   db.fff(sql.join(' '))
 end
 
+Pry::ColorPrinter.pp db.info if db
+
 binding.pry
