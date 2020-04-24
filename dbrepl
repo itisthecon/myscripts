@@ -48,16 +48,33 @@ class Mysql2::Client
   end
 
   def q(sql, take = 10)
+    changed = sql[/^insert|update|delete/i] ? true : false
+
     res = query(sql)
     total = res ? res.count : nil
 
-    ap transform_h(res, take)
+    ap transform_h(res, take) if total
 
-    if take > total
+    if total && take > total
       take = total
     end
 
-    puts "#{total}".colorize(color: :cyan, mode: :bold) + " row(s) total, show " + "#{take}".colorize(color: :blue, mode: :bold) + " row(s)." if total
+    if total
+      output = "#{total}".colorize(color: :cyan, mode: :bold) \
+              + " row(s) total, show ".colorize(:green) \
+              + "#{take}".colorize(color: :blue, mode: :bold ) \
+              + " row(s).".colorize(:green)
+      puts output
+    end
+
+    if changed
+      numbers = query_info_string.scan(/\d+/)
+      output = "Rows matched: ".colorize(:blue) + numbers[0].to_s.colorize(:green) \
+              + "  Changed: ".colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+              + "  Warnings: ".colorize(:blue) + numbers[2].to_s.colorize(:red)
+      puts output
+    end
+
     nil
   end
 
