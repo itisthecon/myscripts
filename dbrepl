@@ -1,13 +1,14 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'awesome_print'
+require 'benchmark'
+require 'colorize'
+require 'date'
+require 'json'
 require 'mysql2'
 require 'pry'
-require 'json'
 require 'text-table'
-require 'date'
-require 'awesome_print'
-require 'colorize'
 
 class Mysql2::Client
   def ff(sql)
@@ -50,7 +51,10 @@ class Mysql2::Client
   def q(sql, take = 10)
     changed = sql[/^insert|update|delete/i] ? true : false
 
-    res = query(sql)
+    res = nil
+    time = Benchmark.measure{
+      res = query(sql)
+    }
     total = res ? res.count : nil
 
     ap transform_h(res, take) if total
@@ -63,7 +67,10 @@ class Mysql2::Client
       output = "#{total}".colorize(color: :cyan, mode: :bold) \
               + " row(s) total, show ".colorize(:green) \
               + "#{take}".colorize(color: :blue, mode: :bold ) \
-              + " row(s).".colorize(:green)
+              + " row(s) ".colorize(:green) \
+              + "(".colorize(:green) \
+              + time.real.to_s.colorize(:yellow) \
+              + " sec)".colorize(:green)
       puts output
     end
 
