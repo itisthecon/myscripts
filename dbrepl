@@ -132,7 +132,7 @@ end
 db = nil
 config_file = File.open '/etc/dbrepl_conf.json'
 configs = JSON.load config_file
-config.close
+config_file.close
 
 configs.each do |config|
   instance_variable_set("@#{config['name']}", Mysql2::Client.new(host: config['host'], username: config['username'], password: config['password'], database: config['database']))
