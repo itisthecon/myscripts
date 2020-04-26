@@ -1,17 +1,19 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'awesome_print'
+require 'benchmark'
+require 'colorize'
+require 'date'
+require 'json'
 require 'mysql2'
 require 'pry'
-require 'json'
 require 'text-table'
-require 'date'
-require 'awesome_print'
 
 class Mysql2::Client
   def ff(sql)
     res = query(sql)
-    transform_h(res, 1)
+    ap transform_h(res, 1)
   end
 
   def l(n = 4)
@@ -47,12 +49,39 @@ class Mysql2::Client
   end
 
   def q(sql, take = 10)
-    res = query(sql)
-    total = res.count
+    changed = sql[/^insert|update|delete/i] ? true : false
 
-    ap transform_h(res, take)
+    res = nil
+    time = Benchmark.measure{
+      res = query(sql)
+    }
+    total = res ? res.count : nil
 
-    puts "#{total} total, show #{take} rows."
+    ap transform_h(res, take) if total
+
+    if total && take > total
+      take = total
+    end
+
+    if total
+      output = "#{total}".colorize(color: :cyan, mode: :bold) \
+              + " row(s) total, show ".colorize(:green) \
+              + "#{take}".colorize(color: :blue, mode: :bold ) \
+              + " row(s) ".colorize(:green) \
+              + "(".colorize(:green) \
+              + time.real.to_s.colorize(:yellow) \
+              + " sec)".colorize(:green)
+      puts output
+    end
+
+    if changed
+      numbers = query_info_string.scan(/\d+/)
+      output = "Rows matched: ".colorize(:blue) + numbers[0].to_s.colorize(:green) \
+              + "  Changed: ".colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+              + "  Warnings: ".colorize(:blue) + numbers[2].to_s.colorize(:red)
+      puts output
+    end
+
     nil
   end
 
@@ -82,7 +111,7 @@ class Mysql2::Client
 
     res.take(take).each do |ret|
       types.each_with_index do |type, index|
-        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql? 'json'
+        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql?('json') && ret[fields[index]]
 
         if fields[index].match(/_at$/) && type.match(/^int/) && !ret[fields[index]].nil?
           ret[fields[index]] = ret[fields[index]].to_s + ' ' + Time.at(ret[fields[index]]).to_s
@@ -96,7 +125,7 @@ class Mysql2::Client
   end
 
   def fff(sql)
-    query(sql, as: :array).first[0]
+    ap query(sql, as: :array).first[0]
   end
 end
 
@@ -112,5 +141,38 @@ configs.each do |config|
 end
 
 db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
+
+tables = db ? db.query("show tables", as: :array).to_a.flatten : []
+
+if tables.any?
+  Pry.config.command_completions = proc { tables }
+  Pry.config.file_completions = proc { [] }
+end
+
+Pry::Commands.block_command "l", "list tables." do
+  db.l
+end
+
+Pry::Commands.block_command "d", "show a table's structure." do |table|
+  db.d table
+end
+
+Pry::Commands.block_command "s", "list a table, order by latest records if possible" do |table|
+  db.s table
+end
+
+Pry::Commands.block_command "q", "run a sql query" do |*sql|
+  db.q(sql.join(' '))
+end
+
+Pry::Commands.block_command "ff", "run a sql query and fetch first row" do |*sql|
+  db.ff(sql.join(' '))
+end
+
+Pry::Commands.block_command "fff", "run a sql query and fetch first row's first field" do |*sql|
+  db.fff(sql.join(' '))
+end
+
+Pry::ColorPrinter.pp db.info if db
 
 binding.pry
