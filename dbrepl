@@ -57,7 +57,7 @@ class Mysql2::Client
     }
     total = res ? res.count : nil
 
-    ap transform_h(res, take) if total
+    ap transform_h(res, take).reverse_each.to_a if total
 
     if total && take > total
       take = total
