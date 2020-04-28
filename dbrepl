@@ -11,27 +11,9 @@ require 'pry'
 require 'text-table'
 
 class Mysql2::Client
-  @res
-  @course = 0
-  @exec_time
-  @total = 0
+  attr_reader :res, :course, :exec_time, :total
+
   @changed
-
-  def res
-    @res
-  end
-
-  def coursor
-    @coursor
-  end
-
-  def exec_time
-    @exec_time
-  end
-
-  def total
-    @total
-  end
 
   def ff(sql)
     @res = query(sql)
