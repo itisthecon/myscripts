@@ -11,9 +11,31 @@ require 'pry'
 require 'text-table'
 
 class Mysql2::Client
+  @res
+  @course = 0
+  @exec_time
+  @total = 0
+  @changed
+
+  def res
+    @res
+  end
+
+  def coursor
+    @coursor
+  end
+
+  def exec_time
+    @exec_time
+  end
+
+  def total
+    @total
+  end
+
   def ff(sql)
-    res = query(sql)
-    ap transform_h(res, 1)
+    @res = query(sql)
+    ap transform_h(0, 1)
   end
 
   def l(n = 4)
@@ -49,32 +71,48 @@ class Mysql2::Client
   end
 
   def q(sql, take = 10)
-    changed = sql[/^insert|update|delete/i] ? true : false
+    @changed = sql[/^insert|update|delete/i] ? true : false
 
     res = nil
-    time = Benchmark.measure{
-      res = query(sql)
+    @exec_time = Benchmark.measure{
+      @res = query(sql)
+      @coursor = 0
     }
-    total = res ? res.count : nil
+    @total = @res ? @res.count : nil
 
-    ap transform_h(res, take).reverse_each.to_a if total
-
-    if total && take > total
+    if @total && take > total
       take = total
     end
 
-    if total
+    output(take)
+    nil
+  end
+
+  def m(take = 10)
+    return if @res.nil?
+    return if @coursor >= @total
+
+    output(take)
+  end
+
+  def output(take)
+    ap transform_h(take, @coursor).to_a if @total
+
+    if @total
       output = "#{total}".colorize(color: :cyan, mode: :bold) \
-              + " row(s) total, show ".colorize(:green) \
-              + "#{take}".colorize(color: :blue, mode: :bold ) \
+              + " row(s) total, from ".colorize(:green) \
+              + "#{@coursor}".colorize(color: :blue, mode: :bold) \
+              + " show ".colorize(:green) \
+              + "#{take}".colorize(color: :blue, mode: :bold) \
               + " row(s) ".colorize(:green) \
               + "(".colorize(:green) \
-              + time.real.to_s.colorize(:yellow) \
+              + @exec_time.real.to_s.colorize(:yellow) \
               + " sec)".colorize(:green)
       puts output
+      @coursor += take
     end
 
-    if changed
+    if @changed
       numbers = query_info_string.scan(/\d+/)
       output = "Rows matched: ".colorize(:blue) + numbers[0].to_s.colorize(:green) \
               + "  Changed: ".colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
@@ -105,11 +143,11 @@ class Mysql2::Client
     q(sql, take)
   end
 
-  def transform_h(res, take)
-    types = res.field_types
-    fields = res.fields
+  def transform_h(take, skip)
+    types = @res.field_types
+    fields = @res.fields
 
-    res.take(take).each do |ret|
+    @res.drop(skip).take(take).each do |ret|
       types.each_with_index do |type, index|
         ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql?('json') && ret[fields[index]]
 
@@ -171,6 +209,11 @@ end
 
 Pry::Commands.block_command "fff", "run a sql query and fetch first row's first field" do |*sql|
   db.fff(sql.join(' '))
+end
+
+Pry::Commands.block_command "m", "show more results." do |num|
+  take = num && num.to_i > 0 ? num.to_i : 10
+  db.m(take)
 end
 
 Pry::ColorPrinter.pp db.info if db
