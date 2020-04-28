@@ -20,18 +20,18 @@ class Mysql2::Client
     ap transform_h(0, 1)
   end
 
-  def l(n = 4)
+  def l(num_of_line = 4)
     sql = 'show tables'
     res = query(sql, as: :array)
 
     tbl = []
-    res.each_slice(n) do |row|
-      tbl.push row.map { |a| a[0] }
+    res.each_slice(num_of_line) do |row|
+      tbl.push(row.map { |a| a[0] })
     end
 
     if tbl.any?
-      if tbl.last.length < 4
-        tbl.last.fill("",  tbl.last.length..3)
+      if tbl.last.length < num_of_line
+        tbl.last.fill('',  tbl.last.length..(num_of_line - 1))
       end
 
       puts tbl.to_table
@@ -55,16 +55,13 @@ class Mysql2::Client
   def q(sql, take = 10)
     @changed = sql[/^insert|update|delete/i] ? true : false
 
-    res = nil
-    @exec_time = Benchmark.measure{
+    @exec_time = Benchmark.measure do
       @res = query(sql)
       @coursor = 0
-    }
+    end
     @total = @res ? @res.count : nil
 
-    if @total && take > total
-      take = total
-    end
+    take = @total if @total && take > @total
 
     output(take)
     nil
@@ -81,28 +78,32 @@ class Mysql2::Client
     ap transform_h(take, @coursor).to_a if @total
 
     if @total
-      output = "#{total}".colorize(color: :cyan, mode: :bold) \
-              + " row(s) total, from ".colorize(:green) \
-              + "#{@coursor}".colorize(color: :blue, mode: :bold) \
-              + " show ".colorize(:green) \
-              + "#{take}".colorize(color: :blue, mode: :bold) \
-              + " row(s) ".colorize(:green) \
-              + "(".colorize(:green) \
-              + @exec_time.real.to_s.colorize(:yellow) \
-              + " sec)".colorize(:green)
-      puts output
+      puts select_output_postfix(take)
       @coursor += take
     end
 
-    if @changed
-      numbers = query_info_string.scan(/\d+/)
-      output = "Rows matched: ".colorize(:blue) + numbers[0].to_s.colorize(:green) \
-              + "  Changed: ".colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
-              + "  Warnings: ".colorize(:blue) + numbers[2].to_s.colorize(:red)
-      puts output
-    end
+    puts changed_output_postfix if @changed
 
     nil
+  end
+
+  def select_output_postfix(take)
+    total.to_s.colorize(color: :cyan, mode: :bold) \
+        + ' row(s) total, from '.colorize(:green) \
+        + @coursor.to_s.colorize(color: :blue, mode: :bold) \
+        + ' show '.colorize(:green) \
+        + take.to_s.colorize(color: :blue, mode: :bold) \
+        + ' row(s) '.colorize(:green) \
+        + '('.colorize(:green) \
+        + @exec_time.real.to_s.colorize(:yellow) \
+        + ' sec)'.colorize(:green)
+  end
+
+  def changed_output_postfix
+    numbers = query_info_string.scan(/\d+/)
+    'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
+        + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+        + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
   end
 
   def field_probe?(table, field)
@@ -131,11 +132,17 @@ class Mysql2::Client
 
     @res.drop(skip).take(take).each do |ret|
       types.each_with_index do |type, index|
-        ret[fields[index]] = JSON.parse(ret[fields[index]]) if type.eql?('json') && ret[fields[index]]
-
-        if fields[index].match(/_at$/) && type.match(/^int/) && !ret[fields[index]].nil?
-          ret[fields[index]] = ret[fields[index]].to_s + ' ' + Time.at(ret[fields[index]]).to_s
+        if type.eql?('json') && ret[fields[index]]
+          ret[fields[index]] = JSON.parse(ret[fields[index]])
         end
+
+        next unless fields[index].match(/_at$/) &&
+                    type.match(/^int/) &&
+                    !ret[fields[index]].nil?
+
+        ret[fields[index]] = ret[fields[index]].to_s \
+          + ' ' \
+          + Time.at(ret[fields[index]]).to_s
       end
     end
   end
@@ -155,46 +162,64 @@ configs = JSON.load config_file
 config_file.close
 
 configs.each do |config|
-  instance_variable_set("@#{config['name']}", Mysql2::Client.new(host: config['host'], username: config['username'], password: config['password'], database: config['database']))
+  instance_variable_set(
+    "@#{config['name']}",
+    Mysql2::Client.new(
+      host: config['host'],
+      username: config['username'],
+      password: config['password'],
+      database: config['database']
+    )
+  )
 
   db = instance_variable_get("@#{config['name']}") if config['default']
 end
 
 db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
 
-tables = db ? db.query("show tables", as: :array).to_a.flatten : []
+tables = db ? db.query('show tables', as: :array).to_a.flatten : []
 
 if tables.any?
   Pry.config.command_completions = proc { tables }
   Pry.config.file_completions = proc { [] }
 end
 
-Pry::Commands.block_command "l", "list tables." do
-  db.l
+Pry::Commands.block_command 'l', 'list tables.' do |num|
+  num_of_line = num&.to_i&.positive? ? num.to_i : 4
+  db.l(num_of_line)
 end
 
-Pry::Commands.block_command "d", "show a table's structure." do |table|
+Pry::Commands.block_command 'd', "show a table's structure." do |table|
   db.d table
 end
 
-Pry::Commands.block_command "s", "list a table, order by latest records if possible" do |table|
+Pry::Commands.block_command(
+  's',
+  'list a table, order by latest records if possible'
+) do |table|
   db.s table
 end
 
-Pry::Commands.block_command "q", "run a sql query" do |*sql|
+Pry::Commands.block_command 'q', 'run a sql query' do |*sql|
   db.q(sql.join(' '))
 end
 
-Pry::Commands.block_command "ff", "run a sql query and fetch first row" do |*sql|
+Pry::Commands.block_command(
+  'ff',
+  'run a sql query and fetch first row'
+) do |*sql|
   db.ff(sql.join(' '))
 end
 
-Pry::Commands.block_command "fff", "run a sql query and fetch first row's first field" do |*sql|
+Pry::Commands.block_command(
+  'fff',
+  "run a sql query and fetch first row's first field"
+) do |*sql|
   db.fff(sql.join(' '))
 end
 
-Pry::Commands.block_command "m", "show more results." do |num|
-  take = num && num.to_i > 0 ? num.to_i : 10
+Pry::Commands.block_command 'm', 'show more results.' do |num|
+  take = num&.to_i&.positive? ? num.to_i : 10
   db.m(take)
 end
 
