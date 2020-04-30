@@ -5,13 +5,14 @@ require 'awesome_print'
 require 'benchmark'
 require 'colorize'
 require 'date'
+require 'ipaddr'
 require 'json'
 require 'mysql2'
 require 'pry'
 require 'text-table'
 
 class Mysql2::Client
-  attr_reader :res, :course, :exec_time, :total
+  attr_reader :res, :course, :exec_time, :total, :tables
 
   @changed
 
@@ -160,6 +161,22 @@ class Mysql2::Client
   def fff(sql)
     ap query(sql, as: :array).first[0]
   end
+
+  def get_tables
+    @tables = query('show tables', as: :array).to_a.flatten
+  end
+
+  def ip_location(ipaddr)
+    iptable = 'ip2location_db11'
+    unless @tables.any?(iptable)
+      puts "table #{iptable} not exist."
+      return
+    end
+
+    ip = IPAddr.new ipaddr
+    sql = "select * from ip2location_db11 where ip_to >=#{ip.to_i} AND ip_from <=#{ip.to_i}"
+    q sql
+  end
 end
 
 db = nil
@@ -183,7 +200,7 @@ end
 
 db = instance_variable_get("@#{ARGV[0]}") unless ARGV.empty?
 
-tables = db ? db.query('show tables', as: :array).to_a.flatten : []
+tables = db.get_tables
 
 if tables.any?
   Pry.config.command_completions = proc { tables }
@@ -227,6 +244,37 @@ end
 Pry::Commands.block_command 'm', 'show more results.' do |num|
   take = num&.to_i&.positive? ? num.to_i : 10
   db.m(take)
+end
+
+Pry::Commands.block_command 'ip', "show ip addr's location." do |ip|
+  db.ip_location ip
+end
+
+Pry::Commands.create_command "ut" do
+  description "human time format unix timestamp convert: ut [-t time string] | [timestamp]"
+  def setup
+    @time_str = nil
+  end
+
+  def options(opt)
+    opt.on :t, :time_str, "a time string want convert to unixstamp.",
+      argument: true, as: String
+  end
+
+  def process
+    unless opts[:t].nil?
+      puts Date.parse("#{opts[:t]}").to_time.to_i
+      puts opts[:t]
+    end
+
+    unless args[0].nil?
+      puts args[0]
+      puts Time.at(args[0].to_i).to_s
+    end
+
+    puts Time.now.to_i
+    puts Time.now.to_s
+  end
 end
 
 Pry::ColorPrinter.pp db.info if db
