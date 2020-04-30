@@ -250,20 +250,20 @@ Pry::Commands.block_command 'ip', "show ip addr's location." do |ip|
   db.ip_location ip
 end
 
-Pry::Commands.create_command "ut" do
-  description "human time format unix timestamp convert: ut [-t time string] | [timestamp]"
+Pry::Commands.create_command 'ut' do
+  description 'human time format unix timestamp convert: ut [-t time string] | [timestamp]'
   def setup
     @time_str = nil
   end
 
   def options(opt)
-    opt.on :t, :time_str, "a time string want convert to unixstamp.",
-      argument: true, as: String
+    opt.on :t, :time_str, 'a time string want convert to unixstamp.',
+           argument: true, as: String
   end
 
   def process
     unless opts[:t].nil?
-      puts Date.parse("#{opts[:t]}").to_time.to_i
+      puts Date.parse(opts[:t].to_s).to_time.to_i
       puts opts[:t]
     end
 
