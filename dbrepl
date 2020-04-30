@@ -42,7 +42,13 @@ class Mysql2::Client
 
   def d(table)
     sql = "desc #{table}"
+    show_in_table(sql)
 
+    sql = "show indexes from #{table}"
+    show_in_table(sql)
+  end
+
+  def show_in_table(sql)
     res = query(sql, as: :array)
 
     fields = res.fields
@@ -89,21 +95,21 @@ class Mysql2::Client
 
   def select_output_postfix(take)
     total.to_s.colorize(color: :cyan, mode: :bold) \
-        + ' row(s) total, from '.colorize(:green) \
-        + @coursor.to_s.colorize(color: :blue, mode: :bold) \
-        + ' show '.colorize(:green) \
-        + take.to_s.colorize(color: :blue, mode: :bold) \
-        + ' row(s) '.colorize(:green) \
-        + '('.colorize(:green) \
-        + @exec_time.real.to_s.colorize(:yellow) \
-        + ' sec)'.colorize(:green)
+      + ' row(s) total, from '.colorize(:green) \
+      + @coursor.to_s.colorize(color: :blue, mode: :bold) \
+      + ' show '.colorize(:green) \
+      + take.to_s.colorize(color: :blue, mode: :bold) \
+      + ' row(s) '.colorize(:green) \
+      + '('.colorize(:green) \
+      + @exec_time.real.to_s.colorize(:yellow) \
+      + ' sec)'.colorize(:green)
   end
 
   def changed_output_postfix
     numbers = query_info_string.scan(/\d+/)
     'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
-        + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
-        + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
+      + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+      + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
   end
 
   def field_probe?(table, field)
