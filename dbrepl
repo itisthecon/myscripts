@@ -41,6 +41,24 @@ class Mysql2::Client
     nil
   end
 
+  def v(keyword = nil)
+    if keyword.nil?
+      sql = "SHOW VARIABLES"
+    else
+      sql = "SHOW VARIABLES LIKE '%#{keyword}%'"
+    end
+    show_in_table(sql)
+  end
+
+  def status(keyword = nil)
+    if keyword.nil?
+      sql = "SHOW GLOBAL STATUS"
+    else
+      sql = "SHOW GLOBAL STATUS LIKE '%#{keyword}%'"
+    end
+    show_in_table(sql)
+  end
+
   def d(table)
     sql = "desc #{table}"
     show_in_table(sql)
@@ -214,6 +232,14 @@ end
 
 Pry::Commands.block_command 'd', "show a table's structure." do |table|
   db.d table
+end
+
+Pry::Commands.block_command 'v', "show mysql variables." do |keyword|
+  db.v keyword
+end
+
+Pry::Commands.block_command 'status', "show mysql server status variables." do |keyword|
+  db.status keyword
 end
 
 Pry::Commands.block_command(
