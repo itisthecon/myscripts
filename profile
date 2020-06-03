@@ -376,6 +376,8 @@ then
     elif [ $DISTRIB_ID == "Debian" ]
     then
         /usr/games/fortune debian-hints;
+    else
+        /usr/games/fortune;
     fi
 fi
 
