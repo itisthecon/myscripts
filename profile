@@ -164,10 +164,10 @@ then
     alias vi="/usr/local/bin/vim";
 fi
 
-if [ -f "/usr/local/bin/exa" ];
+if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]];
 then
-    alias ls="/usr/local/bin/exa -F";
-    alias l="/usr/local/bin/exa -alFhg --git";
+    alias ls="exa -F";
+    alias l="exa -alFhg --git";
 fi
 
 # }}}
@@ -369,7 +369,16 @@ fi
 
 if [ -f "/usr/games/fortune" ];
 then
-    /usr/games/fortune ubuntu-server-tips;
+    DISTRIB_ID=$(lsb_release -i | cut -f 2-)
+    if [ $DISTRIB_ID == "Ubuntu" ]
+    then
+        /usr/games/fortune ubuntu-server-tips;
+    elif [ $DISTRIB_ID == "Debian" ]
+    then
+        /usr/games/fortune debian-hints;
+    else
+        /usr/games/fortune;
+    fi
 fi
 
 if [ -f "/data/soft/git/myscripts/syswarn.rb" ];
