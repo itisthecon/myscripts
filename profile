@@ -164,10 +164,10 @@ then
     alias vi="/usr/local/bin/vim";
 fi
 
-if [ -f "/usr/local/bin/exa" ];
+if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]];
 then
-    alias ls="/usr/local/bin/exa -F";
-    alias l="/usr/local/bin/exa -alFhg --git";
+    alias ls="exa -F";
+    alias l="exa -alFhg --git";
 fi
 
 # }}}
