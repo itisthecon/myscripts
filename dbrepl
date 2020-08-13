@@ -107,10 +107,12 @@ class Mysql2::Client
   end
 
   def changed_output_postfix
-    numbers = query_info_string.scan(/\d+/)
-    'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
-      + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
-      + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
+    unless query_info_string.nil?
+      numbers = query_info_string.scan(/\d+/)
+      'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
+        + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+        + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
+    end
   end
 
   def field_probe?(table, field)
