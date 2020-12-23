@@ -205,10 +205,12 @@ configs = JSON.load config_file
 config_file.close
 
 configs.each do |config|
+  port = config['port'] or 3306
   instance_variable_set(
     "@#{config['name']}",
     Mysql2::Client.new(
       host: config['host'],
+      port: port,
       username: config['username'],
       password: config['password'],
       database: config['database']
