@@ -309,4 +309,13 @@ end
 
 Pry::ColorPrinter.pp db.info if db
 
-binding.pry
+Pry.config.dbname = db.query_options[:database]
+
+Pry.start(
+  binding,
+  :prompt => Pry::Prompt.new(
+    "custom",
+    "my custom prompt",
+    [proc { |main, nest_level, pry_instance, _| "\u001b[33;1m#{Pry.config.dbname}\u001b[0m:#{pry_instance.input_ring.count}> " }]
+  )
+)
