@@ -316,6 +316,6 @@ Pry.start(
   :prompt => Pry::Prompt.new(
     "custom",
     "my custom prompt",
-    [proc { |main, nest_level, pry_instance, _| "\u001b[33;1m#{Pry.config.dbname}\u001b[0m:#{pry_instance.input_ring.count}> " }]
+    [proc { |main, nest_level, pry_instance, _| "\u001b[33;1m#{Pry.config.dbname}\u001b[0m:" + "#{pry_instance.input_ring.count}".colorize(:blue) + "> " }]
   )
 )
