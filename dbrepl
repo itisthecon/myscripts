@@ -100,7 +100,7 @@ class Mysql2::Client
   end
 
   def output(take)
-    ap transform_h(take, @coursor).to_a if @total
+    ap transform_h(take, @coursor).to_a, {color:{hash: :cyanish, args: :red}} if @total
 
     if @total
       puts select_output_postfix(take)
