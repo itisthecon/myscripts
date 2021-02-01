@@ -105,7 +105,7 @@ then
   GIT_PROMPT_SYMBOLS_BEHIND="⬇."
 
   GIT_PROMPT_START_USER="_LAST_COMMAND_INDICATOR_\033[;33;1m\W@\033[31m\h\033[;33;1m${ResetColor}"
-  export GIT_PROMPT_END_USER="${ResetColor} $${ResetColor}"
+  export GIT_PROMPT_END_USER="${BoldYellow}\$${ResetColor}"
   export GIT_PROMPT_END_ROOT="${BoldYellow}#${ResetColor}"
   export GIT_PROMPT_COMMAND_OK="${Yellow}^_^"
   export GIT_PROMPT_COMMAND_FAIL="${Red}O_O-_LAST_COMMAND_STATE_"
