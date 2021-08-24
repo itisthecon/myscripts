@@ -170,6 +170,9 @@ Plugin 'ntpeters/vim-better-whitespace'
 " 颜色主题
 "Plugin 'rakr/vim-one'
 
+"TOML support
+Plugin 'cespare/vim-toml'
+
 call vundle#end()
 " }}}
 " Vimrc autocommands ----------------------- {{{
