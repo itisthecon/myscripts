@@ -45,13 +45,13 @@ discharging_symbol = " "
 format = "[$symbol]($style)"
 #disabled = false
 
-[[battery.dis6Yplay]]
+[[battery.display]]
 threshold = 10
 style = "bright-red"
 charging_symbol = ""
 discharging_symbol = ""
 
-[[battery.dis6Yplay]]
+[[battery.display]]
 threshold = 20
 style = "bold red"
 charging_symbol = ""
