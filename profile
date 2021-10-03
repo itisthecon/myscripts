@@ -158,6 +158,7 @@ alias apts='aptitude search'
 alias aptsearch='apt-cache search'
 alias aptshow='apt-cache showpkg'
 alias aptwhich='dpkg -S'
+alias ssp='eval "$(starship init bash)"'
 
 if [ -f "/usr/local/bin/vim" ];
 then
