@@ -115,7 +115,7 @@ style = "bold dimmed green"
 
 # Prompt: optional param 1
 [time]
-format = "🕙 $time($style)\n"
+format = "🕙$time($style)\n"
 time_format = "%T"
 style = "bright-white"
 disabled = false
