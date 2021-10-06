@@ -100,7 +100,7 @@ class Mysql2::Client
   end
 
   def output(take)
-    ap transform_h(take, @coursor).to_a if @total
+    ap transform_h(take, @coursor).to_a, {color:{hash: :cyanish, args: :red}} if @total
 
     if @total
       puts select_output_postfix(take)
@@ -125,10 +125,12 @@ class Mysql2::Client
   end
 
   def changed_output_postfix
-    numbers = query_info_string.scan(/\d+/)
-    'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
-      + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
-      + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
+    unless query_info_string.nil?
+      numbers = query_info_string.scan(/\d+/)
+      'Rows matched: '.colorize(:blue) + numbers[0].to_s.colorize(:green) \
+        + '  Changed: '.colorize(:blue) + numbers[1].to_s.colorize(:yellow) \
+        + '  Warnings: '.colorize(:blue) + numbers[2].to_s.colorize(:red)
+    end
   end
 
   def field_probe?(table, field)
@@ -203,10 +205,12 @@ configs = JSON.load config_file
 config_file.close
 
 configs.each do |config|
+  port = config['port'] or 3306
   instance_variable_set(
     "@#{config['name']}",
     Mysql2::Client.new(
       host: config['host'],
+      port: port,
       username: config['username'],
       password: config['password'],
       database: config['database']
@@ -305,4 +309,13 @@ end
 
 Pry::ColorPrinter.pp db.info if db
 
-binding.pry
+Pry.config.dbname = db.query_options[:database]
+
+Pry.start(
+  binding,
+  :prompt => Pry::Prompt.new(
+    "custom",
+    "my custom prompt",
+    [proc { |main, nest_level, pry_instance, _| "\u001b[33;1m#{Pry.config.dbname}\u001b[0m:" + "#{pry_instance.input_ring.count}".colorize(:blue) + "> " }]
+  )
+)
