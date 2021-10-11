@@ -319,3 +319,5 @@ endfunction
 " }}}
 
 colorscheme desert
+
+nnoremap <esc>^[ <esc>^[
