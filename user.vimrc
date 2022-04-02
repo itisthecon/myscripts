@@ -173,6 +173,9 @@ Plugin 'ntpeters/vim-better-whitespace'
 "TOML support
 Plugin 'cespare/vim-toml'
 
+"colorschemes support
+Plugin 'flazz/vim-colorschemes'
+
 call vundle#end()
 " }}}
 " Vimrc autocommands ----------------------- {{{
