@@ -8,6 +8,7 @@
 " Email: jdhao@hotmail.com
 " Blog: https://jdhao.github.io/
 " clone from https://github.com/jdhao/nvim-config.git
+" git clone https://github.com/jdhao/nvim-config.git ~/.config/nvim/
 " set lua/config/autosave.lua enabled=false
 
 
