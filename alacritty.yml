@@ -25,9 +25,9 @@ window:
   #
   # Specified in number of pixels.
   # If the position is not set, the window manager will handle the placement.
-  position:
-    x: 0
-    y: 1
+  #position:
+    #x: 0
+    #y: 1
 
   # Window padding (changes require restart)
   #
@@ -606,3 +606,6 @@ colors:
     magenta: '0xa47de9'
     cyan:    '0x99faf2'
     white:   '0xffffff'
+#debug:
+  #render_timer: true
+  #print_events: true
