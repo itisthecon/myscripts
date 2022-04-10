@@ -31,10 +31,11 @@ set directory=~/.nvim/swap
 let g:auto_save=0
 unmap Y
 
-" 切换缩进参考线
-nmap <Leader>ti <cmd>IndentBlanklineToggle<CR>
-" 切换行号和相对行号
-nmap <Leader>tn <cmd>set number! relativenumber!<CR>
+" " 切换缩进参考线
+" nmap <Leader>ti <cmd>IndentBlanklineToggle<CR>
+" " 切换行号和相对行号
+" nmap <Leader>tn <cmd>set number! relativenumber!<CR>
+
 " 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
 nmap <Leader>tc <cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> <cmd>SignifyToggle<CR>
 
@@ -43,3 +44,8 @@ set mouse=
 " hightlight column and line
 " 高亮光标所在的行
 set cursorline
+
+" jdhao/better-escape.vim 设置
+let g:better_escape_shortcut = 'jk'
+" set time interval to 200 ms
+let g:better_escape_interval = 200
