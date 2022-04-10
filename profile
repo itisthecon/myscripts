@@ -165,7 +165,7 @@ then
     alias vi="/usr/local/bin/vim";
 fi
 
-if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]];
+if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]] || [[ -f /usr/bin/exa ]];
 then
     alias ls="exa -F";
     alias l="exa -alFhg --git";
