@@ -176,6 +176,13 @@ Plugin 'cespare/vim-toml'
 "colorschemes support
 Plugin 'flazz/vim-colorschemes'
 
+Plugin 'rust-lang/rust.vim'
+
+Plugin 'Yggdroot/indentLine'
+
+" 彩色显示括号匹配
+Plugin 'luochen1990/rainbow'
+
 call vundle#end()
 " }}}
 " Vimrc autocommands ----------------------- {{{
@@ -232,6 +239,10 @@ map <c-o> :CtrlPBuffer<CR>
 
 map <F3> <Esc>:call Comment()<CR>
 nmap <C-a> <Esc>:call Newfunc()<CR>
+" Ctrl+n 行号显示切换
+nmap <C-n> <Esc>:call ToggleLn()<CR>
+" Ctrl+i 缩进参考线显示切换
+nmap <C-I> <Esc>:IndentLinesToggle<CR>
 
 "用空格键来开关折叠
 nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
@@ -319,8 +330,36 @@ function Gitbr()
     return ' ' . branchname
 endfunction
 
+function! ToggleLn()
+    set number! relativenumber!
+endfunction
+
 " }}}
 
-colorscheme desert
+" Enable true color support. Do not set this option if your terminal does not
+" support true colors! For a comprehensive list of terminals supporting true
+" colors, see https://github.com/termstandard/colors and https://gist.github.com/XVilka/8346728.
+set termguicolors
+" Set up cursor color and shape in various mode, ref:
+" https://github.com/neovim/neovim/wiki/FAQ#how-to-change-cursor-color-in-the-terminal
+set guicursor=n-v-c:block-Cursor/lCursor,i-ci-ve:ver25-Cursor2/lCursor2,r-cr:hor20,o:hor20
+
+colorscheme gruvbox
+"colorscheme desert
+"colorscheme putty
+
+" 设置高亮配对字符
+" Set matching pairs of characters and highlight matching brackets
+set matchpairs+=<:>,「:」,『:』,【:】,“:”,‘:’,《:》
+
+" 显示行号和相对行号
+set number! relativenumber!
+
+" Correctly break multi-byte characters such as CJK,
+" see https://stackoverflow.com/q/32669814/6064933
+set formatoptions+=mM
 
 nnoremap <esc>^[ <esc>^[
+
+if has('nvim')
+endif
