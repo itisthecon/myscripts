@@ -30,6 +30,8 @@ set backupdir=~/.nvim/backup
 set directory=~/.nvim/swap
 let g:auto_save=0
 unmap Y
+"unmap %
+"autocmd VimEnter unmap! %
 
 " " 切换缩进参考线
 " nmap <Leader>ti <cmd>IndentBlanklineToggle<CR>
@@ -49,3 +51,8 @@ set cursorline
 let g:better_escape_shortcut = 'jk'
 " set time interval to 200 ms
 let g:better_escape_interval = 200
+
+let g:loaded_matchit = 1
+
+" do it for % match work, don't know why
+autocmd VimEnter * unmap %

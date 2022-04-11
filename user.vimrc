@@ -183,6 +183,9 @@ Plugin 'Yggdroot/indentLine'
 " 彩色显示括号匹配
 Plugin 'luochen1990/rainbow'
 
+" better % match
+Plugin 'andymass/vim-matchup'
+
 call vundle#end()
 " }}}
 " Vimrc autocommands ----------------------- {{{
