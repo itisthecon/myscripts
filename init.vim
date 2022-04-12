@@ -9,6 +9,10 @@
 " Blog: https://jdhao.github.io/
 " clone from https://github.com/jdhao/nvim-config.git
 " git clone https://github.com/jdhao/nvim-config.git ~/.config/nvim/
+" pip install -U pynvim
+" pip install 'python-lsp-server[all]' pylsp-mypy pyls-isort
+" apt install nodejs npm
+" npm install -g vim-language-server
 " set lua/config/autosave.lua enabled=false
 
 
