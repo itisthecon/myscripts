@@ -95,7 +95,7 @@ Plugin 'ap/vim-css-color'
 "Plugin 'honza/vim-snippets'
 
 "Ack全局搜索插件 !!!使用前需apt install ack
-Plugin 'mileszs/ack.vim'
+"Plugin 'mileszs/ack.vim'
 " git
 Plugin 'tpope/vim-fugitive'
 
