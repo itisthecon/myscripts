@@ -60,3 +60,5 @@ let g:loaded_matchit = 1
 
 " do it for % match work, don't know why
 autocmd VimEnter * unmap %
+
+let g:loaded_ruby_provider=1
