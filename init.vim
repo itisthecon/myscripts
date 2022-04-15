@@ -14,6 +14,7 @@
 " apt install nodejs npm
 " npm install -g vim-language-server
 " set lua/config/autosave.lua enabled=false
+" 修改 lua/plugins.lua 禁止autosave
 
 
 let s:core_conf_files = [
