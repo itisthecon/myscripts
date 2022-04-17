@@ -88,3 +88,17 @@ highlight Number           guifg=#ff6c6b ctermfg=1    guibg=none    ctermbg=none
 highlight Function         guifg=#ff6c6b ctermfg=1    guibg=none    ctermbg=none  cterm=none
 highlight Visual           guifg=#dfdfdf ctermfg=1    guibg=#1c1f24 ctermbg=none  cterm=none
 
+
+" neovide specialized set
+if exists('g:neovide')
+  let g:neovide_transparency=0.9
+  let g:neovide_no_idle=v:true
+  let g:neovide_remember_window_size = v:true
+  let g:neovide_cursor_animation_length=0.5
+  let g:neovide_cursor_trail_length=0.8
+  let g:neovide_cursor_antialiasing=v:true
+  let g:neovide_cursor_vfx_mode = "railgun"
+  
+  set mouse=nicr
+  set mouse=a
+endif
