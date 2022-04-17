@@ -94,11 +94,22 @@ if exists('g:neovide')
   let g:neovide_transparency=0.9
   let g:neovide_no_idle=v:true
   let g:neovide_remember_window_size = v:true
-  let g:neovide_cursor_animation_length=0.5
-  let g:neovide_cursor_trail_length=0.8
+  let g:neovide_cursor_animation_length=0.2
+  let g:neovide_cursor_trail_length=0.3
   let g:neovide_cursor_antialiasing=v:true
   let g:neovide_cursor_vfx_mode = "railgun"
   
-  set mouse=nicr
+  "set mouse=nicr
   set mouse=a
 endif
+
+" " Paste from clipboard
+nnoremap <leader>p "*p
+nnoremap <leader>P "+P
+vnoremap <leader>p "*p
+vnoremap <leader>P "+P
+
+" ensure vim runtime dirctory exist
+call EnsureDirExists($HOME . '/.nvim/backup')
+call EnsureDirExists($HOME . '/.nvim/swap')
+call EnsureDirExists($HOME . '/.nvim/undo')
