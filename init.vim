@@ -15,6 +15,9 @@
 " npm install -g vim-language-server
 " set lua/config/autosave.lua enabled=false
 " 修改 lua/plugins.lua 禁止autosave
+" ln -s /usr/local/share/vim/vimrc /usr/local/share/nvim/sysinit.vim
+" ln -s /usr/local/share/vim/vim82/vimrc_example.vim /usr/local/share/nvim/runtime/
+" ln -s /usr/local/share/vim/vim82/defaults.vim /usr/local/share/nvim/runtime/
 
 
 let s:core_conf_files = [
