@@ -78,7 +78,8 @@ unset -f pathmunge
 export HISTFILESIZE=5000000
 export HISTSIZE=5000000
 export HISTTIMEFORMAT='%F %T '
-export HISTCONTROL=ignoredups
+export HISTCONTROL=ignoredups:erasedups # no duplicate entries
+export TERM="xterm-256color"                      # getting proper colors
 #export PROMPT_COMMAND='history -a'
 # After each command, append to the history file and reread it
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
