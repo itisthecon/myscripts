@@ -160,6 +160,7 @@ alias aptsearch='apt-cache search'
 alias aptshow='apt-cache showpkg'
 alias aptwhich='dpkg -S'
 alias ssp='eval "$(starship init bash)"'
+alias journalctl_clean='journalctl --vacuum-time=1d'
 
 if [ -f "/usr/local/bin/vim" ];
 then
