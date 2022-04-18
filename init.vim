@@ -64,6 +64,8 @@ let g:loaded_matchit = 1
 
 " do it for % match work, don't know why
 autocmd VimEnter * unmap %
+"autocmd VimEnter * unmap  <C-T>
+"autocmd VimEnter * unmap  <C-D>
 
 let g:loaded_ruby_provider=1
 let g:ruby_host_prog = '~/.local/share/gem/ruby/3.0.0/bin/neovim-ruby-host'
@@ -107,10 +109,16 @@ if exists('g:neovide')
 endif
 
 " " Paste from clipboard
+" paste selected content
 nnoremap <leader>p "*p
-nnoremap <leader>P "+P
 vnoremap <leader>p "*p
+" paste from clipboard
+nnoremap <leader>P "+P
 vnoremap <leader>P "+P
+
+" restore the default indent key bind in insert mode
+inoremap <C-t> <ESC>>>i
+inoremap <C-d> <ESC><<i
 
 " ensure vim runtime dirctory exist
 call EnsureDirExists($HOME . '/.nvim/backup')
