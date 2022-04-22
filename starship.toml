@@ -2,21 +2,22 @@
 #format = "$battery$all"
 # First param ─┌
 [username]
-format = "[╭─$user]($style)@"
+format = "[╭─$user]($style)"
 style_user = "bold blue"
 style_root = "bold red"
 show_always = true
 
 # Second param
 [hostname]
-format = "[$hostname]($style):"
+format = "[@$hostname]($style)"
 style = "bold dimmed red"
 trim_at = "-"
-ssh_only = false
+ssh_only = true
 disabled = false
 
 # Third param
 [directory]
+format = "[:$path]($style)[$lock_symbol]($lock_style) "
 style = "purple"
 truncation_length = 0
 truncate_to_repo = true
