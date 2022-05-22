@@ -70,6 +70,9 @@ map <F2> <Esc>:%!python -m json.tool<CR>:set filetype=json<CR>
 " Ctrl+b do PHP syntax check
 map <C-L> :w !php -l<CR>
 
+" 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
+nnoremap <F9> :set number! relativenumber!<CR>
+
 " }}}
 " Vimrc functions ----------------------- {{{
 function! CurDir()

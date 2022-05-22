@@ -120,6 +120,8 @@ vnoremap <leader>P "+P
 inoremap <C-t> <ESC>>>i
 inoremap <C-d> <ESC><<i
 
+nnoremap / /
+
 " ensure vim runtime dirctory exist
 call EnsureDirExists($HOME . '/.nvim/backup')
 call EnsureDirExists($HOME . '/.nvim/swap')
