@@ -76,6 +76,7 @@ myManageHook = composeAll . concat $
     , [resource =? r --> doFloat | r <- myRFloats]
     , [resource =? i --> doIgnore | i <- myIgnores]
     , [className  =? "krunner" --> doIgnore >> doFloat]
+    , [className  =? "mpv" --> doIgnore >> doFloat]
     , [className  =? "plasmashell" --> doIgnore >> doFloat]
     , [ isFullscreen --> doFullFloat ]
     , [className  =? "TelegramDesktop" --> doShift "\61554"]
@@ -199,6 +200,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((controlMask .|. mod1Mask , xK_m ), spawn $ "xfce4-settings-manager")
   , ((controlMask .|. mod1Mask , xK_o ), spawn $ "$HOME/.xmonad/scripts/picom-toggle.sh")
   , ((controlMask .|. mod1Mask , xK_p ), spawn $ "pamac-manager")
+  , ((controlMask .|. mod1Mask , xK_q ), spawn $ "qutebrowser")
   , ((controlMask .|. mod1Mask , xK_r ), spawn $ "rofi-theme-selector")
   , ((controlMask .|. mod1Mask , xK_s ), spawn $ "spotify")
   , ((controlMask .|. mod1Mask , xK_t ), spawn $ "telegram-desktop")
