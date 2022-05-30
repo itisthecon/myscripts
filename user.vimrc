@@ -179,6 +179,7 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'rust-lang/rust.vim'
 
 Plugin 'Yggdroot/indentLine'
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 
 " 彩色显示括号匹配
 Plugin 'luochen1990/rainbow'
