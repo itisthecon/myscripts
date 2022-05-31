@@ -674,7 +674,7 @@ schemes:
       background: None
     selection:
       text: CellForeground
-      background: '#44475a'
+      background: '#101010'
     normal:
       black:   '#000000'
       red:     '#ff5555'
