@@ -48,6 +48,7 @@ unmap Y
 
 " 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
 nmap <Leader>tc <cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> <cmd>SignifyToggle<CR>
+nmap <F9> <cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> <cmd>SignifyToggle<CR>
 
 set mouse=
 
@@ -103,7 +104,7 @@ if exists('g:neovide')
   let g:neovide_cursor_trail_length=0.3
   let g:neovide_cursor_antialiasing=v:true
   let g:neovide_cursor_vfx_mode = "railgun"
-  
+
   "set mouse=nicr
   set mouse=a
 endif
