@@ -193,7 +193,7 @@ c.tabs.show = 'always'
 
 # Setting default page for when opening new tabs or new windows with
 # commands like :open -t and :open -w .
-c.url.default_page = 'https://google.com.com/'
+c.url.default_page = 'https://google.com/'
 c.url.start_pages = 'https://google.com/'
 
 # Search engines which can be used via the address bar.  Maps a search
@@ -417,6 +417,10 @@ config.bind(',dr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/
 config.bind(',gr', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/gruvbox/gruvbox-all-sites.css ""')
 config.bind(',sd', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-dark/solarized-dark-all-sites.css ""')
 config.bind(',sl', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/solarized-everything-css/css/solarized-light/solarized-light-all-sites.css ""')
+
+#hint bind
+config.bind(';l', 'hint links')
+config.bind(';f', 'hint inputs')
 
 # Always restore open sites when qutebrowser is reopened.
 c.auto_save.session = True
