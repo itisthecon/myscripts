@@ -422,9 +422,14 @@ config.bind(',sl', 'config-cycle content.user_stylesheets ~/.config/qutebrowser/
 config.bind(';l', 'hint links')
 config.bind(';f', 'hint inputs')
 
+config.bind('<F1>', 'open -t qute://help/img/cheatsheet-big.png')
+
 # Always restore open sites when qutebrowser is reopened.
 c.auto_save.session = True
 c.auto_save.interval = 3000
 
 # Value to send in the `Accept-Language` header.
 c.content.headers.accept_language = "zh-CN,zh;q=0.9"
+
+#Automatically enter insert mode if an editable element is focused after loading the page.
+c.input.insert_mode.auto_load = True
