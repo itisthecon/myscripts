@@ -169,8 +169,8 @@ fi
 
 if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]] || [[ -f /usr/bin/exa ]];
 then
-    alias ls="exa -F";
-    alias l="exa -alFhg --git";
+    alias ls="exa -F --icons";
+    alias l="exa -alFhg --git --icons";
 fi
 
 # }}}
