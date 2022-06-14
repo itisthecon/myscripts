@@ -56,7 +56,7 @@ set list listchars=tab:▸\ ,extends:❯,precedes:❮,nbsp:␣
 " lastmod time is drawn from https://stackoverflow.com/q/8426736/6064933
 set title
 set titlestring=
-set titlestring=%{Get_titlestr()}
+"set titlestring=%{Get_titlestr()}
 
 " Persistent undo even after you close a file and re-open it
 set undofile
