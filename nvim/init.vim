@@ -1,3 +1,7 @@
+" ln -s /usr/local/share/vim/vimrc /usr/local/share/nvim/sysinit.vim
+" ln -s /usr/local/share/vim/vim82/vimrc_example.vim /usr/local/share/nvim/runtime/
+" ln -s /usr/local/share/vim/vim82/defaults.vim /usr/local/share/nvim/runtime/
+"
 " mkdir -p ~/.local/share/nvim/site/autoload
 " wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim -O
 " ~/.local/share/nvim/site/autoload/plug.vim
@@ -7,6 +11,10 @@
 " ln -s /usr/local/share/vim/vim82/defaults.vim /usr/local/share/nvim/runtime/
 "
 " pip install pynvim
+" npm install -g yarn
+" cd ~/.vim/plugged/coc.nvim/
+" yarn install
+" yarn build
 
 " Vimrc file plugins ----------------------- {{{
 
@@ -307,7 +315,7 @@ set undodir=~/.nvim/undo
 set backupdir=~/.nvim/backup
 set directory=~/.nvim/swap
 
-source ~/.config/nvim/lua/config/indent-blankline.lua
+source ~/.config/nvim/lua/init.lua
 
 " }}}
 
@@ -334,6 +342,9 @@ inoremap <C-T> <ESC>>>i
 inoremap <C-B> <ESC><<i
 "删除当前行
 inoremap <C-D> <ESC>ddi
+
+" 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
+nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>
 
 " }}}
 
