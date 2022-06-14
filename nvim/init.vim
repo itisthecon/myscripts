@@ -255,6 +255,36 @@ nnoremap <silent>,p :<C-u>CocListResume<CR>
 
 " }}}
 
+" functions ----------------------- {{{
+
+function! CurDir()
+    let curdir = substitute(getcwd(), '/Users/amir/', "~/", "g")
+    return curdir
+endfunction
+
+" 状态条git分支显示
+function Gitbr()
+    let branchname = gitbranch#name()
+    if strlen(branchname) < 1
+        return ""
+    endif
+    return ' ' . branchname
+endfunction
+
+"确保备份交换和undo目录存在
+function! EnsureDirExists (dir)
+   if !isdirectory(a:dir)
+     if exists("*mkdir")
+       call mkdir(a:dir,'p')
+       echo "Created directory: " . a:dir
+     else
+       echo "Please create directory: " . a:dir
+     endif
+   endif
+endfunction
+
+" }}}
+
 " Vimrc autocommands ----------------------- {{{
 
 augroup auto_grp
@@ -344,19 +374,6 @@ inoremap <C-B> <ESC><<i
 inoremap <C-D> <ESC>ddi
 
 " 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
-nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>
-
-" }}}
-
-" functions ----------------------- {{{
-
-" 状态条git分支显示
-function Gitbr()
-    let branchname = gitbranch#name()
-    if strlen(branchname) < 1
-        return ""
-    endif
-    return ' ' . branchname
-endfunction
+nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>:SignifyToggle<CR>:SignifyRefresh<CR>
 
 " }}}
