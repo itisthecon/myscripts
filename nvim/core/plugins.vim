@@ -93,4 +93,8 @@ Plug 'folke/which-key.nvim'
 " Repeat vim motions
 Plug 'tpope/vim-repeat'
 
+"CSS color show(css颜色显示) 将css/sass/less中的颜色用背景色高亮出来方便预览
+"Plugin 'gorodinskiy/vim-coloresque'
+Plug 'ap/vim-css-color'
+
 call plug#end()
