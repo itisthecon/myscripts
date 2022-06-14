@@ -111,3 +111,29 @@ function! s:quit_current_win() abort
     qall
   endif
 endfunction
+
+augroup auto_grp
+    au!
+    autocmd BufNewFile,BufRead *.fish   set syntax=fish
+    autocmd FileType vim,sh,conf setlocal foldmethod=marker
+
+    " support css word with -
+    autocmd FileType css,scss,slim,html,eruby,coffee,javascript setlocal iskeyword+=-
+    autocmd Filetype python setlocal tabstop=4 shiftwidth=4 softtabstop=4
+
+    " markdown 不折叠
+    autocmd BufNewFile,BufRead *.md set nofoldenable
+
+    autocmd BufWritePre * :%s/\s\+$//e
+
+    "let g:user_emmet_expandabbr_key = '<c-e>'
+    "autocmd FileType html,css,scss,eruby,php EmmetInstall
+
+    " coffeescript
+    "autocmd BufNewFile,BufRead *.coffee set filetype=coffee
+
+    " hack filetype for slim
+    autocmd BufNewFile,BufRead *.slim set filetype=slim
+    autocmd BufNewFile,BufRead *.es6 set filetype=javascript
+
+augroup END
