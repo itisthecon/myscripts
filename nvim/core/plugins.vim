@@ -81,7 +81,16 @@ Plug 'mhinz/vim-signify'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" The missing auto-completion for cmdline!
+Plug 'gelguy/wilder.nvim'
+
 " A fancy, configurable, notification manager for NeoVim
 Plug 'rcarriga/nvim-notify'
+
+" displays a popup with possible key bindings of the command you started typing.
+Plug 'folke/which-key.nvim'
+
+" Repeat vim motions
+Plug 'tpope/vim-repeat'
 
 call plug#end()
