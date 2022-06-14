@@ -16,19 +16,6 @@
 " yarn install
 " yarn build
 
-" init setting ----------------------- {{{
-
-let s:core_conf_files = [
-      \ 'autocommands.vim',
-      \ ]
-
-for s:fname in s:core_conf_files
-  execute printf('source %s/core/%s', stdpath('config'), s:fname)
-endfor
-
-let g:is_linux = (has('unix') && !has('macunix')) ? v:true : v:false
-
-" }}}
 
 " functions ----------------------- {{{
 
@@ -70,6 +57,41 @@ function! Get_titlestr() abort
 
   return l:title_str
 endfunction
+
+function! Add_pack(name) abort
+  let l:status = v:true
+
+  return l:status
+endfunction
+
+" Generate random integers in the range [Low, High] in pure vim script,
+" adapted from https://stackoverflow.com/a/12739441/6064933
+function! RandInt(Low, High) abort
+  " Use lua to generate random int. It is faster. Ref: https://stackoverflow.com/a/20157671/6064933
+  call v:lua.math.randomseed(localtime())
+  return v:lua.math.random(a:Low, a:High)
+endfunction
+
+" Selection a random element from a sequence/list
+function! RandElement(seq) abort
+  let l:idx = RandInt(0, len(a:seq)-1)
+
+  return a:seq[l:idx]
+endfunction
+
+" }}}
+
+" init setting ----------------------- {{{
+
+let s:core_conf_files = [
+      \ 'autocommands.vim',
+      \ ]
+
+for s:fname in s:core_conf_files
+  execute printf('source %s/core/%s', stdpath('config'), s:fname)
+endfor
+
+let g:is_linux = (has('unix') && !has('macunix')) ? v:true : v:false
 
 " }}}
 
@@ -203,7 +225,17 @@ Plug 'wellle/targets.vim'
 " Press sdb or sd{deletion}. For example, key sequences sdb or sd( makes (foo) to foo.
 Plug 'machakann/vim-sandwich'
 
+" themes..
 Plug 'sainnhe/sonokai'
+Plug 'lifepillar/vim-gruvbox8'
+Plug 'navarasu/onedark.nvim'
+Plug 'sainnhe/edge'
+Plug 'sainnhe/gruvbox-material'
+Plug 'shaunsingh/nord.nvim'
+Plug 'NTBBloodbath/doom-one.nvim'
+Plug 'sainnhe/everforest'
+Plug 'EdenEast/nightfox.nvim'
+Plug 'rebelot/kanagawa.nvim'
 
 "状态栏相关设置
 Plug 'itchyny/lightline.vim'
@@ -251,6 +283,9 @@ Plug 'mhinz/vim-signify'
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" A fancy, configurable, notification manager for NeoVim
+Plug 'rcarriga/nvim-notify'
+
 call plug#end()
 
 " }}}
@@ -261,9 +296,13 @@ call plug#end()
 if has('termguicolors')
     set termguicolors
 endif
-let g:sonokai_style = 'andromeda'
-let g:sonokai_enable_italic = 1
-colorscheme sonokai
+"let g:sonokai_style = 'andromeda'
+"let g:sonokai_enable_italic = 1
+"colorscheme sonokai
+
+"let g:everforest_enable_italic = 1
+"let g:everforest_better_performance = 1
+"colorscheme everforest
 
 " config of lightline
 let g:lightline = {}
@@ -477,5 +516,6 @@ nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>:Signify
 " other config ----------------------- {{{
 
 source ~/.config/nvim/lua/init.lua
+colorscheme nightfox
 
 " }}}
