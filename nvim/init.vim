@@ -12,7 +12,7 @@
 "
 " pip install pynvim
 " npm install -g yarn
-" cd ~/.vim/plugged/coc.nvim/
+" cd ~/.config/nvim/plugged/coc.nvim/
 " yarn install
 " yarn build
 "
