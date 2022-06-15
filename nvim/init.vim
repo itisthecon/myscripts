@@ -45,4 +45,6 @@ endfor
 source ~/.config/nvim/lua/init.lua
 colorscheme nightfox
 
+let g:signify_disable_by_default = 0
+
 " }}}

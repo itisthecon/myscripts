@@ -167,6 +167,11 @@ then
     alias vi="/usr/local/bin/vim";
 fi
 
+if [ -f "/usr/local/bin/nvim" ];
+then
+    alias vi="/usr/local/bin/nvim";
+fi
+
 if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]] || [[ -f /usr/bin/exa ]];
 then
     alias ls="exa -F --icons";

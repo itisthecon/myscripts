@@ -21,4 +21,16 @@ inoremap <C-B> <ESC><<i
 inoremap <C-D> <ESC>ddi
 
 " 拷贝模式切换(关闭缩进参考线和行号, 也关闭signify的git diff指示符)
-nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>:SignifyToggle<CR>:SignifyRefresh<CR>
+"nnoremap <F9> :set number! relativenumber!<CR>:IndentBlanklineToggle<CR>:SignifyToggle<CR>:SignifyRefresh<CR>
+"nnoremap <F9> <cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> <cmd>SignifyToggle<CR>
+nnoremap <F9> <cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> :call ToggleSignColumn()<CR> <cmd>SignifyToggle<CR>
+
+unmap Y
+
+" " Paste from clipboard
+" paste selected content
+nnoremap <leader>p "*p
+vnoremap <leader>p "*p
+" paste from clipboard
+nnoremap <leader>P "+P
+vnoremap <leader>P "+P
