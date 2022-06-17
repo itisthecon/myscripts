@@ -97,4 +97,9 @@ Plug 'tpope/vim-repeat'
 "Plugin 'gorodinskiy/vim-coloresque'
 Plug 'ap/vim-css-color'
 
+Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+
+" ALE (Asynchronous Lint Engine) is a plugin providing linting (syntax checking and semantic errors)
+Plug 'dense-analysis/ale'
+
 call plug#end()
