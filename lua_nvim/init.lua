@@ -8,7 +8,6 @@ vf = vim.fn
 -- load pre-defined vim functions
 vim.cmd 'source ~/.config/nvim/vim/funcs.vim'
 
-
 vg.is_linux = vf.IsLinux()
 vg.vimsyn_embed = 'l'
 
