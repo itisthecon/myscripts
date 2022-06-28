@@ -5,21 +5,12 @@ vg = vim.g
 -- call vim function prefix
 vf = vim.fn
 
--- load pre-defined vim functions
-vim.cmd 'source ~/.config/nvim/vim/funcs.vim'
-
-vg.is_linux = vf.IsLinux()
-vg.vimsyn_embed = 'l'
-
--- Ale settings
-vg.ale_completion_enabled = 1
-vg.ale_completion_autoimport = 1
-vim.opt.omnifunc='ale#completion#OmniFunc'
-
 -- }}}
 
 -- requirements ----------------------- {{{
 
+-- load pre-defined vim functions
+vim.cmd 'source ~/.config/nvim/vim/funcs.vim'
 require 'user.settings'
 require 'user.plugins'
 require 'user.config.lightline'

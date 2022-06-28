@@ -115,3 +115,7 @@ set.matchpairs:append [[<:>,「:」,『:』,【:】,“:”,‘:’,《:》]]
 if vf.has('termguicolors') then
     set.termguicolors = true
 end
+
+--  allows users to select what, if any, types of
+--  embedded script highlighting they wish to have.
+vg.vimsyn_embed = 'lPr'
