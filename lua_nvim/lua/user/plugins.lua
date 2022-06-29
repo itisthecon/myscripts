@@ -7,7 +7,7 @@ end
 return require('packer').startup(function(use)
   -- Speed up loading Lua modules in Neovim to improve startup time.
   -- it is recommened to put impatient.nvim before any other plugins
-  use {'lewis6991/impatient.nvim', config = [[require('impatient')]]}
+  use 'lewis6991/impatient.nvim'
 
   -- My plugins here
   use 'wbthomason/packer.nvim'
