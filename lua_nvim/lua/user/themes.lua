@@ -1,5 +1,3 @@
-vg = vim.g
-
 local themes = {
     function ()
         vg.gruvbox_italics=1
@@ -14,6 +12,8 @@ local themes = {
     function ()
         vg.sonokai_enable_italic = 1
         vg.sonokai_better_performance = 1
+        vg.sonokai_transparent_background = 1
+        vg.sonokai_diagnostic_line_highlight = 1
         return "colorscheme sonokai"
     end,
 
@@ -40,7 +40,12 @@ local themes = {
 
 
 function theme_toggle()
-    local theme = themes[ math.random( 0, #themes - 1 ) ]
+    local theme = nil
+
+    while( not theme )
+        do
+            theme = themes[ math.random( 0, #themes - 1 ) ]
+    end
 
     print( theme() )
 
