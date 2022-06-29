@@ -31,7 +31,8 @@ require 'user.config'
 
 -- theme config ----------------------- {{{
 
-vim.cmd 'colorscheme nightfox'
+-- vim.cmd 'colorscheme nightfox'
+vim.cmd 'colorscheme kanagawa'
 
 -- }}}
 
