@@ -1,8 +1,6 @@
-HOME = os.getenv("HOME")
-
-local backup_dir = HOME .. '/.local/share/nvim/user/backup'
-local swap_dir = HOME .. '/.local/share/nvim/user/swap'
-local undo_dir = HOME .. '/.local/share/nvim/user/undo'
+local backup_dir = data_dir .. '/user/backup'
+local swap_dir = data_dir .. '/user/swap'
+local undo_dir = data_dir .. '/user/undo'
 
 -- ensure vim runtime dirctory exist
 vf.EnsureDirExists(backup_dir)

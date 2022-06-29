@@ -5,19 +5,24 @@ vg = vim.g
 -- call vim function prefix
 vf = vim.fn
 
+-- user nvim config dir
+config_dir = vf.stdpath("config")
+-- user nvim data dir
+data_dir = vf.stdpath("data")
+
 -- }}}
 
 -- requirements ----------------------- {{{
 
 -- load pre-defined vim functions
-vim.cmd 'source ~/.config/nvim/vim/funcs.vim'
+vim.cmd  ('source ' .. config_dir .. '/vim/funcs.vim')
 
 -- user plugins , settings, and keymaps
 require 'user'
 
 -- pip install pynvim
-vim.cmd 'source ~/.config/nvim/vim/coc_settings.vim'
-vim.cmd 'source ~/.config/nvim/vim/autocommands.vim'
+vim.cmd  ('source ' .. config_dir .. '/vim/coc_settings.vim')
+vim.cmd  ('source ' .. config_dir .. '/vim/autocommands.vim')
 
 -- plugin configs
 require 'user.config'
