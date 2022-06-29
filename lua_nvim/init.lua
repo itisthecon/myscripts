@@ -11,21 +11,21 @@ vf = vim.fn
 
 -- load pre-defined vim functions
 vim.cmd 'source ~/.config/nvim/vim/funcs.vim'
-require 'user.settings'
-require 'user.plugins'
-require 'user.config.lightline'
-require 'user.config.ale'
-require 'user.config.indent-blankline'
+
+-- user plugins , settings, and keymaps
+require 'user'
+
 -- pip install pynvim
 vim.cmd 'source ~/.config/nvim/vim/coc_settings.vim'
-require 'user.keymaps'
 vim.cmd 'source ~/.config/nvim/vim/autocommands.vim'
+
+-- plugin configs
+require 'user.config'
 
 -- }}}
 
 -- theme config ----------------------- {{{
 
-require 'user.config.nightfox'
 vim.cmd 'colorscheme nightfox'
 
 -- }}}
