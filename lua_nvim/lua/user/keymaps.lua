@@ -75,3 +75,9 @@ map('n', '<C-k>', '<C-w>k')
 map('n', '<C-l>', '<C-w>l')
 
 -- }}}
+
+-- UI related ----------------------- {{{
+
+map('n', '<leader>tt', ':call v:lua.theme_toggle()<cr>')
+
+-- }}}

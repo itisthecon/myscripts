@@ -1,0 +1,48 @@
+vg = vim.g
+
+local themes = {
+    function ()
+        vg.gruvbox_italics=1
+        vg.gruvbox_italicize_strings=1
+        vg.gruvbox_filetype_hi_groups = 1
+        vg.gruvbox_plugin_hi_groups = 1
+        return "colorscheme gruvbox8"
+    end,
+
+    function () return "colorscheme onedark" end,
+
+    function ()
+        vg.sonokai_enable_italic = 1
+        vg.sonokai_better_performance = 1
+        return "colorscheme sonokai"
+    end,
+
+    function ()
+        vg.gruvbox_material_enable_italic = 1
+        vg.gruvbox_material_better_performance = 1
+        return "colorscheme gruvbox-material"
+    end,
+
+    function () return "colorscheme nord" end,
+
+    function () return "colorscheme doom-one" end,
+
+    function ()
+        vg.everforest_enable_italic = 1
+        vg.everforest_better_performance = 1
+        return "colorscheme everforest"
+    end,
+
+    function () return "colorscheme nightfox" end,
+
+    function () return "colorscheme kanagawa" end
+}
+
+
+function theme_toggle()
+    local theme = themes[ math.random( 0, #themes - 1 ) ]
+
+    print( theme() )
+
+    vim.cmd( theme() )
+end
