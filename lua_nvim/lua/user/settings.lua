@@ -106,8 +106,8 @@ for k, v in pairs(options) do
 end
 
 -- 搜索高亮颜色
-vim.cmd[[ hi Search ctermbg=LightYellow ]]
-vim.cmd[[ hi Search ctermfg=DarkRed ]]
+vim.cmd[[hi Search ctermbg=LightYellow]]
+vim.cmd[[hi Search ctermfg=DarkRed]]
 
 set.matchpairs:append [[<:>,「:」,『:』,【:】,“:”,‘:’,《:》]]
 

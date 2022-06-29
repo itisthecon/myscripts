@@ -13,7 +13,7 @@ vg.lightline = {
 
     component = {
         totallines = '%LL',
-        length = [[ %{line2byte('$') + len(getline('$'))}C  ]],
+        length = [[%{line2byte('$') + len(getline('$'))}C]],
         cwd = '%{CurDir()}',
         git = '%{FugitiveStatusline()}',
         path = '%f'
