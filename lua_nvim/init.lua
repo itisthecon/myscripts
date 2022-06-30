@@ -22,7 +22,6 @@ require 'user'
 
 -- pip install pynvim
 vim.cmd  ('source ' .. config_dir .. '/vim/coc_settings.vim')
-vim.cmd  ('source ' .. config_dir .. '/vim/autocommands.vim')
 
 -- plugin configs
 require 'user.config'

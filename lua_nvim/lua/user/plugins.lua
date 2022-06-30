@@ -79,7 +79,8 @@ return require('packer').startup(function(use)
   use 'dag/vim-fish'
 
   --
-  use 'ntpeters/vim-better-whitespace'
+  -- use 'ntpeters/vim-better-whitespace'
+  use {'jdhao/whitespace.nvim', event = 'VimEnter'}
   --
   use({
       "lukas-reineke/indent-blankline.nvim",
