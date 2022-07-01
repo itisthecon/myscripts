@@ -19,6 +19,7 @@ return require('packer').startup(function(use)
 
   -- A (Neo)vim plugin for formatting code. :Neoformat
   use({ "sbdchd/neoformat", cmd = { "Neoformat" } })
+  -- use({'mhartington/formatter.nvim', config = [[require('user.config.formatter')]]})
 
   -- Targets.vim is a Vim plugin that adds various text objects to give you more targets to operate on.
   -- It expands on the idea of simple commands like di'
