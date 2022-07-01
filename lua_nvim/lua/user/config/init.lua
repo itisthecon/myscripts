@@ -1,3 +1,4 @@
+require 'user.config.notify'
 require 'user.config.ale'
 require 'user.config.lightline'
 require 'user.config.nightfox'

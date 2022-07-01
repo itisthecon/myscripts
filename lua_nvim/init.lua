@@ -30,8 +30,13 @@ require 'user.config'
 
 -- theme config ----------------------- {{{
 
--- vim.cmd 'colorscheme nightfox'
-vim.cmd 'colorscheme kanagawa'
+-- local colorscheme = 'nightfox'
+local colorscheme = 'kanagawa'
+local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
+if not status_ok then
+    vim.notify("colorscheme " .. colorscheme .. "not found!", "error")
+    return
+end
 
 -- }}}
 

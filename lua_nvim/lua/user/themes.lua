@@ -5,38 +5,38 @@ function theme_toggle()
             vg.gruvbox_italicize_strings=1
             vg.gruvbox_filetype_hi_groups = 1
             vg.gruvbox_plugin_hi_groups = 1
-            return "colorscheme gruvbox8"
+            return "gruvbox8"
         end,
 
-        function () return "colorscheme onedark" end,
+        function () return "onedark" end,
 
         function ()
             vg.sonokai_enable_italic = 1
             vg.sonokai_better_performance = 1
             vg.sonokai_transparent_background = 1
             vg.sonokai_diagnostic_line_highlight = 1
-            return "colorscheme sonokai"
+            return "sonokai"
         end,
 
         function ()
             vg.gruvbox_material_enable_italic = 1
             vg.gruvbox_material_better_performance = 1
-            return "colorscheme gruvbox-material"
+            return "gruvbox-material"
         end,
 
-        function () return "colorscheme nord" end,
+        function () return "nord" end,
 
-        function () return "colorscheme doom-one" end,
+        function () return "doom-one" end,
 
         function ()
             vg.everforest_enable_italic = 1
             vg.everforest_better_performance = 1
-            return "colorscheme everforest"
+            return "everforest"
         end,
 
-        function () return "colorscheme nightfox" end,
+        function () return "nightfox" end,
 
-        function () return "colorscheme kanagawa" end
+        function () return "kanagawa" end
     }
 
     local theme = nil
@@ -46,9 +46,14 @@ function theme_toggle()
             theme = themes[ math.random( 0, #themes - 1 ) ]
     end
 
-    print( theme() )
+    local colorscheme = theme()
+    vim.notify("setting theme to " .. colorscheme .. " ...", "INFO")
 
-    vim.cmd( theme() )
+    local status_ok, _ = pcall(vim.cmd, 'colorscheme ' .. theme())
+    if not status_ok then
+        vim.notify("colorscheme " .. colorscheme .. "not found!", "error")
+        return
+    end
 end
 
 function bg_trans_toggle()
