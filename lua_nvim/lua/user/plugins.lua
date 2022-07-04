@@ -27,9 +27,25 @@ return require('packer').startup(function(use)
 
   -- sandwich.vim is a set of operator and textobject plugins to
   -- add/delete/replace surroundings of a sandwiched textobject, like (foo), 'bar'.
-  -- Press sa{motion/textobject}{addition}. For example, a key sequence saiw( makes foo to (foo).
-  -- Press sdb or sd{deletion}. For example, key sequences sdb or sd( makes (foo) to foo.
+  -- Add: Press sa{motion/textobject}{addition}. For example:
+  -- a key sequence saiw( makes foo to (foo).
+  -- Delete: Press sdb or sd{deletion}. For example:
+  -- sdb or sd( makes (foo) to foo
+  -- Replace: Press srb{addition} or sr{deletion}{addition}. For example:
+  -- srb" or sr(" makes (foo) to "foo"
   use({"machakann/vim-sandwich", event = "VimEnter"})
+
+  -- 自动补全引号括号等
+  use({"Raimondi/delimitMate", event = "InsertEnter"})
+
+  -- 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
+  -- cs"'               双引号转单引号
+  -- cs'<q>             单引号转<q></q>
+  -- cst"               再转回来
+  -- ds"                删掉双引号
+  -- ys<text-obj>"      添加符号,比如ysid" -- 给当前句子加上引号
+  -- 快速改变surroud符号，比如 cs(' 把()改成''
+  use 'tpope/vim-surround'
 
   -- themes..
   use({"lifepillar/vim-gruvbox8", opt = true})
@@ -59,22 +75,8 @@ return require('packer').startup(function(use)
   -- 用gcc来注释一行（需要计数）
   use({"tpope/vim-commentary", event = "VimEnter"})
 
-
-
-  -- 用来加括号，引号，前后缀等等，写XML很有用（特别是配合repeat）
-  -- cs"'               双引号转单引号
-  -- cs'<q>             单引号转<q></q>
-  -- cst"               再转回来
-  -- ds"                删掉双引号
-  -- ys<text-obj>"      添加符号,比如ysid" -- 给当前句子加上引号
-  -- 快速改变surroud符号，比如 cs(' 把()改成''
-  use 'tpope/vim-surround'
-
   -- 兼容源代码目录中的.editorcontig配置
   use 'editorconfig/editorconfig-vim'
-
-  -- 自动补全引号括号等
-  use({"Raimondi/delimitMate", event = "InsertEnter"})
 
   -- fish syntax扩展
   use 'dag/vim-fish'
