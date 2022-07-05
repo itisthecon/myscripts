@@ -49,7 +49,7 @@ map("n", "<space>", "@=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>")
 map(
 	"n",
 	"<F9>",
-	"<cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber!<CR> :call ToggleSignColumn()<CR> <cmd>SignifyToggle<CR>"
+	"<cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber! list!<CR> :call ToggleSignColumn()<CR> <cmd>SignifyToggle<CR>"
 )
 
 -- paste selected content

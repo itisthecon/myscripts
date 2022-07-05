@@ -81,7 +81,8 @@ local options = {
 
     -- Use list mode and customized listchars
     list = true,
-    listchars = [[tab:▸\ ,extends:❯,precedes:❮,nbsp:␣]],
+    --listchars = [[tab:→\ ,extends:❯,precedes:❮,nbsp:␣]],
+    listchars = [[tab:→\,space:·,nbsp:␣,eol:¶]],
 
     -- Show hostname, full path of file and last-mod time on the window title. The
     -- meaning of the format str for strftime can be found in
