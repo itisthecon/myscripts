@@ -9,6 +9,14 @@ local augroup = vim.api.nvim_create_augroup   -- Create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd   -- Create autocommand
 vg = vim.g
 
+-- Commentary plugin settings
+augroup('Commentary', { clear = true })
+autocmd('Filetype', {
+      group = 'Commentary',
+      pattern = { 'c',},
+      command = [[setlocal commentstring=//\ %s]]
+})
+
 -- Do not use smart case in command line mode, extracted from https://vi.stackexchange.com/a/16511/15292.
 augroup('dynamic_smartcase', { clear = true })
 autocmd('CmdLineEnter', {
