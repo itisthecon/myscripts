@@ -97,7 +97,9 @@ local options = {
     -- hightlight column and line 高亮光标所在的行
     cursorline = true,
     --
-    --
+    -- shows  the effects of a command
+    -- in a partial off-screen results in a preview window.
+    icm='split'
 }
 
 for k, v in pairs(options) do

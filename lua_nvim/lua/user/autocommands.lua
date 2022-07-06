@@ -97,7 +97,7 @@ augroup('highlight_yank', { clear = true })
 autocmd('TextYankPost', {
       group = 'highlight_yank',
       pattern = '*',
-      command = [[silent! lua vim.highlight.on_yank{higroup="YankColor", timeout=300, on_visual=false}]],
+      command = [[silent! lua vim.highlight.on_yank{higroup="YankColor", timeout=150, on_visual=false}]],
 })
 
 augroup('auto_grp', { clear = true })
