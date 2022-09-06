@@ -351,17 +351,19 @@ function up_vim()
 {
     pushd . > /dev/null;
 
-    if ! [[ -e /data/soft/git/vim && -d /data/soft/git/vim ]];
+    if ! [[ -e /data/soft/git/neovim && -d /data/soft/git/neovim ]];
     then
         mkdir -p /data/soft/git/
         cd /data/soft/git/
-        git clone https://github.com/vim/vim.git
+        git clone https://github.com/neovim/neovim.git
     fi
 
-    cd /data/soft/git/vim
+    cd /data/soft/git/neovim
     git pull
-    ./configure --enable-python3interp --enable-pythoninterp --with-features=huge --enable-perlinterp --enable-multibyte --enable-rubyinterp --enable-luainterp --enable-cscope
-    make
+    rm -rf .deps/ build/
+
+#     ./configure --enable-python3interp --enable-pythoninterp --with-features=huge --enable-perlinterp --enable-multibyte --enable-rubyinterp --enable-luainterp --enable-cscope
+    make CMAKE_BUILD_TYPE=Release
     make install
 
     popd > /dev/null;
