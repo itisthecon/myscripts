@@ -1,3 +1,10 @@
+-- mcd ~/.local/share/nvim/site/autoload
+-- wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+-- mcd ~/.config/
+-- ln -s /data/soft/git/myscripts/lua_nvim/init.lua
+-- ln -s /data/soft/git/myscripts/lua_nvim/lua
+-- ln -s /data/soft/git/myscripts/lua_nvim/vim
+
 -- misc pre config ----------------------- {{{
 
 -- define vim global var prefix
