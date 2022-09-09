@@ -1,6 +1,6 @@
 -- mcd ~/.local/share/nvim/site/autoload
 -- wget https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
--- mcd ~/.config/
+-- mcd ~/.config/nvim
 -- ln -s /data/soft/git/myscripts/lua_nvim/init.lua
 -- ln -s /data/soft/git/myscripts/lua_nvim/lua
 -- ln -s /data/soft/git/myscripts/lua_nvim/vim
@@ -9,8 +9,8 @@
 --curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 --bash nodesource_setup.sh
 --
--- apt install nodejs npm python3-pyx
--- pip install pynvim python3-pip
+-- apt install nodejs python3-pip python3-pyx
+-- pip install pynvim
 --
 --
 
