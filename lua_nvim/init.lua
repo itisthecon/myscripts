@@ -6,7 +6,7 @@
 -- ln -s /data/soft/git/myscripts/lua_nvim/vim
 --
 --debian install new version nodejs:
---curl -sL https://deb.nodesource.com/setup_16.x -o nodesource_setup.sh
+--curl -sL https://deb.nodesource.com/setup_18.x -o nodesource_setup.sh
 --bash nodesource_setup.sh
 --
 -- apt install nodejs npm python3-pyx
