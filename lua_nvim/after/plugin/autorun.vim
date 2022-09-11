@@ -1,4 +1,1 @@
-IndentBlanklineToggle
-set number! relativenumber! list!
-call ToggleSignColumn()
-SignifyToggle
+"au VimEnter * set nolist

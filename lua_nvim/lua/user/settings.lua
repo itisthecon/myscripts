@@ -77,12 +77,12 @@ local options = {
     errorbells = false,
 
     -- The number of command and search history to keep
-    history = 5000,
+    history = 9000,
 
     -- Use list mode and customized listchars
     list = true,
     --listchars = [[tab:→\ ,extends:❯,precedes:❮,nbsp:␣]],
-    listchars = [[tab:→\,space:·,nbsp:␣,eol:↲,extends:❯,precedes:❮]],
+    --listchars = [[tab:→\,space:·,nbsp:␣,eol:↲,extends:❯,precedes:❮]],
 
     -- Show hostname, full path of file and last-mod time on the window title. The
     -- meaning of the format str for strftime can be found in
