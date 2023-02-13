@@ -60,6 +60,8 @@ return require('packer').startup(function(use)
   use "EdenEast/nightfox.nvim"
   -- use({"rebelot/kanagawa.nvim", opt = true, config = [[require('user.config.kanagawa')]]})
   use 'rebelot/kanagawa.nvim'
+  use { "catppuccin/nvim", as = "catppuccin" }
+  use 'folke/tokyonight.nvim'
 
   -- 状态栏相关设置
   use 'itchyny/lightline.vim'
