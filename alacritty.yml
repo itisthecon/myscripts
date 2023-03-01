@@ -1043,4 +1043,5 @@ TokyoNightStorm: &TokyoNightStorm
 #colors: *TokyoNight
 #colors: *MonokaiPro
 #colors: *TokyoNightStorm
-colors: *TomorrowNight
+#colors: *MonokaiPro
+colors: *Nord
