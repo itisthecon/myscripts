@@ -52,7 +52,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   #decorations:full
-  opacity: 0.80
+  opacity: 0.75
 
 
   # Startup Mode (changes require restart)
@@ -94,7 +94,7 @@ scrolling:
 # Font configuration
 font:
   # Normal (roman) font face
-  size: 12
+  size: 11
   normal:
     # Font family
     #
@@ -102,7 +102,8 @@ font:
     #   - (macOS) Menlo
     #   - (Linux/BSD) monospace
     #   - (Windows) Consolas
-    family: Iosevka Nerd Font
+    family: Caskaydia Cove Nerd Font
+      #family: Iosevka Nerd Font
       #family: Source Code Pro
 
     # The `style` can be specified to pick a specific face.
@@ -117,7 +118,8 @@ font:
     # value specified for the normal font.
     #family:  Iosevka Bold Nerd Font Complete
     #family:  Iosevka Term
-    family: Iosevka Nerd Font SemiBold
+    family: CaskaydiaCove Nerd Font
+      #family: Iosevka Nerd Font SemiBold
 
     # The `style` can be specified to pick a specific face.
     style: Bold
@@ -131,7 +133,8 @@ font:
     # value specified for the normal font.
     #family:  FantasqueSansMono Nerd Font Mono
     #family:  Iosevka Nerd Font Mono
-    family:  Iosevka Nerd Font
+    family: CaskaydiaCove Nerd Font
+    #family:  Iosevka Nerd Font
     #family:  Iosevka Medium Italic Nerd Font Complete
 
     # The `style` can be specified to pick a specific face.
@@ -148,7 +151,8 @@ font:
     #family:  Iosevka Bold Italic Nerd Font Complete
 
     # The `style` can be specified to pick a specific face.
-    family:  Iosevka Term
+    family: CaskaydiaCove Nerd Font
+      #family:  Iosevka Term
     style: Bold Italic
 
   # Point size
@@ -1044,6 +1048,5 @@ TokyoNightStorm: &TokyoNightStorm
 #colors: *Dracula
 #colors: *TokyoNight
 #colors: *MonokaiPro
-#colors: *TokyoNightStorm
-#colors: *MonokaiPro
-colors: *Nord
+colors: *TokyoNightStorm
+#colors: *Nord
