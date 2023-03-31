@@ -20,8 +20,8 @@ window:
   dimensions:
     #columns: 145
     #lines: 34
-    columns: 140
-    lines: 30
+    columns: 130
+    lines: 35
 
   # Window position (changes require restart)
   #
