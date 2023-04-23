@@ -52,7 +52,7 @@ window:
   #     - transparent: Title bar, transparent background and title bar buttons
   #     - buttonless: Title bar, transparent background, but no title bar buttons
   #decorations:full
-  opacity: 0.75
+  opacity: 0.85
 
 
   # Startup Mode (changes require restart)
