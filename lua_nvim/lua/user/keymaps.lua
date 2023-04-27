@@ -51,6 +51,11 @@ map(
 	"<F9>",
 	"<cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber! list!<CR> :call ToggleSignColumn()<CR> <cmd>SignifyToggle<CR>"
 )
+map(
+	"n",
+	"<leader><F9>",
+	"<cmd>IndentBlanklineToggle<CR> <cmd>set number! relativenumber! list!<CR> :call ToggleSignColumn()<CR> <cmd>SignifyToggle<CR>"
+)
 
 -- paste selected content
 map("n", "<leader>p", '"*p')
