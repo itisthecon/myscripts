@@ -1,0 +1,21 @@
+#!/bin/sh
+
+echo "backup old nvim config .."
+mv ~/.config/nvim ~/.config/my_vim
+
+mv ~/.local/share/nvim ~/.local/share/my_vim
+mv ~/.local/state/nvim ~/.local/state/my_vim
+mv ~/.cache/nvim ~/.cache/my_vim
+
+echo "install lazyvim .."
+git clone https://github.com/LazyVim/starter ~/.config/nvim
+rm -rf ~/.config/nvim/.git
+
+echo "apply custom config .."
+rm -f ~/.config/nvim/lua/config/keymaps.lua
+rm -f ~/.config/nvim/lua/config/options.lua
+
+ln -s /data/soft/git/myscripts/lazy/config/keymaps.lua ~/.config/nvim/lua/config/keymaps.lua
+ln -s /data/soft/git/myscripts/lazy/config/options.lua ~/.config/nvim/lua/config/options.lua
+
+ln -s /data/soft/git/myscripts/lazy/plugins/my_plugins.lua ~/.config/nvim/lua/plugins/my_plugins.lua
