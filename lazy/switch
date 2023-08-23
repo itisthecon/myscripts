@@ -1,18 +1,19 @@
 #!/bin/sh
 
 echo "backup old nvim config .."
-if [ -d "~/.config/my_vim" ]
-then
-  echo "backup dirctory exists, quitting .."
-  exit 1
-else
-  mv ~/.config/nvim ~/.config/my_vim
+if [ -d "~/.config/nvim" ]
+  if [ -d "~/.config/my_vim" ]
+  then
+    echo "backup dirctory exists, quitting .."
+    exit 1
+  else
+    mv ~/.config/nvim ~/.config/my_vim
 
-  mv ~/.local/share/nvim ~/.local/share/my_vim
-  mv ~/.local/state/nvim ~/.local/state/my_vim
-  mv ~/.cache/nvim ~/.cache/my_vim
+    mv ~/.local/share/nvim ~/.local/share/my_vim
+    mv ~/.local/state/nvim ~/.local/state/my_vim
+    mv ~/.cache/nvim ~/.cache/my_vim
+  fi
 fi
-
 
 echo "install lazyvim .."
 git clone https://github.com/LazyVim/starter ~/.config/nvim
