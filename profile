@@ -312,6 +312,7 @@ function up_apt ()
     apt update;
     apt upgrade;
     apt autoremove;
+    apt clean;
 }
 
 function up_profile()
