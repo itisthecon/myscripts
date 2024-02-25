@@ -309,10 +309,16 @@ function mcd () { mkdir -p "$1" && cd "$1"; }
 
 function up_apt ()
 {
-    apt update;
-    apt upgrade;
-    apt autoremove;
-    apt clean;
+  if [ -f "/usr/bin/pacman" ];
+  then
+      pacman -Syu
+      pacman -Scc
+  else
+      apt update;
+      apt upgrade;
+      apt autoremove;
+      apt clean;
+  fi
 }
 
 function up_profile()
