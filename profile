@@ -312,7 +312,7 @@ function up_apt ()
   if [ -f "/usr/bin/pacman" ];
   then
       pacman -Syu
-      pacman -Scc
+      yes | LC_ALL=en_US.UTF-8 pacman -Scc
   else
       apt update;
       apt upgrade;
