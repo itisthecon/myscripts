@@ -17,14 +17,14 @@ def get_trans(trans_element)
 
   trans = trans_element.at('.trans-container')
   list_items = trans.search('li')
-  list_items.each do |item|
+  list_items&.each do |item|
     puts item.text.strip.colorize(:light_blue)
   end
 end
 
 def get_chs_trans(page)
   trans_list = page.at('.trans-container ul')
-  trans_list.search('p').each do |trans|
+  trans_list&.search('p')&.each do |trans|
     word_type = trans.search('span')[0].text.strip.gsub(/\s+/, ' ')
     word = trans.search('span')[1].text.strip.gsub(/\s+/, ' ')
     puts "#{word_type.colorize(:red)} #{word.colorize(:yellow)}"
@@ -75,7 +75,7 @@ end
 def get_chs_sentences(page)
   sentences = page.at('#bilingual ul')
   list_items = sentences.search('li')
-  list_items.each_with_index do |item, index|
+  list_items&.each_with_index do |item, index|
     chs = item.search('p')[0].text.strip
     eng = item.search('p')[1].text.strip
 
@@ -89,7 +89,7 @@ def get_phrases(page)
   return if phrases.nil?
 
   phrases_list = phrases.search('.wordGroup')
-  phrases_list.each do |phrase|
+  phrases_list&.each do |phrase|
     puts phrase.text.strip.gsub(/\s+/, ' ').colorize(color: :light_magenta)
   end
 end
