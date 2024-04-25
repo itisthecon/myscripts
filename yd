@@ -1,0 +1,140 @@
+#!/usr/bin/ruby
+require 'mechanize'
+require 'colorize'
+
+if ARGV.empty?
+	abort ("有道在线词典控制台Ruby版\n用法:yd 单词 ...")
+end
+
+# 发音
+def get_pronounce(trans_element)
+  unless trans_element.at('.baav').nil?
+    puts trans_element.at('.baav').text.strip.gsub(/\s+/, ' ').colorize(:yellow)
+  end
+end
+
+# 释义
+def get_trans(trans_element)
+  trans = trans_element.at('.trans-container')
+  list_items = trans.search('li')
+  list_items.each do |item|
+    puts item.text.strip.colorize(:light_blue)
+  end
+end
+
+def get_chs_trans(page)
+  #puts page.at('.trans-container ul').text.strip.gsub(/\s+/, ' ')
+  trans_list = page.at('.trans-container ul')
+  trans_list.search('p').each do |trans|
+    word_type = trans.search('span')[0].text.strip.gsub(/\s+/, ' ')
+    word = trans.search('span')[1].text.strip.gsub(/\s+/, ' ')
+    puts word_type.colorize(:red) + ' ' + word.colorize(:yellow)
+  end
+end
+
+# 附加内容
+def get_additional(trans_element)
+  unless trans_element.at('.additional').nil?
+    puts "\e[38;5;228m" + trans_element.at('.additional').text.strip.gsub(/\s+/, ' ') + "\e[0m"
+  end
+end
+
+# 获取例句列表
+def get_sentences(page)
+  sentences = Array.new
+  desc_text = nil
+  example = ''
+  title_text = ''
+  collins_list = page.at('.collinsToggle')
+  unless collins_list.nil?
+    collins_list.search('li').each do |item|
+      sentence_html = item.at('.collinsMajorTrans')
+      if !sentence_html.nil?
+        desc = item.at('.collinsMajorTrans p')
+        desc_text = desc.text.strip.gsub(/\s+/, ' ')
+        if !desc.nil?
+          title = desc.search('.additional').first
+          if !title.nil? and !title.attribute('title').nil?
+            title_text = '[' + title.attribute('title').value + '/' + title.text + ']'
+            desc_text = desc_text.sub(title.text, '')
+          end
+        end
+      end
+      examples = item.search('.exampleLists')
+      if !examples.nil?
+        examples.each do |examp|
+          example += "例：".colorize(:green) + examp.text.strip.gsub(/\s+/, ' ').sub('例：', '') + "\n\t"
+        end
+      end
+      if !desc.nil? and example != ''
+        sentences << {title: title_text, desc: desc_text, example: example} 
+      end
+      desc_text = nil
+      example = ''
+    end
+    sentences.each_with_index do |sentence, index|
+      puts "#{index + 1}. \e[38;5;86m#{title_text}\e[0m\e[38;5;221m#{sentence[:desc]}\e[0m"
+      puts "\t#{sentence[:example]}"
+    end
+  end
+end
+
+def get_chs_sentences(page)
+  sentences = page.at('#bilingual ul')
+  list_items = sentences.search('li')
+  list_items.each_with_index do |item, index|
+    chs = item.search('p')[0].text.strip
+    eng = item.search('p')[1].text.strip
+
+    puts "#{index + 1}. " + eng.colorize(:light_green) + ' ' + chs
+  end
+end
+
+# 获取短语列表
+def get_phrases(page)
+  phrases = page.at('#webPhrase')
+  phrases_list = phrases.search('.wordGroup')
+  phrases_list.each do |phrase|
+    puts phrase.text.strip.gsub(/\s+/, ' ').colorize(:color => :light_magenta)
+  end
+end
+
+def get_eng(page)
+  trans_element = page.at('#phrsListTab')
+  puts '音标: '.colorize(:color => :cyan,:mode => :bold)
+  get_pronounce(trans_element)
+  puts '翻译:'.colorize(:color => :cyan,:mode => :bold)
+  get_trans(trans_element)
+  puts '附加信息:'.colorize(:color => :cyan,:mode => :bold)
+  get_additional(trans_element)
+  puts '短语:'.colorize(:color => :cyan,:mode => :bold)
+  get_phrases(page)
+  puts '例句:'.colorize(:color => :cyan,:mode => :bold)
+  get_sentences(page)
+end
+
+def get_chs(page)
+  puts '翻译:'.colorize(:color => :cyan,:mode => :bold)
+  get_chs_trans(page)
+  puts '短语:'.colorize(:color => :cyan,:mode => :bold)
+  get_phrases(page)
+  puts '例句:'.colorize(:color => :cyan,:mode => :bold)
+  get_chs_sentences(page)
+end
+
+def is_chinese?(str)
+  str =~ /\p{Han}/
+end
+
+agent = Mechanize.new
+query_str = ARGV.join(' ')
+query = URI.encode_www_form_component(query_str)
+url = "https://dict.youdao.com/search?q="
+url += query
+page = agent.get(url)
+
+if is_chinese?(query_str)
+  get_chs(page)
+else
+  get_eng(page)
+end
