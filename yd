@@ -16,7 +16,7 @@ def get_trans(trans_element)
   return if trans_element.nil?
 
   trans = trans_element.at('.trans-container')
-  list_items = trans.search('li')
+  list_items = trans&.search('li')
   list_items&.each do |item|
     puts item.text.strip.colorize(:light_blue)
   end
