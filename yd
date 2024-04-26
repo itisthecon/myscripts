@@ -17,17 +17,14 @@ end
 # 释义
 def get_trans(trans_element)
   puts "\n翻译:".colorize(color: :cyan, mode: :bold)
-  trans = trans_element&.at('.trans-container')
-  list_items = trans&.search('li')
-  list_items&.each do |item|
+  trans_element&.at('.trans-container')&.search('li')&.each do |item|
     puts item.text.strip.colorize(:light_blue)
   end
 end
 
 def get_chs_trans(page)
   puts "\n翻译:".colorize(color: :cyan, mode: :bold)
-  trans_list = page.at('.trans-container ul')
-  trans_list&.search('p')&.each do |trans|
+  page.at('.trans-container ul')&.search('p')&.each do |trans|
     word_type = trans.search('span')[0].text.strip.gsub(/\s+/, ' ')
     word = trans.search('span')[1].text.strip.gsub(/\s+/, ' ')
     puts "#{word_type.colorize(:red)} #{word.colorize(:yellow)}"
@@ -44,14 +41,12 @@ end
 def get_sentences(page)
   puts "\n例句:".colorize(color: :cyan, mode: :bold)
   sentences = []
-  collins_list = page.at('.collinsToggle')
 
-  collins_list&.search('li')&.each do |item|
+  page.at('.collinsToggle')&.search('li')&.each do |item|
     desc_text = nil
     example = ''
     title_text = ''
-    sentence_html = item.at('.collinsMajorTrans')
-    unless sentence_html.nil?
+    unless item.at('.collinsMajorTrans').nil?
       desc = item.at('.collinsMajorTrans p')
       desc_text = desc.text.strip.gsub(/\s+/, ' ')
       unless desc.nil?
@@ -62,8 +57,7 @@ def get_sentences(page)
         end
       end
     end
-    examples = item.search('.exampleLists')
-    examples&.each do |examp|
+    item.search('.exampleLists')&.each do |examp|
       example += '例：'.colorize(:green) + examp.text.strip.gsub(/\s+/, ' ').sub('例：', '') + "\n\t"
     end
     sentences << { title: title_text, desc: desc_text, example: example } if !desc.nil? && example != ''
@@ -76,9 +70,7 @@ end
 
 def get_chs_sentences(page)
   puts "\n例句:".colorize(color: :cyan, mode: :bold)
-  sentences = page.at('#bilingual ul')
-  list_items = sentences.search('li')
-  list_items&.each_with_index do |item, index|
+  page.at('#bilingual ul')&.search('li')&.each_with_index do |item, index|
     chs = item.search('p')[0].text.strip
     eng = item.search('p')[1].text.strip
 
@@ -89,9 +81,7 @@ end
 # 获取短语列表
 def get_phrases(page)
   puts "\n短语:".colorize(color: :cyan, mode: :bold)
-  phrases = page&.at('#wordGroup')
-  phrases_list = phrases&.search('p')
-  phrases_list&.each do |phrase|
+  page&.at('#wordGroup')&.search('p')&.each do |phrase|
     phrease_text = "\e[38;5;45m#{phrase&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')}\e[0m"
     puts "#{phrease_text} #{phrase&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')}"
   end
@@ -99,9 +89,7 @@ end
 
 def get_chs_phrases(page)
   puts "\n短语:".colorize(color: :cyan, mode: :bold)
-  phrases = page.at('#webPhrase')
-  phrases_list = phrases&.search('.wordGroup')
-  phrases_list&.each do |phrase|
+  page.at('#webPhrase')&.search('.wordGroup')&.each do |phrase|
     puts phrase.text.strip.gsub(/\s+/, ' ').colorize(color: :light_magenta)
   end
 end
@@ -122,8 +110,7 @@ end
 # 获取同根词
 def get_relword(page)
   puts "\n同根词:".colorize(color: :cyan, mode: :bold)
-  rels = page&.at('#relWordTab')
-  rels.children&.each do |rel|
+  page&.at('#relWordTab')&.children&.each do |rel|
     if rel&.attribute('class')&.value == 'wordGroup'
       elm1 = rel&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
       elm2 = rel&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')
@@ -141,9 +128,7 @@ end
 # 获取词语辨析
 def get_discriminate(page)
   puts "\n词语辨析:".colorize(color: :cyan, mode: :bold)
-  discriminates = page&.at('#discriminate')
-  discriminates_list = discriminates&.search('.wordGroup p')
-  discriminates_list&.each do |discriminate|
+  page&.at('#discriminate')&.search('.wordGroup p')&.each do |discriminate|
     elm1 = discriminate&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
     elm2 = discriminate&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')
     elm1 = "\e[38;5;45m#{elm1}\e[0m" unless chinese?(elm1)
@@ -172,8 +157,7 @@ end
 agent = Mechanize.new
 query_str = ARGV.join(' ')
 query = URI.encode_www_form_component(query_str)
-url = 'https://dict.youdao.com/search?q='
-url += query
+url = "https://dict.youdao.com/search?q=#{query}"
 page = agent.get(url)
 
 if chinese?(query_str)
