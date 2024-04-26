@@ -46,17 +46,16 @@ def get_sentences(page)
     desc_text = nil
     example = ''
     title_text = ''
-    unless item.at('.collinsMajorTrans').nil?
-      desc = item.at('.collinsMajorTrans p')
+    desc = item.at('.collinsMajorTrans p')
+    unless desc.nil?
       desc_text = desc.text.strip.gsub(/\s+/, ' ')
-      unless desc.nil?
-        title = desc.search('.additional').first
-        if !title.nil? && !title.attribute('title').nil?
-          title_text = "[#{title.attribute('title').value}/#{title.text}]"
-          desc_text = desc_text.sub(title.text, '')
-        end
+      title = desc.search('.additional').first
+      if !title.nil? && !title.attribute('title').nil?
+        title_text = "[#{title.attribute('title').value}/#{title.text}]"
+        desc_text = desc_text.sub(title.text, '')
       end
     end
+
     item.search('.exampleLists')&.each do |examp|
       example += '例：'.colorize(:green) + examp.text.strip.gsub(/\s+/, ' ').sub('例：', '') + "\n\t"
     end
@@ -98,9 +97,8 @@ end
 def get_synoyms(page)
   puts "\n近义词:".colorize(color: :cyan, mode: :bold)
   synoymses = page&.at('#synonyms')
-  synoymses_chs_list = synoymses&.search('li')
   synoymses_eng_list = synoymses&.search('p')
-  synoymses_chs_list&.each_with_index do |synonyms_chs, index|
+  synoymses&.search('li')&.each_with_index do |synonyms_chs, index|
     chs_text = synonyms_chs&.text&.strip&.gsub(/\s+/, ' ')
     eng_text = synoymses_eng_list[index]&.text&.strip&.gsub(/\s+/, ' ')
     puts "#{chs_text} \e[38;5;45m#{eng_text}\e[0m"
