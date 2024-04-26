@@ -6,16 +6,12 @@ abort("有道在线词典控制台Ruby版\n用法:yd 单词 ...") if ARGV.empty?
 
 # 发音
 def get_pronounce(trans_element)
-  return if trans_element.nil? || trans_element.at('.baav').nil?
-
-  puts trans_element.at('.baav').text.strip.gsub(/\s+/, ' ').colorize(:yellow)
+  puts trans_element&.at('.baav')&.text&.strip&.gsub(/\s+/, ' ')&.colorize(:yellow)
 end
 
 # 释义
 def get_trans(trans_element)
-  return if trans_element.nil?
-
-  trans = trans_element.at('.trans-container')
+  trans = trans_element&.at('.trans-container')
   list_items = trans&.search('li')
   list_items&.each do |item|
     puts item.text.strip.colorize(:light_blue)
@@ -33,18 +29,15 @@ end
 
 # 附加内容
 def get_additional(trans_element)
-  return if trans_element.nil? || trans_element.at('.additional').nil?
-
-  puts "\e[38;5;228m #{trans_element.at('.additional').text.strip.gsub(/\s+/, ' ')} \e[0m"
+  puts "\e[38;5;228m #{trans_element&.at('.additional')&.text&.strip&.gsub(/\s+/, ' ')} \e[0m"
 end
 
 # 获取例句列表
 def get_sentences(page)
   sentences = []
   collins_list = page.at('.collinsToggle')
-  return if collins_list.nil?
 
-  collins_list.search('li').each do |item|
+  collins_list&.search('li')&.each do |item|
     desc_text = nil
     example = ''
     title_text = ''
@@ -86,9 +79,7 @@ end
 # 获取短语列表
 def get_phrases(page)
   phrases = page.at('#webPhrase')
-  return if phrases.nil?
-
-  phrases_list = phrases.search('.wordGroup')
+  phrases_list = phrases&.search('.wordGroup')
   phrases_list&.each do |phrase|
     puts phrase.text.strip.gsub(/\s+/, ' ').colorize(color: :light_magenta)
   end
@@ -117,10 +108,6 @@ def get_chs(page)
   get_chs_sentences(page)
 end
 
-def chinese?(str)
-  str =~ /\p{Han}/
-end
-
 agent = Mechanize.new
 query_str = ARGV.join(' ')
 query = URI.encode_www_form_component(query_str)
@@ -128,7 +115,7 @@ url = 'https://dict.youdao.com/search?q='
 url += query
 page = agent.get(url)
 
-if chinese?(query_str)
+if query_str =~ /\p{Han}/
   get_chs(page)
 else
   get_eng(page)
