@@ -47,6 +47,7 @@ def get_sentences(page)
     example = ''
     title_text = ''
     desc = item.at('.collinsMajorTrans p')
+    # 处理例句描述和例句描述的前缀部分
     unless desc.nil?
       desc_text = desc.text.strip.gsub(/\s+/, ' ')
       title = desc.search('.additional').first
