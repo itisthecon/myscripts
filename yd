@@ -25,9 +25,9 @@ end
 def get_chs_trans(page)
   puts "\n翻译:".colorize(color: :cyan, mode: :bold)
   page.at('.trans-container ul')&.search('p')&.each do |trans|
-    word_type = trans.search('span')[0].text.strip.gsub(/\s+/, ' ')
-    word = trans.search('span')[1].text.strip.gsub(/\s+/, ' ')
-    puts "#{word_type.colorize(:red)} #{word.colorize(:yellow)}"
+    word_type = trans&.search('span')&.[](0)&.text&.strip&.gsub(/\s+/, ' ')
+    word = trans&.search('span')&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
+    puts "#{word_type&.colorize(:red)} #{word&.colorize(:yellow)}"
   end
 end
 
