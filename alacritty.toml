@@ -31,6 +31,9 @@ padding.y = 0
 decorations = "Full"
 decorations_theme_variant = "Light" # "Dark"
 
+position = { x = 0, y = 500 }
+dimensions = { columns = 156, lines = 44 }
+
 [font]
 
 #normal.family = "ComicShannsMono Nerd Font Propo"
