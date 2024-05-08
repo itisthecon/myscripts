@@ -25,8 +25,9 @@ import = ["~/.config/alacritty/themes/themes/orizon-dark.toml"]
 
 opacity = 0.80
 
-padding.x = 0
-padding.y = 0
+padding.x = 1
+padding.y = 1
+#dynamic_padding = true
 
 decorations = "Full"
 decorations_theme_variant = "Light" # "Dark"
