@@ -33,7 +33,7 @@ decorations = "Full"
 decorations_theme_variant = "Light" # "Dark"
 
 position = { x = 0, y = 500 }
-dimensions = { columns = 156, lines = 44 }
+dimensions = { columns = 156, lines = 43 }
 
 [font]
 
