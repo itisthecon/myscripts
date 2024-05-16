@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
 require 'json'
 require 'date'
@@ -7,9 +7,9 @@ require 'colorize'
 require 'net/http'
 
 def kiwivm_api_request(api_key, vm_id)
-# 设置 API 请求 URL
-# https://api.64clouds.com/v1/getServiceInfo?veid=1352749&api_key=private_dFUM8YY54Os8T9Tg5PR5p4W7
-  api_url = "https://api.64clouds.com/v1/getServiceInfo"
+  # 设置 API 请求 URL
+  # https://api.64clouds.com/v1/getServiceInfo?veid=1352749&api_key=private_dFUM8YY54Os8T9Tg5PR5p4W7
+  api_url = 'https://api.64clouds.com/v1/getServiceInfo'
   # Define the API request parameters
   params = {
     'veid' => vm_id,
@@ -26,11 +26,8 @@ def kiwivm_api_request(api_key, vm_id)
     return { error: "API response is not valid JSON: #{e}" }
   end
 
-
   # 检查 API 响应中是否有错误
-  if result.key?('error') and result['error'] != 0
-    return { error: "API returned error: #{result['error']}" }
-  end
+  return { error: "API returned error: #{result['error']}" } if result.key?('error') and result['error'] != 0
 
   # 返回 API 响应数据
   result
@@ -42,15 +39,16 @@ hosts = YAML.load_file('/etc/bwg.yaml')
 hosts.each do |host|
   result = kiwivm_api_request(host['api_key'], host['vm_id'])
 
-  puts ""
-  puts "Hostname:\t" + "#{result['hostname']}".colorize(:color => :green, :mode => :bold)
-  puts "IP Address:\t" + "#{result['ip_addresses'][0]}".colorize(:color => :yellow, :mode => :bold)
-  puts "DC:\t\t" + "#{result['node_datacenter']}".colorize(:color => :light_blue, :mode => :italic)
+  puts ''
+  puts "Hostname:\t" + "#{result['hostname']}".colorize(color: :green, mode: :bold)
+  puts "IP Address:\t" + "#{result['ip_addresses'][0]}".colorize(color: :yellow, mode: :bold)
+  puts "DC:\t\t" + "#{result['node_datacenter']}".colorize(color: :light_blue, mode: :italic)
   total = result['plan_monthly_data'] / gb_number
   used = result['data_counter'] / gb_number
   rate_color = 120
   used / total > 0.5 && rate_color = 228
   used / total > 0.85 && rate_color = 161
   puts "Data Used:\t" + "\e[38;5;#{rate_color}m#{used.round(2)}G / #{total}G\e[0m"
-  puts "Resets Date:\t" + "#{Time.at(result['data_next_reset']).strftime('%m/%d/%Y')}".colorize(:color => :cyan, :mode => :bold)
+  puts "Resets Date:\t" + "#{Time.at(result['data_next_reset']).strftime('%m/%d/%Y')}".colorize(color: :cyan,
+                                                                                                mode: :bold)
 end
