@@ -27,7 +27,7 @@ def kiwivm_api_request(api_key, vm_id)
   end
 
   # 检查 API 响应中是否有错误
-  return { error: "API returned error: #{result['error']}" } if result.key?('error') and result['error'] != 0
+  return { error: "API returned error: #{result['error']}" } if result.key?('error') && result['error'] != 0
 
   # 返回 API 响应数据
   result
