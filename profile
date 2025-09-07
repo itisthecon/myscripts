@@ -9,63 +9,62 @@
 # /etc/profile.d/ to make custom changes to your environment, as this
 # will prevent the need for merging in future updates.
 
-pathmunge () {
-    case ":${PATH}:" in
-        *:"$1":*)
-            ;;
-        *)
-            if [ "$2" = "after" ] ; then
-                PATH=$PATH:$1
-            else
-                PATH=$1:$PATH
-            fi
-    esac
+pathmunge() {
+  case ":${PATH}:" in
+  *:"$1":*) ;;
+  *)
+    if [ "$2" = "after" ]; then
+      PATH=$PATH:$1
+    else
+      PATH=$1:$PATH
+    fi
+    ;;
+  esac
 }
 
-
 if [ -x /usr/bin/id ]; then
-    if [ -z "$EUID" ]; then
-        # ksh workaround
-        EUID=`id -u`
-        UID=`id -ru`
-    fi
-    USER="`id -un`"
-    LOGNAME=$USER
-    MAIL="/var/spool/mail/$USER"
+  if [ -z "$EUID" ]; then
+    # ksh workaround
+    EUID=$(id -u)
+    UID=$(id -ru)
+  fi
+  USER="$(id -un)"
+  LOGNAME=$USER
+  MAIL="/var/spool/mail/$USER"
 fi
 
 # Path manipulation
 if [ "$EUID" = "0" ]; then
-    pathmunge /sbin
-    pathmunge /usr/sbin
-    pathmunge /usr/local/sbin
+  pathmunge /sbin
+  pathmunge /usr/sbin
+  pathmunge /usr/local/sbin
 else
-    pathmunge /usr/local/sbin after
-    pathmunge /usr/sbin after
-    pathmunge /sbin after
+  pathmunge /usr/local/sbin after
+  pathmunge /usr/sbin after
+  pathmunge /sbin after
 fi
 
-HOSTNAME=`/bin/hostname 2>/dev/null`
+HOSTNAME=$(/bin/hostname 2>/dev/null)
 export USER LOGNAME MAIL HOSTNAME
 
 # By default, we want umask to get set. This sets it for login shell
 # Current threshold for system reserved uid/gids is 200
 # You could check uidgid reservation validity in
 # /usr/share/doc/setup-*/uidgid file
-if [ $UID -gt 199 ] && [ "`id -gn`" = "`id -un`" ]; then
-    umask 002
+if [ $UID -gt 199 ] && [ "$(id -gn)" = "$(id -un)" ]; then
+  umask 002
 else
-    umask 022
+  umask 022
 fi
 
-for i in /etc/profile.d/*.sh ; do
-    if [ -r "$i" ]; then
-        if [ "${-#*i}" != "$-" ]; then
-            . "$i"
-        else
-            . "$i" >/dev/null 2>&1
-        fi
+for i in /etc/profile.d/*.sh; do
+  if [ -r "$i" ]; then
+    if [ "${-#*i}" != "$-" ]; then
+      . "$i"
+    else
+      . "$i" >/dev/null 2>&1
     fi
+  fi
 done
 
 unset i
@@ -79,15 +78,14 @@ export HISTFILESIZE=5000000
 export HISTSIZE=5000000
 export HISTTIMEFORMAT='%F %T '
 export HISTCONTROL=ignoredups:erasedups # no duplicate entries
-export TERM="xterm-256color"                      # getting proper colors
+export TERM="xterm-256color"            # getting proper colors
 #export PROMPT_COMMAND='history -a'
 # After each command, append to the history file and reread it
 #export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 export PS1="\`if [ \$? = 0 ]; then echo \[\e[33m\]^_^\[\e[0m\]; else echo \[\e[31m\]O_O\[\e[0m\]; fi\`\033[;33;1m\W@\033[31m\h\033[;33;1m\\$\033[0m"
 
-if [ -d "/data/soft/git/bash-git-prompt" ];
-then
+if [ -d "/data/soft/git/bash-git-prompt" ]; then
   source /data/soft/git/bash-git-prompt/prompt-colors.sh
   source /data/soft/git/bash-git-prompt/gitprompt.sh
   GIT_PROMPT_ONLY_IN_REPO=1
@@ -162,20 +160,17 @@ alias aptwhich='dpkg -S'
 alias ssp='eval "$(starship init bash)"'
 alias journalctl_clean='journalctl --vacuum-time=1d'
 
-if [ -f "/usr/local/bin/vim" ];
-then
-    alias vi="/usr/local/bin/vim";
+if [ -f "/usr/local/bin/vim" ]; then
+  alias vi="/usr/local/bin/vim"
 fi
 
-if [ -f "/usr/local/bin/nvim" ];
-then
-    alias vi="/usr/local/bin/nvim";
+if [ -f "/usr/local/bin/nvim" ]; then
+  alias vi="/usr/local/bin/nvim"
 fi
 
-if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]] || [[ -f /usr/bin/exa ]];
-then
-    alias ls="exa -F --icons";
-    alias l="exa -alFhg --git --icons";
+if [[ -f /usr/local/bin/exa ]] || [[ -f ~/.cargo/bin/exa ]] || [[ -f /usr/bin/exa ]]; then
+  alias ls="exa -F --icons"
+  alias l="exa -alFhg --git --icons"
 fi
 
 # }}}
@@ -183,27 +178,26 @@ fi
 # macos alias----------------------- {{{
 
 # from https://natelandau.com/my-mac-osx-bash_profile/
-if [[ $(uname -s) == Darwin ]];
-then
-    alias f='open -a Finder ./';                                                  # Opens current directory in MacOS Finder
-    alias flush_dns='dscacheutil -flushcache';                                    # Flush out the DNS Cache
-    alias lsock='sudo /usr/sbin/lsof -i -P';                                      # lsock:        Display open sockets
-    alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP';                            # lsockU:       Display only open UDP sockets
-    alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP';                            # lsockT:       Display only open TCP sockets
-    alias ip_info0='ipconfig getpacket en0';                                      # Get info on connections for en0
-    alias ip_info1='ipconfig getpacket en1';                                      # Get info on connections for en1
-    alias open_ports='sudo lsof -i | grep LISTEN';                                # All listening connections
-    alias show_blocked='sudo ipfw list';                                          # All ipfw rules inc/ blocked IPs
-    alias mount_read_write='/sbin/mount -uw /';                                   # For use when booted into single-user
-    alias finder_show_hidden='defaults write com.apple.finder ShowAllFiles TRUE'; # Show hidden files in Finder
-    alias finder_hide_hidden='defaults write com.apple.finder ShowAllFiles FALSE' # Hide hidden files in Finder
-    alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'            # Find CPU hogs
-    alias mem_hogs_top='top -l 1 -o rsize | head -20'                             # Find memory hogs
-    alias mem_hogs_ps='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'    # Find memory hogs
-    alias ttop="top -R -F -s 10 -o rsize"                                         # Recommended minimize resources top
-    alias fix_stty='stty sane'                                                    # fix_stty:     Restore terminal settings when screwed up
-    ql () { qlmanage -p "$*" >& /dev/null; }                                      # ql:           Opens any file in MacOS Quicklook Preview
-    my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }      # List processes owned by my user
+if [[ $(uname -s) == Darwin ]]; then
+  alias f='open -a Finder ./'                                                   # Opens current directory in MacOS Finder
+  alias flush_dns='dscacheutil -flushcache'                                     # Flush out the DNS Cache
+  alias lsock='sudo /usr/sbin/lsof -i -P'                                       # lsock:        Display open sockets
+  alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP'                             # lsockU:       Display only open UDP sockets
+  alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP'                             # lsockT:       Display only open TCP sockets
+  alias ip_info0='ipconfig getpacket en0'                                       # Get info on connections for en0
+  alias ip_info1='ipconfig getpacket en1'                                       # Get info on connections for en1
+  alias open_ports='sudo lsof -i | grep LISTEN'                                 # All listening connections
+  alias show_blocked='sudo ipfw list'                                           # All ipfw rules inc/ blocked IPs
+  alias mount_read_write='/sbin/mount -uw /'                                    # For use when booted into single-user
+  alias finder_show_hidden='defaults write com.apple.finder ShowAllFiles TRUE'  # Show hidden files in Finder
+  alias finder_hide_hidden='defaults write com.apple.finder ShowAllFiles FALSE' # Hide hidden files in Finder
+  alias cpu_hogs='ps wwaxr -o pid,stat,%cpu,time,command | head -10'            # Find CPU hogs
+  alias mem_hogs_top='top -l 1 -o rsize | head -20'                             # Find memory hogs
+  alias mem_hogs_ps='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10'    # Find memory hogs
+  alias ttop="top -R -F -s 10 -o rsize"                                         # Recommended minimize resources top
+  alias fix_stty='stty sane'                                                    # fix_stty:     Restore terminal settings when screwed up
+  ql() { qlmanage -p "$*" >&/dev/null; }                                        # ql:           Opens any file in MacOS Quicklook Preview
+  my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command; }       # List processes owned by my user
 fi
 
 #   ---------------------------------------
@@ -264,144 +258,133 @@ shopt -s hostcomplete
 # For example, I see 'Bold Red' as 'orange' on my screen,
 # hence the 'Green' 'BRed' 'Red' sequence I often use in my prompt.
 # Normal Colors
-Black='\e[0;30m'        # Black
-Red='\e[0;31m'          # Red
-Green='\e[0;32m'        # Green
-Yellow='\e[0;33m'       # Yellow
-Blue='\e[0;34m'         # Blue
-Purple='\e[0;35m'       # Purple
-Cyan='\e[0;36m'         # Cyan
-White='\e[0;37m'        # White
+Black='\e[0;30m'  # Black
+Red='\e[0;31m'    # Red
+Green='\e[0;32m'  # Green
+Yellow='\e[0;33m' # Yellow
+Blue='\e[0;34m'   # Blue
+Purple='\e[0;35m' # Purple
+Cyan='\e[0;36m'   # Cyan
+White='\e[0;37m'  # White
 
 # Bold
-BBlack='\e[1;30m'       # Black
-BRed='\e[1;31m'         # Red
-BGreen='\e[1;32m'       # Green
-BYellow='\e[1;33m'      # Yellow
-BBlue='\e[1;34m'        # Blue
-BPurple='\e[1;35m'      # Purple
-BCyan='\e[1;36m'        # Cyan
-BWhite='\e[1;37m'       # White
+BBlack='\e[1;30m'  # Black
+BRed='\e[1;31m'    # Red
+BGreen='\e[1;32m'  # Green
+BYellow='\e[1;33m' # Yellow
+BBlue='\e[1;34m'   # Blue
+BPurple='\e[1;35m' # Purple
+BCyan='\e[1;36m'   # Cyan
+BWhite='\e[1;37m'  # White
 
 # Background
-On_Black='\e[40m'       # Black
-On_Red='\e[41m'         # Red
-On_Green='\e[42m'       # Green
-On_Yellow='\e[43m'      # Yellow
-On_Blue='\e[44m'        # Blue
-On_Purple='\e[45m'      # Purple
-On_Cyan='\e[46m'        # Cyan
-On_White='\e[47m'       # White
+On_Black='\e[40m'  # Black
+On_Red='\e[41m'    # Red
+On_Green='\e[42m'  # Green
+On_Yellow='\e[43m' # Yellow
+On_Blue='\e[44m'   # Blue
+On_Purple='\e[45m' # Purple
+On_Cyan='\e[46m'   # Cyan
+On_White='\e[47m'  # White
 
-NC="\e[m"               # Color Reset
+NC="\e[m" # Color Reset
 
 ALERT=${BWhite}${On_Red} # Bold White on red background
 # }}}
 
 # functions----------------------- {{{
-function _exit()              # Function to run upon exit of shell.
-{
-    echo -e "${BRed}Hasta la vista, baby${NC}"
+function _exit() { # Function to run upon exit of shell.
+  echo -e "${BRed}Hasta la vista, baby${NC}"
 }
 trap _exit EXIT
 
-function mcd () { mkdir -p "$1" && cd "$1"; }
+function mcd() { mkdir -p "$1" && cd "$1"; }
 
-function up_apt ()
-{
-  if [ -f "/usr/bin/pacman" ];
-  then
-      pacman -Syu
-      yes | LC_ALL=en_US.UTF-8 pacman -Scc
+function up_apt() {
+  if [ -f "/usr/bin/pacman" ]; then
+    pacman -Syu
+    yes | LC_ALL=en_US.UTF-8 pacman -Scc
   else
-      apt update;
-      apt upgrade;
-      apt autoremove;
-      apt clean;
+    apt update
+    apt upgrade
+    apt autoremove
+    apt clean
   fi
 }
 
-function up_profile()
-{
-    pushd . > /dev/null;
-    cd /data/soft/git/myscripts;
-    { git pull; } || { popd > /dev/null; }
-    cd /data/soft/git/fish_config;
-    { git pull; } || { popd > /dev/null; }
-    popd > /dev/null;
+function up_profile() {
+  pushd . >/dev/null
+  cd /data/soft/git/myscripts
+  { git pull; } || { popd >/dev/null; }
+  cd /data/soft/git/fish_config
+  { git pull; } || { popd >/dev/null; }
+  popd >/dev/null
 }
 
-function up_fish()
-{
-    pushd . > /dev/null;
+function up_fish() {
+  pushd . >/dev/null
 
-    if ! [[ -e /data/soft/git/fish-shell && -d /data/soft/git/fish-shell ]];
-    then
-        mkdir -p /data/soft/git/
-        cd /data/soft/git/
-        git clone https://github.com/fish-shell/fish-shell.git
-    fi
+  if ! [[ -e /data/soft/git/fish-shell && -d /data/soft/git/fish-shell ]]; then
+    mkdir -p /data/soft/git/
+    cd /data/soft/git/
+    git clone https://github.com/fish-shell/fish-shell.git
+  fi
 
-    cd /data/soft/git/fish-shell
-    git pull
-    rm -rf build
-    mkdir build
-    cd build
-    cmake ..
-    make
-    make install
+  cd /data/soft/git/fish-shell
+  git pull
+  rm -rf build
+  mkdir build
+  cd build
+  cmake ..
+  make
+  make install
 
-    popd > /dev/null;
+  popd >/dev/null
 }
 
-function up_vim()
-{
-    pushd . > /dev/null;
+function up_vim() {
+  pushd . >/dev/null
 
-    if ! [[ -e /data/soft/git/neovim && -d /data/soft/git/neovim ]];
-    then
-        mkdir -p /data/soft/git/
-        cd /data/soft/git/
-        git clone https://github.com/neovim/neovim.git
-    fi
+  if ! [[ -e /data/soft/git/neovim && -d /data/soft/git/neovim ]]; then
+    mkdir -p /data/soft/git/
+    cd /data/soft/git/
+    git clone https://github.com/neovim/neovim.git
+  fi
 
-    cd /data/soft/git/neovim
-    git pull
-    rm -rf .deps/ build/
+  cd /data/soft/git/neovim
+  git pull
+  rm -rf .deps/ build/
 
-#     ./configure --enable-python3interp --enable-pythoninterp --with-features=huge --enable-perlinterp --enable-multibyte --enable-rubyinterp --enable-luainterp --enable-cscope
-    make CMAKE_BUILD_TYPE=Release
-    make install
+  #     ./configure --enable-python3interp --enable-pythoninterp --with-features=huge --enable-perlinterp --enable-multibyte --enable-rubyinterp --enable-luainterp --enable-cscope
+  make CMAKE_BUILD_TYPE=Release
+  make install
 
-    popd > /dev/null;
+  popd >/dev/null
 }
 
 # }}}
 
 # final actions----------------------- {{{
-if [ -f "/usr/bin/dircolors" ];
-then
-    eval "$(dircolors)"
+if [ -f "/usr/bin/dircolors" ]; then
+  eval "$(dircolors)"
 fi
 
-if [ -f "/usr/games/fortune" ];
-then
-    DISTRIB_ID=$(lsb_release -i | cut -f 2-)
-    if [ $DISTRIB_ID == "Ubuntu" ]
-    then
-        /usr/games/fortune ubuntu-server-tips;
-    elif [ $DISTRIB_ID == "Debian" ]
-    then
-        /usr/games/fortune debian-hints;
-    else
-        /usr/games/fortune;
-    fi
+if [ -f "/usr/games/fortune" ]; then
+  DISTRIB_ID=$(lsb_release -i | cut -f 2-)
+  if [ $DISTRIB_ID == "Ubuntu" ]; then
+    /usr/games/fortune ubuntu-server-tips
+  elif [ $DISTRIB_ID == "Debian" ]; then
+    /usr/games/fortune debian-hints
+  else
+    /usr/games/fortune
+  fi
 fi
 
-if [ -f "/data/soft/git/myscripts/syswarn.rb" ];
-then
-    /data/soft/git/myscripts/syswarn.rb;
+if [ -f "/data/soft/git/myscripts/syswarn.rb" ]; then
+  /data/soft/git/myscripts/syswarn.rb
 fi
 # }}}
 
 set editing-mode vi
+. "$HOME/.cargo/env"
+export EDITOR=nvim
