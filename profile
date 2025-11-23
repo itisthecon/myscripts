@@ -77,7 +77,7 @@ unset -f pathmunge
 export HISTFILESIZE=5000000
 export HISTSIZE=5000000
 export HISTTIMEFORMAT='%F %T '
-export HISTCONTROL=ignoredups:erasedups # no duplicate entries
+export HISTCONTROL=ignoredups:erasedups:ignorespace # no duplicate entries
 export TERM="xterm-256color"            # getting proper colors
 #export PROMPT_COMMAND='history -a'
 # After each command, append to the history file and reread it
@@ -384,6 +384,9 @@ if [ -f "/data/soft/git/myscripts/syswarn.rb" ]; then
   /data/soft/git/myscripts/syswarn.rb
 fi
 # }}}
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 set editing-mode vi
 . "$HOME/.cargo/env"
