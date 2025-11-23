@@ -1,0 +1,166 @@
+#!/usr/bin/env ruby
+require 'mechanize'
+require 'colorize'
+
+abort("有道在线词典控制台Ruby版\n用法:yd 单词 ...") if ARGV.empty?
+
+def chinese?(str)
+  str =~ /\p{Han}/
+end
+
+# 发音
+def get_pronounce(trans_element)
+  puts '音标: '.colorize(color: :cyan, mode: :bold)
+  puts trans_element&.at('.baav')&.text&.strip&.gsub(/\s+/, ' ')&.colorize(:yellow)
+end
+
+# 释义
+def get_trans(trans_element)
+  puts "\n翻译:".colorize(color: :cyan, mode: :bold)
+  trans_element&.at('.trans-container')&.search('li')&.each do |item|
+    puts item.text.strip.colorize(:light_blue)
+  end
+end
+
+def get_chs_trans(page)
+  puts "\n翻译:".colorize(color: :cyan, mode: :bold)
+  page.at('.trans-container ul')&.search('p')&.each do |trans|
+    word_type = trans&.search('span')&.[](0)&.text&.strip&.gsub(/\s+/, ' ')
+    word = trans&.search('span')&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
+    puts "#{word_type&.colorize(:red)} #{word&.colorize(:yellow)}"
+  end
+end
+
+# 附加内容
+def get_additional(trans_element)
+  puts "\n附加信息:".colorize(color: :cyan, mode: :bold)
+  puts "\e[38;5;228m #{trans_element&.at('.additional')&.text&.strip&.gsub(/\s+/, ' ')} \e[0m"
+end
+
+# 获取例句列表
+def get_sentences(page)
+  puts "\n例句:".colorize(color: :cyan, mode: :bold)
+  sentences = []
+
+  page.at('.collinsToggle')&.search('li')&.each do |item|
+    desc_text = nil
+    example = ''
+    title_text = ''
+    desc = item.at('.collinsMajorTrans p')
+    # 处理例句描述和例句描述的前缀部分
+    unless desc.nil?
+      desc_text = desc.text.strip.gsub(/\s+/, ' ')
+      title = desc.search('.additional').first
+      if !title.nil? && !title.attribute('title').nil?
+        title_text = "[#{title.attribute('title').value}/#{title.text}]"
+        desc_text = desc_text.sub(title.text, '')
+      end
+    end
+
+    item.search('.exampleLists')&.each do |examp|
+      example += '例：'.colorize(:green) + examp.text.strip.gsub(/\s+/, ' ').sub('例：', '') + "\n\t"
+    end
+    sentences << { title: title_text, desc: desc_text, example: example } if !desc.nil? && example != ''
+  end
+  sentences.each_with_index do |sentence, index|
+    puts "#{index + 1}. \e[38;5;86m#{sentence[:title]}\e[0m\e[38;5;221m#{sentence[:desc]}\e[0m"
+    puts "\t#{sentence[:example]}"
+  end
+end
+
+def get_chs_sentences(page)
+  puts "\n例句:".colorize(color: :cyan, mode: :bold)
+  page.at('#bilingual ul')&.search('li')&.each_with_index do |item, index|
+    chs = item.search('p')[0].text.strip
+    eng = item.search('p')[1].text.strip
+
+    puts "#{index + 1}. #{eng.colorize(:light_green)} #{chs}"
+  end
+end
+
+# 获取短语列表
+def get_phrases(page)
+  puts "\n短语:".colorize(color: :cyan, mode: :bold)
+  page&.at('#wordGroup')&.search('p')&.each do |phrase|
+    phrease_text = "\e[38;5;45m#{phrase&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')}\e[0m"
+    puts "#{phrease_text} #{phrase&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')}"
+  end
+end
+
+def get_chs_phrases(page)
+  puts "\n短语:".colorize(color: :cyan, mode: :bold)
+  page.at('#webPhrase')&.search('.wordGroup')&.each do |phrase|
+    puts phrase.text.strip.gsub(/\s+/, ' ').colorize(color: :light_magenta)
+  end
+end
+
+# 获取近义词
+def get_synoyms(page)
+  puts "\n近义词:".colorize(color: :cyan, mode: :bold)
+  synoymses = page&.at('#synonyms')
+  synoymses_eng_list = synoymses&.search('p')
+  synoymses&.search('li')&.each_with_index do |synonyms_chs, index|
+    chs_text = synonyms_chs&.text&.strip&.gsub(/\s+/, ' ')
+    eng_text = synoymses_eng_list[index]&.text&.strip&.gsub(/\s+/, ' ')
+    puts "#{chs_text} \e[38;5;45m#{eng_text}\e[0m"
+  end
+end
+
+# 获取同根词
+def get_relword(page)
+  puts "\n同根词:".colorize(color: :cyan, mode: :bold)
+  page&.at('#relWordTab')&.children&.each do |rel|
+    if rel&.attribute('class')&.value == 'wordGroup'
+      elm1 = rel&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
+      elm2 = rel&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')
+      elm1 = "\e[38;5;45m#{elm1}\e[0m" unless chinese?(elm1)
+      elm2 = "\e[38;5;45m#{elm2}\e[0m" unless chinese?(elm2)
+
+      puts "#{elm1} #{elm2}"
+    else
+      str = rel&.text&.strip&.gsub(/\s+/, ' ')
+      puts str.colorize(color: :red, mode: :bold) if str != ''
+    end
+  end
+end
+
+# 获取词语辨析
+def get_discriminate(page)
+  puts "\n词语辨析:".colorize(color: :cyan, mode: :bold)
+  page&.at('#discriminate')&.search('.wordGroup p')&.each do |discriminate|
+    elm1 = discriminate&.children&.[](1)&.text&.strip&.gsub(/\s+/, ' ')
+    elm2 = discriminate&.children&.[](2)&.text&.strip&.gsub(/\s+/, ' ')
+    elm1 = "\e[38;5;45m#{elm1}\e[0m" unless chinese?(elm1)
+    puts "#{elm1} #{elm2}"
+  end
+end
+
+def get_eng(page)
+  trans_element = page.at('#phrsListTab')
+  get_pronounce(trans_element)
+  get_trans(trans_element)
+  get_additional(trans_element)
+  get_phrases(page)
+  get_synoyms(page)
+  get_relword(page)
+  get_discriminate(page)
+  get_sentences(page)
+end
+
+def get_chs(page)
+  get_chs_trans(page)
+  get_chs_phrases(page)
+  get_chs_sentences(page)
+end
+
+agent = Mechanize.new
+query_str = ARGV.join(' ')
+query = URI.encode_www_form_component(query_str)
+url = "https://dict.youdao.com/search?q=#{query}"
+page = agent.get(url)
+
+if chinese?(query_str)
+  get_chs(page)
+else
+  get_eng(page)
+end
