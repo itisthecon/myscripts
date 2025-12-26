@@ -132,7 +132,6 @@ alias m="less -FSRXc"
 alias cp="cp -i"
 alias rm="rm -i"
 alias mv="mv -i"
-alias t3="ssh -p57575 t3"
 alias webd="cd /data/webserver/"
 alias pfix='printf "\e[?2004l"'
 alias nocommet='perl -nle '\''print unless /^\s*#/ or /^$/'\''  '
