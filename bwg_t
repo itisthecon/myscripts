@@ -1,0 +1,57 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'date'
+require 'yaml'
+require 'colorize'
+require 'net/http'
+require 'terminal-table'
+
+def kiwivm_api_request(api_key, vm_id)
+  # 设置 API 请求 URL
+  # https://api.64clouds.com/v1/getServiceInfo?veid=1352749&api_key=private_dFUM8YY54Os8T9Tg5PR5p4W7
+  api_url = 'https://api.64clouds.com/v1/getServiceInfo'
+  # Define the API request parameters
+  params = {
+    'veid' => vm_id,
+    'api_key' => api_key
+  }
+  uri = URI(api_url)
+  uri.query = URI.encode_www_form(params)
+  response = Net::HTTP.get_response(uri)
+
+  # 解析 API 响应
+  begin
+    result = JSON.parse(response.body)
+  rescue JSON::ParserError => e
+    return { error: "API response is not valid JSON: #{e}" }
+  end
+
+  # 检查 API 响应中是否有错误
+  return { error: "API returned error: #{result['error']}" } if result.key?('error') && result['error'] != 0
+
+  # 返回 API 响应数据
+  result
+end
+
+gb_number = 1_073_741_824.0
+hosts = YAML.load_file('/etc/bwg.yaml')
+
+rows = []
+hosts.each do |host|
+  result = kiwivm_api_request(host['api_key'], host['vm_id'])
+
+  hostname = "#{result['hostname']}".colorize(color: :green, mode: :bold)
+  ip = "#{result['ip_addresses'][0]}".colorize(color: :yellow, mode: :bold)
+  dc =  "#{result['node_datacenter']}".colorize(color: :light_blue, mode: :italic)
+  total = result['plan_monthly_data'] / gb_number
+  used = result['data_counter'] / gb_number
+  rate_color = 120
+  used / total > 0.5 && rate_color = 228
+  used / total > 0.85 && rate_color = 161
+  traffic = "\e[38;5;#{rate_color}m#{used.round(2)}G/#{total}G\e[0m"
+  reset = "#{Time.at(result['data_next_reset']).strftime('%m/%d/%Y')}".colorize(color: :cyan, mode: :bold)
+  rows << [hostname, traffic, reset, dc]
+end
+table = Terminal::Table.new :rows => rows
+puts table
