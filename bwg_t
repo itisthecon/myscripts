@@ -48,10 +48,10 @@ hosts.each do |host|
   used = result['data_counter'] / gb_number
   rate_color = 120
   used_text = "\e[38;5;#{rate_color}m#{used.round(2)}G\e[0m"
-  used / total > 0.5 && used_text = "#{used.round(2)}G".yellow.bold.blink
+  used / total > 0.5 && used_text = "#{used.round(2)}G".yellow.bold
   used / total > 0.85 && used_text = "#{used.round(2)}G".red.bold.blink
   traffic = "#{used_text}\e[38;5;#{rate_color}m/#{total}G\e[0m"
-  reset = "#{Time.at(result['data_next_reset']).strftime('%m/%d/%Y')}".colorize(color: :cyan, mode: :bold)
+  reset = "#{Time.at(result['data_next_reset']).strftime('%m/%d')}".colorize(color: :cyan, mode: :bold)
   rows << [hostname, traffic, reset, dc]
 end
 table = Terminal::Table.new :rows => rows
