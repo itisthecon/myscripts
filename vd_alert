@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'date'
+require 'terminal-table'
+require 'colorize'
+
+vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/21', 'shop.novacloud-hosting.com'],
+           v7: ['03/10', 'zgovps.com'],
+           v10: ['10/22', 'racknerd.com'], v11: ['11/19', 'racknerd.com'],
+           dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], pp_ua: ['09/11', 'nic.ua'],
+           de1_3: ["#{Time.now.month}/18", 'euserv.com'] }
+rows = []
+
+vdlist.each do |vps, info|
+  expire_left = (Date.strptime(info[0], '%m/%d') - Date.today).to_i
+  expire_str = if expire_left < 5
+                 info[0].light_red.blink
+               elsif expire_left < 10
+                 info[0].light_yellow.blink
+               else
+                 info[0]
+               end
+  rows << ["#{vps}".green.bold, expire_str, info[1].light_blue.italic]
+end
+
+table = Terminal::Table.new rows: rows
+puts table
