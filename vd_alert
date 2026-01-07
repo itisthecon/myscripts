@@ -4,11 +4,17 @@ require 'date'
 require 'terminal-table'
 require 'colorize'
 
+if Time.now.day > 18
+  de_mon = Date.today.next_month.month
+else
+  de_mon = Time.now.month
+end
+
 vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/21', 'shop.novacloud-hosting.com'],
            v7: ['03/10', 'zgovps.com'],
            v10: ['10/22', 'racknerd.com'], v11: ['11/19', 'racknerd.com'],
            dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], pp_ua: ['09/11', 'nic.ua'],
-           de1_3: ["#{Time.now.month}/18", 'euserv.com'] }
+           de1_3: ["#{de_mon}/18", 'euserv.com'] }
 rows = []
 
 vdlist.each do |vps, info|
