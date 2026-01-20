@@ -19,9 +19,9 @@ rows = []
 
 vdlist.each do |vps, info|
   expire_left = (Date.strptime(info[0], '%m/%d') - Date.today).to_i
-  expire_str = if expire_left < 5
+  expire_str = if expire_left > 0 && expire_left < 5
                  info[0].light_red.blink
-               elsif expire_left < 10
+               elsif expire_left > 0 && expire_left < 10
                  info[0].light_yellow.blink
                else
                  info[0]
