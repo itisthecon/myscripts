@@ -13,8 +13,8 @@ end
 vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/21', 'shop.novacloud-hosting.com'],
            v6: ['01/18', 'billing.chunkserve.com'], v7: ['03/10', 'zgovps.com'],
            v10: ['10/22', 'racknerd.com'], v11: ['11/19', 'racknerd.com'],
-           dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], pp_ua: ['09/11', 'nic.ua'],
-           de1_3: ["#{de_mon}/18", 'euserv.com'] }
+           v14: ['01/25', 'billing.dedirock.com'], dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], 
+           pp_ua: ['09/11', 'nic.ua'], de1_3: ["#{de_mon}/18", 'euserv.com'] }
 rows = []
 
 vdlist.each do |vps, info|
