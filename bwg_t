@@ -56,9 +56,9 @@ hosts.each do |host|
   reset = "#{Time.at(result['data_next_reset']).strftime('%m/%d')}".colorize(color: :cyan, mode: :bold)
   expire = expires[:"#{result['hostname']}"]
   expire_left = (Date.strptime(expire, "%m/%d") - Date.today).to_i
-  if expire_left < 7
+  if expire_left < 7 and expire_left > 0
     expire_str = expire.light_red.blink
-  elsif expire_left < 15
+  elsif expire_left < 15 and expire_left > 0
     expire_str = expire.light_yellow.blink
   else
     expire_str = expire.light_green
