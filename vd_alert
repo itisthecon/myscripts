@@ -10,12 +10,12 @@ else
   de_mon = Time.now.month
 end
 
-vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/21', 'shop.novacloud-hosting.com'],
+vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/09', 'shop.novacloud-hosting.com'],
            v6: ['01/18', 'billing.chunkserve.com'], 
            v10: ['10/22', 'racknerd.com'], v11: ['11/19', 'racknerd.com'],
            v14: ['01/25', 'billing.dedirock.com'], dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], 
            pp_ua: ['09/11', 'nic.ua'], us_ci: ['01/28', 'dnshe.com'],
-           de1_3: ["#{de_mon}/18", 'euserv.com'], gv: ['08/09', 'gv'] }
+           de1_2: ["#{de_mon}/18", 'euserv.com'], de3: ["#{de_mon}/21", 'euserv.com'], gv: ['08/09', 'gv'] }
 rows = []
 
 vdlist.each do |vps, info|
