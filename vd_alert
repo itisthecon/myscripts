@@ -10,7 +10,7 @@ else
   de_mon = Time.now.month
 end
 
-vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/09', 'shop.novacloud-hosting.com'],
+vdlist = { v2: ['07/20', 'app.cloudcone.com'], v4: ['11/20', 'shop.novacloud-hosting.com'],
            v6: ['01/18', 'billing.chunkserve.com'], 
            v10: ['10/22', 'racknerd.com'], v11: ['11/19', 'racknerd.com'],
            v14: ['01/25', 'billing.dedirock.com'], dpdns_org: ['07/10', 'dash.domain.digitalplat.org'], 
